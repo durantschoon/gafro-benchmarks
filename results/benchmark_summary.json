@@ -1,0 +1,84 @@
+{
+  "cpp": {
+    "language": "cpp",
+    "implementation": "gafro-cpp (C++26)",
+    "results": [
+      {
+        "benchmark": "motor_composition_gp",
+        "iterations": 2000000,
+        "total_time_ms": 12.567,
+        "time_per_op_ns": 6.28,
+        "ops_per_sec": 159146972
+      },
+      {
+        "benchmark": "sandwich_point_transform",
+        "iterations": 2000000,
+        "total_time_ms": 2.032,
+        "time_per_op_ns": 1.02,
+        "ops_per_sec": 984251969
+      },
+      {
+        "benchmark": "point_pair_outer_product",
+        "iterations": 2000000,
+        "total_time_ms": 0.508,
+        "time_per_op_ns": 0.25,
+        "ops_per_sec": 3937007874
+      },
+      {
+        "benchmark": "kinematics_fk_6dof",
+        "iterations": 500000,
+        "total_time_ms": 67.769,
+        "time_per_op_ns": 135.54,
+        "ops_per_sec": 7378005
+      },
+      {
+        "benchmark": "kinematics_geometric_jacobian_6dof",
+        "iterations": 500000,
+        "total_time_ms": 136.722,
+        "time_per_op_ns": 273.44,
+        "ops_per_sec": 3657056
+      }
+    ]
+  },
+  "rust": {
+    "language": "rust",
+    "implementation": "gafro-rust",
+    "results": [
+      {
+        "benchmark": "motor_composition_gp",
+        "iterations": 2000000,
+        "total_time_ms": 255.3362,
+        "time_per_op_ns": 127.67,
+        "ops_per_sec": 7832811
+      },
+      {
+        "benchmark": "sandwich_point_transform",
+        "iterations": 2000000,
+        "total_time_ms": 881.3433,
+        "time_per_op_ns": 440.67,
+        "ops_per_sec": 2269263
+      },
+      {
+        "benchmark": "point_pair_outer_product",
+        "iterations": 2000000,
+        "total_time_ms": 99.0777,
+        "time_per_op_ns": 49.54,
+        "ops_per_sec": 20186167
+      },
+      {
+        "benchmark": "kinematics_fk_6dof",
+        "iterations": 500000,
+        "total_time_ms": 462.5247,
+        "time_per_op_ns": 925.05,
+        "ops_per_sec": 1081023
+      },
+      {
+        "benchmark": "kinematics_geometric_jacobian_6dof",
+        "iterations": 500000,
+        "total_time_ms": 1137.7528,
+        "time_per_op_ns": 2275.51,
+        "ops_per_sec": 439463
+      }
+    ]
+  }
+}

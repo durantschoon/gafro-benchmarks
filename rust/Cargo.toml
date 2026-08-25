@@ -1,0 +1,8 @@
+[package]
+name = "gafro-bench-rust"
+version = "0.1.0"
+edition = "2021"
+authors = ["Durant Schoon <durant.schoon@gmail.com>"]
+
+[dependencies]
+gafro = { path = "../../gafro-rust" }
