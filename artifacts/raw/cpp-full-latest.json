@@ -1,6 +1,114 @@
 {
   "results": [
     {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    },
+    {
       "host": {
         "clock": "high_resolution_clock"
       },
@@ -21,21 +129,21 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        3040958,
-        3090917,
-        3059667,
-        3045084,
-        3078709,
-        3044583,
-        3063667,
-        3038834,
-        3055791,
-        3047583,
-        3041541,
-        3061667,
-        3051916,
-        3059042,
-        3041084
+        3204125,
+        3256208,
+        3169167,
+        3177791,
+        3177834,
+        3175625,
+        3188667,
+        3331834,
+        3341500,
+        3120208,
+        3057875,
+        3721041,
+        4106083,
+        3228208,
+        3419084
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -63,21 +171,21 @@
       },
       "reason": "",
       "sample_durations_ns": [
+        10542,
+        10542,
+        10417,
+        10417,
+        10500,
+        10458,
+        10416,
+        10417,
         10417,
         10333,
-        10334,
-        10333,
-        10334,
         10292,
-        10291,
+        10500,
+        12709,
         10292,
-        10292,
-        10292,
-        10291,
-        10292,
-        10292,
-        10333,
-        10334
+        10375
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -105,21 +213,21 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        6833,
+        6959,
+        6958,
+        6958,
+        6917,
+        6875,
+        6875,
+        6958,
         6917,
         6875,
         6917,
-        6916,
-        6791,
+        6875,
+        6875,
         6917,
         6875,
-        6792,
-        6750,
-        6791,
-        6833,
-        6792,
-        6750,
-        6834
+        6917
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -147,21 +255,21 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        68208,
-        66875,
-        68291,
-        69083,
-        69250,
-        66417,
-        66292,
-        66291,
-        66292,
-        66292,
-        66291,
-        66334,
-        66250,
-        66250,
-        66292
+        68959,
+        66208,
+        69042,
+        67000,
+        90500,
+        66583,
+        67083,
+        67000,
+        71958,
+        66666,
+        67084,
+        67042,
+        67000,
+        66542,
+        66250
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",

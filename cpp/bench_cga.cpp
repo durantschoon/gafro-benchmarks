@@ -90,6 +90,13 @@ int main(int argc, char **argv) try {
     results.push_back(measure("point_pair_outer_product/f64/e12", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
         return (outer_left[i % 2] ^ outer_right[i % 2]).template get<blades::e12>();
     }));
+    const std::vector<std::string> unsupported{
+        "batch_motor_composition/f64/n16/scalar_lane0",
+        "batch_motor_composition/f64/n256/scalar_lane0",
+        "batch_motor_composition/f64/n4096/scalar_lane0",
+        "batch_point_transform/f64/n16/e1_lane0",
+        "batch_point_transform/f64/n256/e1_lane0",
+        "batch_point_transform/f64/n4096/e1_lane0"};
     std::cout << std::setprecision(17) << "{\"results\":[";
     for (std::size_t index = 0; index < results.size(); ++index) {
         const auto &result = results[index]; if (index) std::cout << ',';
@@ -100,6 +107,13 @@ int main(int argc, char **argv) try {
                   << "\"warmup_operations\":" << warmup << ",\"operations_per_sample\":" << operations << ",\"sample_durations_ns\":[";
         for (std::size_t sample = 0; sample < result.durations.size(); ++sample) { if (sample) std::cout << ','; std::cout << result.durations[sample]; }
         std::cout << "],\"oracle\":{\"value\":" << result.oracle << "}}";
+    }
+    for (const auto &id : unsupported) {
+        std::cout << ",{\"schema_version\":\"gafro-benchmark-result/v1\",\"implementation\":{\"family\":\"cpp\",\"name\":\"gafro-cpp\","
+                  << "\"repository_revision\":\"" << revision << "\",\"dirty\":" << dirty << ','
+                  << "\"compiler\":\"" << GAFRO_BENCH_COMPILER << "\",\"backend\":\"cpu-scalar\",\"flags\":[\"" << GAFRO_BENCH_FLAGS << "\"]},"
+                  << "\"host\":{},\"workload_id\":\"" << id << "\",\"status\":\"unsupported\","
+                  << "\"reason\":\"gafro-cpp CPU adapter has no contract SoA batch API\"}";
     }
     std::cout << "]}\n"; return 0;
 } catch (const std::exception &error) { std::cerr << "benchmark failed: " << error.what() << '\n'; return 2; }
