@@ -1,0 +1,32 @@
+{
+  "schema_version": "gafro-benchmark-workloads/v1",
+  "workloads": [
+    {
+      "id": "motor_composition_gp/f64/scalar",
+      "operation": "geometric product of two normalized rigid motors",
+      "operands": {"kind": "translation_motors", "translations": [[1.0, 2.0, 3.0], [-0.5, 0.25, 1.5]], "variation": "alternate operand order"},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 10000,
+      "operations_per_sample": 100000,
+      "observable": {"kind": "coefficient", "name": "scalar", "reference": 1.0, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "sandwich_point_transform/f64/e1",
+      "operation": "motor-point sandwich product M P reverse(M)",
+      "operands": {"kind": "translated_points", "translations": [[1.0, 2.0, 3.0], [-0.5, 0.25, 1.5]], "points": [[2.5, -1.5, 4.0], [3.0, 2.0, -1.0]], "variation": "matching indexed pairs"},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 10000,
+      "operations_per_sample": 100000,
+      "observable": {"kind": "coefficient", "name": "e1", "reference": 3.5, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "point_pair_outer_product/f64/e12",
+      "operation": "outer product of two conformal points",
+      "operands": {"kind": "conformal_points", "base": [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0]], "variation": "reciprocal e1/e2 scaling by 1.125"},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 10000,
+      "operations_per_sample": 100000,
+      "observable": {"kind": "coefficient", "name": "e12", "reference": 1.0, "absolute_tolerance": 1e-10}
+    }
+  ]
+}

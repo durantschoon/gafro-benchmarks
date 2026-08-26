@@ -3,3 +3,5 @@ install/
 .cache
 target/
 **/target/
+__pycache__/
+*.py[cod]
