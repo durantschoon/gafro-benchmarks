@@ -62,10 +62,9 @@ result schema are versioned under [`contracts/`](contracts/). Capability status
 is one of `supported`, `unsupported`, `unavailable`, or `failed`; every status
 except `supported` requires a reason.
 
-The legacy full benchmark can be invoked with `make benchmark`. Until later
-stages migrate its adapters, it retains the existing compiler and library
-prerequisites described below and does not overwrite its committed summaries
-during smoke tests.
+The contract full benchmark can be invoked with `make benchmark`. It writes
+validated raw bundles per implementation and does not overwrite the legacy
+summary tables.
 
 ### C++ reference adapter
 
@@ -73,6 +72,7 @@ The Stage 02 C++ capability matrix is:
 
 | Workload | Precision | Status | Observable |
 | --- | --- | --- | --- |
+| Dense geometric product | `double` | Supported | scalar coefficient |
 | Motor composition | `double` | Supported | scalar coefficient |
 | Motor-point sandwich | `double` | Supported | `e1` coefficient |
 | Point-pair outer product | `double` | Supported | `e12` coefficient |
@@ -89,6 +89,35 @@ make benchmark IMPLEMENTATIONS=cpp \
 
 Validated evidence is written to `artifacts/raw/cpp-full-latest.json` only after
 all workload IDs, operation counts, finite samples, and oracle values pass.
+
+### Idris 2 adapter
+
+Stage 03 runs the same four common workloads against the attached
+`gafro-idris2` checkout. The adapter requires the implementation's pinned Idris
+2 0.7.0 compiler and defaults to the Chez backend. It builds from an isolated
+temporary source tree, records revision and dirty state, and keeps encoding and
+output outside the timed regions:
+
+```bash
+make benchmark IMPLEMENTATIONS=cpp,idris2 \
+  IDRIS2_PATH=../gafro-idris2/gafro-idris2 \
+  IDRIS2_COMPILER=/opt/homebrew/bin/idris2 \
+  IDRIS2_BACKEND=chez
+```
+
+Chez and RefC results are separate series. RefC additionally requires a C
+compiler and Idris runtime archives matching the host process architecture;
+the local mixed-architecture installation cannot link RefC, so it is not used
+as a fallback. Robotics capability records are introduced with the canonical
+robotics IDs in Stage 05 rather than inventing placeholder operations here.
+
+Supplemental optimized C++ CUDA evidence is available in
+[`artifacts/raw/cpp-cuda-runpod-20260826.json`](artifacts/raw/cpp-cuda-runpod-20260826.json).
+It contains 15 CUDA-event samples for point-cloud transforms, warp- and
+thread-per-robot kinematics/Jacobians, and batch inverse kinematics, collected
+from revision `cb9969a` on a Runpod RTX PRO 4500 Blackwell. These are explicitly
+kernel-only measurements and are not cross-language comparable until the
+heterogeneous contract in benchmark Stage 07 is implemented.
 
 To build and run all benchmarks and generate side-by-side comparison tables:
 
