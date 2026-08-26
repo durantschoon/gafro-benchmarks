@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gafro-benchmark-result/v1",
+  "title": "Gafro benchmark result",
+  "description": "One capability/result observation. The Python validator enforces status-dependent fields.",
+  "type": "object",
+  "required": ["schema_version", "implementation", "host", "workload_id", "status", "reason"],
+  "properties": {
+    "schema_version": {"const": "gafro-benchmark-result/v1"},
+    "implementation": {
+      "type": "object",
+      "required": ["family", "name", "repository_revision", "dirty", "compiler", "backend", "flags"]
+    },
+    "host": {"type": "object"},
+    "workload_id": {"type": "string", "minLength": 1},
+    "status": {"enum": ["supported", "unsupported", "unavailable", "failed"]},
+    "reason": {"type": "string"},
+    "warmup_operations": {"type": "integer", "minimum": 0},
+    "operations_per_sample": {"type": "integer", "minimum": 1},
+    "sample_durations_ns": {"type": "array", "items": {"type": "number", "exclusiveMinimum": 0}},
+    "oracle": {}
+  }
+}
