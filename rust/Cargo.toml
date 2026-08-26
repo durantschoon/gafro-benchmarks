@@ -6,3 +6,9 @@ authors = ["Durant Schoon <durant.schoon@gmail.com>"]
 
 [dependencies]
 gafro = { path = "../../gafro-rust" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"

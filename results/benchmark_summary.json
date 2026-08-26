@@ -6,37 +6,37 @@
       {
         "benchmark": "motor_composition_gp",
         "iterations": 2000000,
-        "total_time_ms": 12.567,
-        "time_per_op_ns": 6.28,
-        "ops_per_sec": 159146972
+        "total_time_ms": 13.989,
+        "time_per_op_ns": 6.99,
+        "ops_per_sec": 142969476
       },
       {
         "benchmark": "sandwich_point_transform",
         "iterations": 2000000,
-        "total_time_ms": 2.032,
-        "time_per_op_ns": 1.02,
-        "ops_per_sec": 984251969
+        "total_time_ms": 2.088,
+        "time_per_op_ns": 1.04,
+        "ops_per_sec": 957854406
       },
       {
         "benchmark": "point_pair_outer_product",
         "iterations": 2000000,
-        "total_time_ms": 0.508,
+        "total_time_ms": 0.509,
         "time_per_op_ns": 0.25,
-        "ops_per_sec": 3937007874
+        "ops_per_sec": 3929273084
       },
       {
         "benchmark": "kinematics_fk_6dof",
         "iterations": 500000,
-        "total_time_ms": 67.769,
-        "time_per_op_ns": 135.54,
-        "ops_per_sec": 7378005
+        "total_time_ms": 68.948,
+        "time_per_op_ns": 137.9,
+        "ops_per_sec": 7251842
       },
       {
         "benchmark": "kinematics_geometric_jacobian_6dof",
         "iterations": 500000,
-        "total_time_ms": 136.722,
-        "time_per_op_ns": 273.44,
-        "ops_per_sec": 3657056
+        "total_time_ms": 135.408,
+        "time_per_op_ns": 270.82,
+        "ops_per_sec": 3692544
       }
     ]
   },
@@ -47,37 +47,37 @@
       {
         "benchmark": "motor_composition_gp",
         "iterations": 2000000,
-        "total_time_ms": 255.3362,
-        "time_per_op_ns": 127.67,
-        "ops_per_sec": 7832811
+        "total_time_ms": 28.4288,
+        "time_per_op_ns": 14.21,
+        "ops_per_sec": 70351215
       },
       {
         "benchmark": "sandwich_point_transform",
         "iterations": 2000000,
-        "total_time_ms": 881.3433,
-        "time_per_op_ns": 440.67,
-        "ops_per_sec": 2269263
+        "total_time_ms": 320.3108,
+        "time_per_op_ns": 160.16,
+        "ops_per_sec": 6243936
       },
       {
         "benchmark": "point_pair_outer_product",
         "iterations": 2000000,
-        "total_time_ms": 99.0777,
-        "time_per_op_ns": 49.54,
-        "ops_per_sec": 20186167
+        "total_time_ms": 45.7383,
+        "time_per_op_ns": 22.87,
+        "ops_per_sec": 43726998
       },
       {
         "benchmark": "kinematics_fk_6dof",
         "iterations": 500000,
-        "total_time_ms": 462.5247,
-        "time_per_op_ns": 925.05,
-        "ops_per_sec": 1081023
+        "total_time_ms": 50.3061,
+        "time_per_op_ns": 100.61,
+        "ops_per_sec": 9939156
       },
       {
         "benchmark": "kinematics_geometric_jacobian_6dof",
         "iterations": 500000,
-        "total_time_ms": 1137.7528,
-        "time_per_op_ns": 2275.51,
-        "ops_per_sec": 439463
+        "total_time_ms": 332.3343,
+        "time_per_op_ns": 664.67,
+        "ops_per_sec": 1504509
       }
     ]
   }
