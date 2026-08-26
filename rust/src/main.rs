@@ -139,6 +139,50 @@ fn main() {
         results.push(res);
     }
 
+    // 6. Fused Forward Kinematics + Geometric Jacobian 6-DOF (Single Pass)
+    {
+        let mut chain = KinematicChain::new();
+        for i in 0..6 {
+            let trans = Translator::from_displacement(0.0, 0.2, 0.0);
+            let axis = if i % 2 == 0 { [0.0, 0.0, 1.0] } else { [1.0, 0.0, 0.0] };
+            chain.add_joint(Joint::revolute(axis, Motor::from(trans)));
+        }
+
+        let q = [TAU / 8.0, TAU / 4.0, -TAU / 8.0, TAU / 6.0, 0.0, TAU / 4.0];
+
+        let res = run_benchmark("fused_fk_and_jacobian_6dof", 500_000, |_| {
+            let (fk, jac) = black_box(&chain).forward_kinematics_and_jacobian(black_box(&q));
+            black_box(fk.scalar() + jac[0].e12());
+        });
+        results.push(res);
+    }
+
+    // 7. BatchMotorSoA Composition (4,096 parallel motors)
+    {
+        use gafro::algebra::cga::batch_motor::BatchMotorSoA;
+        const BATCH_SIZE: usize = 4096;
+        let batch_a = BatchMotorSoA::<BATCH_SIZE>::new();
+        let batch_b = BatchMotorSoA::<BATCH_SIZE>::new();
+
+        let batch_iters = 2_000; // 2,000 * 4,096 = 8,192,000 motor compositions
+        let res = run_benchmark("batch_motor_soa_compose_4096", batch_iters, |_| {
+            let res_batch = black_box(&batch_a).compose(black_box(&batch_b));
+            black_box(res_batch.blades[0][0]);
+        });
+
+        // Report per-motor op latency (total time / (iterations * BATCH_SIZE))
+        let per_motor_ns = res.ns_per_op / BATCH_SIZE as f64;
+        let per_motor_ops = res.ops_per_sec * BATCH_SIZE as f64;
+
+        results.push(BenchmarkResult {
+            name: "batch_motor_soa_per_motor",
+            iterations: res.iterations * BATCH_SIZE as u64,
+            total_time_ms: res.total_time_ms,
+            ns_per_op: per_motor_ns,
+            ops_per_sec: per_motor_ops,
+        });
+    }
+
     if json_output {
         println!("{{");
         println!("  \"language\": \"rust\",");

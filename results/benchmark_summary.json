@@ -6,37 +6,37 @@
       {
         "benchmark": "motor_composition_gp",
         "iterations": 2000000,
-        "total_time_ms": 13.989,
-        "time_per_op_ns": 6.99,
-        "ops_per_sec": 142969476
+        "total_time_ms": 12.52,
+        "time_per_op_ns": 6.26,
+        "ops_per_sec": 159744409
       },
       {
         "benchmark": "sandwich_point_transform",
         "iterations": 2000000,
-        "total_time_ms": 2.088,
-        "time_per_op_ns": 1.04,
-        "ops_per_sec": 957854406
+        "total_time_ms": 2.01,
+        "time_per_op_ns": 1.0,
+        "ops_per_sec": 995024876
       },
       {
         "benchmark": "point_pair_outer_product",
         "iterations": 2000000,
-        "total_time_ms": 0.509,
+        "total_time_ms": 0.502,
         "time_per_op_ns": 0.25,
-        "ops_per_sec": 3929273084
+        "ops_per_sec": 3984063745
       },
       {
         "benchmark": "kinematics_fk_6dof",
         "iterations": 500000,
-        "total_time_ms": 68.948,
-        "time_per_op_ns": 137.9,
-        "ops_per_sec": 7251842
+        "total_time_ms": 67.647,
+        "time_per_op_ns": 135.29,
+        "ops_per_sec": 7391311
       },
       {
         "benchmark": "kinematics_geometric_jacobian_6dof",
         "iterations": 500000,
-        "total_time_ms": 135.408,
-        "time_per_op_ns": 270.82,
-        "ops_per_sec": 3692544
+        "total_time_ms": 132.148,
+        "time_per_op_ns": 264.3,
+        "ops_per_sec": 3783637
       }
     ]
   },
@@ -47,37 +47,51 @@
       {
         "benchmark": "motor_composition_gp",
         "iterations": 2000000,
-        "total_time_ms": 28.4288,
-        "time_per_op_ns": 14.21,
-        "ops_per_sec": 70351215
+        "total_time_ms": 23.0812,
+        "time_per_op_ns": 11.54,
+        "ops_per_sec": 86650731
       },
       {
         "benchmark": "sandwich_point_transform",
         "iterations": 2000000,
-        "total_time_ms": 320.3108,
-        "time_per_op_ns": 160.16,
-        "ops_per_sec": 6243936
+        "total_time_ms": 312.5007,
+        "time_per_op_ns": 156.25,
+        "ops_per_sec": 6399985
       },
       {
         "benchmark": "point_pair_outer_product",
         "iterations": 2000000,
-        "total_time_ms": 45.7383,
-        "time_per_op_ns": 22.87,
-        "ops_per_sec": 43726998
+        "total_time_ms": 45.3027,
+        "time_per_op_ns": 22.65,
+        "ops_per_sec": 44147511
       },
       {
         "benchmark": "kinematics_fk_6dof",
         "iterations": 500000,
-        "total_time_ms": 50.3061,
-        "time_per_op_ns": 100.61,
-        "ops_per_sec": 9939156
+        "total_time_ms": 51.1848,
+        "time_per_op_ns": 102.37,
+        "ops_per_sec": 9768527
       },
       {
         "benchmark": "kinematics_geometric_jacobian_6dof",
         "iterations": 500000,
-        "total_time_ms": 332.3343,
-        "time_per_op_ns": 664.67,
-        "ops_per_sec": 1504509
+        "total_time_ms": 331.6274,
+        "time_per_op_ns": 663.25,
+        "ops_per_sec": 1507716
+      },
+      {
+        "benchmark": "fused_fk_and_jacobian_6dof",
+        "iterations": 500000,
+        "total_time_ms": 309.4065,
+        "time_per_op_ns": 618.81,
+        "ops_per_sec": 1615997
+      },
+      {
+        "benchmark": "batch_motor_soa_per_motor",
+        "iterations": 8192000,
+        "total_time_ms": 30.6579,
+        "time_per_op_ns": 3.74,
+        "ops_per_sec": 267206673
       }
     ]
   }
