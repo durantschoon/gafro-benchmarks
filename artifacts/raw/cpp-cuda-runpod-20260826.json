@@ -1,0 +1,86 @@
+{
+  "schema_version": "gafro-cuda-supplemental-evidence/v1",
+  "run_id": "runpod-20260826-rtx-pro-4500-blackwell",
+  "recorded_at": "2026-08-26",
+  "comparability": {
+    "central_heterogeneous_contract": false,
+    "reason": "Supplemental kernel-only evidence collected before benchmark Stage 07; do not compare with end-to-end or resident-pipeline measurements."
+  },
+  "implementation": {
+    "family": "cpp",
+    "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1",
+    "dirty": false,
+    "build_type": "Release",
+    "cuda_architectures": [120],
+    "cmake_options": [
+      "-DGAFRO_BUILD_CUDA=ON",
+      "-DCMAKE_BUILD_TYPE=Release",
+      "-DCMAKE_CUDA_ARCHITECTURES=120"
+    ]
+  },
+  "environment": {
+    "provider": "Runpod",
+    "cloud": "secure",
+    "data_center": "EU-RO-1",
+    "gpu": "NVIDIA RTX PRO 4500 Blackwell",
+    "gpu_uuid": "GPU-67abb1bd-2462-3c56-9432-c698681eeb62",
+    "compute_capability": "12.0",
+    "driver_version": "580.178.04",
+    "power_limit_w": 200.0,
+    "max_sm_clock_mhz": 3090,
+    "max_memory_clock_mhz": 14001,
+    "cuda_toolkit": "12.8.93",
+    "host_compiler": "GNU 13.3.0",
+    "cmake": "3.28.3",
+    "image": "runpod/pytorch:1.0.3-cu1281-torch291-ubuntu2404"
+  },
+  "verification": {
+    "ctest_targets": 5,
+    "ctest_failures": 0,
+    "host_assertions": 6269,
+    "host_test_cases": 168,
+    "sample_count": 15
+  },
+  "measurements": [
+    {
+      "workload_id": "point_cloud_motor_sandwich/f64/1000000",
+      "timing_scope": "kernel",
+      "timer": "cuda_event",
+      "batch_size": 1000000,
+      "sample_durations_ms": [0.035296, 0.035744, 0.034912, 0.034944, 0.035456, 0.036128, 0.034912, 0.035776, 0.035488, 0.035456, 0.035104, 0.035904, 0.035328, 0.03536, 0.035488],
+      "median_duration_ms": 0.035456,
+      "median_throughput_operations_per_second": 28203971119.133575,
+      "oracle": {"max_absolute_error": 0.0, "tolerance": 1e-9, "passed": true}
+    },
+    {
+      "workload_id": "franka_7dof_fk_jacobian_warp/f64/16384",
+      "timing_scope": "kernel",
+      "timer": "cuda_event",
+      "batch_size": 16384,
+      "sample_durations_ms": [0.451648, 0.451648, 0.452256, 0.452256, 0.451392, 0.451584, 0.450976, 0.451776, 0.454912, 0.45184, 0.451008, 0.451456, 0.453184, 0.453632, 0.453792],
+      "median_duration_ms": 0.451776,
+      "median_throughput_operations_per_second": 36265649.521886945,
+      "oracle": {"motor_max_absolute_error": 5.55112e-16, "jacobian_max_absolute_error": 9.99201e-16, "tolerance": 1e-9, "passed": true}
+    },
+    {
+      "workload_id": "franka_7dof_fk_jacobian_thread/f64/16384",
+      "timing_scope": "kernel",
+      "timer": "cuda_event",
+      "batch_size": 16384,
+      "sample_durations_ms": [0.088032, 0.087456, 0.087712, 0.086592, 0.086272, 0.088128, 0.092384, 0.086272, 0.087936, 0.087968, 0.087488, 0.086912, 0.08624, 0.0864, 0.087904],
+      "median_duration_ms": 0.087488,
+      "median_throughput_operations_per_second": 187272529.83266276,
+      "oracle": {"motor_max_absolute_error": 2.22045e-16, "jacobian_max_absolute_error": 6.66134e-16, "tolerance": 1e-9, "passed": true}
+    },
+    {
+      "workload_id": "franka_7dof_levenberg_marquardt_ik/f64/16384",
+      "timing_scope": "kernel",
+      "timer": "cuda_event",
+      "batch_size": 16384,
+      "sample_durations_ms": [3.79117, 3.78368, 3.78413, 3.78931, 3.78787, 3.79139, 3.7913, 3.79536, 3.78157, 3.78307, 3.78243, 3.79322, 3.78707, 3.78259, 3.78662],
+      "median_duration_ms": 3.78707,
+      "median_throughput_operations_per_second": 4326322.507052934,
+      "oracle": {"converged": 15280, "total": 16384, "convergence_rate": 0.9326171875, "max_motor_tracking_error": 4.93851e-5, "tolerance": 1e-3, "passed": true}
+    }
+  ]
+}

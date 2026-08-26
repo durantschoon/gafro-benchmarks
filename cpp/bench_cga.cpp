@@ -31,12 +31,16 @@ void require_close(const char *id, double actual, double expected) {
 template <class Operation>
 Result measure(std::string id, std::uint64_t warmup, std::uint64_t operations, int samples, double expected, Operation operation) {
     require_close(id.c_str(), operation(0), expected);
-    for (std::uint64_t i = 0; i < warmup; ++i) do_not_optimize(operation(i));
+    double warmup_accumulator = 0.0;
+    for (std::uint64_t i = 0; i < warmup; ++i) warmup_accumulator += operation(i);
+    do_not_optimize(warmup_accumulator);
     Result result{std::move(id), {}, expected};
     for (int sample = 0; sample < samples; ++sample) {
         const auto start = std::chrono::high_resolution_clock::now();
-        for (std::uint64_t i = 0; i < operations; ++i) do_not_optimize(operation(i));
+        double accumulator = 0.0;
+        for (std::uint64_t i = 0; i < operations; ++i) accumulator += operation(i);
         const auto stop = std::chrono::high_resolution_clock::now();
+        do_not_optimize(accumulator);
         const double ns = std::chrono::duration<double, std::nano>(stop - start).count();
         if (!std::isfinite(ns) || ns <= 0.0) throw std::runtime_error("non-finite timing");
         result.durations.push_back(ns);
@@ -50,29 +54,41 @@ std::string argument(int argc, char **argv, const std::string &key, const std::s
 }
 int main(int argc, char **argv) try {
     const bool smoke = argument(argc, argv, "--profile", "full") == "smoke";
-    const std::uint64_t warmup = smoke ? 8 : 10000;
-    const std::uint64_t operations = smoke ? 1000 : 100000;
+    const std::uint64_t warmup = smoke ? 8 : 1000;
+    const std::uint64_t operations = smoke ? 1000 : 10000;
     const int samples = smoke ? 3 : 15;
     const std::string revision = argument(argc, argv, "--revision", "unknown");
     const std::string dirty = argument(argc, argv, "--dirty", "false");
     const std::vector<Eigen::Vector3d> translations{{1.0, 2.0, 3.0}, {-0.5, 0.25, 1.5}};
     const std::vector<Eigen::Vector3d> points{{2.5, -1.5, 4.0}, {3.0, 2.0, -1.0}};
+    const std::vector<Motor<double>> motors{
+        Motor<double>{Translator<double>{Translator<double>::Generator(translations[0])}},
+        Motor<double>{Translator<double>{Translator<double>::Generator(translations[1])}}};
+    const std::vector<Point<double>> conformal_points{Point<double>(points[0]), Point<double>(points[1])};
+    const std::vector<Point<double>> outer_left{
+        Point<double>(Eigen::Vector3d(1.0, 0.0, 0.0)), Point<double>(Eigen::Vector3d(1.125, 0.0, 0.0))};
+    const std::vector<Point<double>> outer_right{
+        Point<double>(Eigen::Vector3d(0.0, 1.0, 0.0)), Point<double>(Eigen::Vector3d(0.0, 1.0 / 1.125, 0.0))};
     std::vector<Result> results;
+    using Dense = Multivector<double,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31>;
+    const Dense dense_left(Eigen::Matrix<double, 32, 1>::Ones());
+    Eigen::Matrix<double, 32, 1> dense_right_values = Eigen::Matrix<double, 32, 1>::Ones();
+    dense_right_values[0] = 2.0;
+    const Dense dense_right(dense_right_values);
+    results.push_back(measure("dense_geometric_product/f64/scalar", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
+        return i % 2 == 0 ? Dense(dense_left * dense_right).template get<blades::scalar>()
+                          : Dense(dense_right * dense_left).template get<blades::scalar>();
+    }));
     results.push_back(measure("motor_composition_gp/f64/scalar", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
-        Motor<double> a{Translator<double>{Translator<double>::Generator(translations[i % 2])}};
-        Motor<double> b{Translator<double>{Translator<double>::Generator(translations[(i + 1) % 2])}};
-        return Motor<double>(a * b).template get<blades::scalar>();
+        return Motor<double>(motors[i % 2] * motors[(i + 1) % 2]).template get<blades::scalar>();
     }));
     results.push_back(measure("sandwich_point_transform/f64/e1", warmup, operations, samples, 3.5, [&](std::uint64_t i) {
-        const auto &t = translations[i % 2]; const auto &p = points[i % 2];
-        Motor<double> motor{Translator<double>{Translator<double>::Generator(t)}};
-        return motor.apply(Point<double>(p)).template get<blades::e1>();
+        return motors[i % 2].apply(conformal_points[i % 2]).template get<blades::e1>();
     }));
     results.push_back(measure("point_pair_outer_product/f64/e12", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
-        const double delta = static_cast<double>(i & 1U) * 0.125;
-        Point<double> a(Eigen::Vector3d(1.0 + delta, 0.0, 0.0));
-        Point<double> b(Eigen::Vector3d(0.0, 1.0 / (1.0 + delta), 0.0));
-        return (a ^ b).template get<blades::e12>();
+        return (outer_left[i % 2] ^ outer_right[i % 2]).template get<blades::e12>();
     }));
     std::cout << std::setprecision(17) << "{\"results\":[";
     for (std::size_t index = 0; index < results.size(); ++index) {

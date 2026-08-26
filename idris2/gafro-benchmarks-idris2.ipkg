@@ -1,0 +1,11 @@
+package gafro-benchmarks-idris2
+
+version = 0.1.0
+authors = "gafro-benchmarks contributors"
+license = "MIT"
+brief = "Contract benchmark adapter for gafro-idris2"
+
+sourcedir = "src"
+modules = Main
+main = Main
+executable = bench-cga-idris2

@@ -7,13 +7,13 @@
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
       "operations_per_sample": 1000,
       "oracle": {
@@ -21,9 +21,39 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        333,
-        333,
-        375
+        303500,
+        302916,
+        302792
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "high_resolution_clock"
+      },
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        1083,
+        1083,
+        1041
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -37,13 +67,13 @@
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
       "operations_per_sample": 1000,
       "oracle": {
@@ -51,8 +81,8 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        750,
-        750,
+        709,
+        708,
         708
       ],
       "schema_version": "gafro-benchmark-result/v1",
@@ -67,13 +97,13 @@
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
       "operations_per_sample": 1000,
       "oracle": {
@@ -81,9 +111,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        7250,
-        7042,
-        7084
+        7625,
+        6708,
+        6666
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",

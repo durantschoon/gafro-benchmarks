@@ -2,128 +2,170 @@
   "results": [
     {
       "host": {
-        "clock": "steady_clock"
+        "clock": "high_resolution_clock"
       },
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
-      "operations_per_sample": 100000,
+      "operations_per_sample": 10000,
       "oracle": {
         "value": 1
       },
       "reason": "",
       "sample_durations_ns": [
-        25167,
-        25167,
-        25208,
-        25084,
-        25166,
-        25250,
-        25125,
-        25125,
-        25292,
-        25083,
-        25125,
-        25208,
-        25083,
-        25166,
-        25208
+        3040958,
+        3090917,
+        3059667,
+        3045084,
+        3078709,
+        3044583,
+        3063667,
+        3038834,
+        3055791,
+        3047583,
+        3041541,
+        3061667,
+        3051916,
+        3059042,
+        3041084
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
-      "warmup_operations": 10000,
+      "warmup_operations": 1000,
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "high_resolution_clock"
+      },
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        10417,
+        10333,
+        10334,
+        10333,
+        10334,
+        10292,
+        10291,
+        10292,
+        10292,
+        10292,
+        10291,
+        10292,
+        10292,
+        10333,
+        10334
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
       "workload_id": "motor_composition_gp/f64/scalar"
     },
     {
       "host": {
-        "clock": "steady_clock"
+        "clock": "high_resolution_clock"
       },
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
-      "operations_per_sample": 100000,
+      "operations_per_sample": 10000,
       "oracle": {
         "value": 1
       },
       "reason": "",
       "sample_durations_ns": [
-        75084,
-        75000,
-        74958,
-        75000,
-        75000,
-        75000,
-        74917,
-        75000,
-        74917,
-        74916,
-        74917,
-        74875,
-        75000,
-        74917,
-        74916
+        6833,
+        6917,
+        6875,
+        6917,
+        6916,
+        6791,
+        6917,
+        6875,
+        6792,
+        6750,
+        6791,
+        6833,
+        6792,
+        6750,
+        6834
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
-      "warmup_operations": 10000,
+      "warmup_operations": 1000,
       "workload_id": "point_pair_outer_product/f64/e12"
     },
     {
       "host": {
-        "clock": "steady_clock"
+        "clock": "high_resolution_clock"
       },
       "implementation": {
         "backend": "cpu-scalar",
         "compiler": "AppleClang-21.0.0.21000101-cxx26",
-        "dirty": false,
+        "dirty": true,
         "family": "cpp",
         "flags": [
           "-std=c++2c -O3 -march=native -DNDEBUG"
         ],
         "name": "gafro-cpp",
-        "repository_revision": "37093d992b98a272e5a1fa264a68bef964a65eb2"
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
       },
-      "operations_per_sample": 100000,
+      "operations_per_sample": 10000,
       "oracle": {
         "value": 3.5
       },
       "reason": "",
       "sample_durations_ns": [
-        692833,
-        691834,
-        692167,
-        698167,
-        702291,
-        692291,
-        691708,
-        692459,
-        692541,
-        691917,
-        692084,
-        703875,
-        691709,
-        692125,
-        692209
+        68208,
+        66875,
+        68291,
+        69083,
+        69250,
+        66417,
+        66292,
+        66291,
+        66292,
+        66292,
+        66291,
+        66334,
+        66250,
+        66250,
+        66292
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
-      "warmup_operations": 10000,
+      "warmup_operations": 1000,
       "workload_id": "sandwich_point_transform/f64/e1"
     }
   ],

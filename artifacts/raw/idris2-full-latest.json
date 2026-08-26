@@ -1,0 +1,177 @@
+{
+  "results": [
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        3762772000,
+        3658226000,
+        3630453000,
+        3728793000,
+        3622178000,
+        3623893000,
+        3612448000,
+        3693353000,
+        3758596000,
+        3714923000,
+        3863388000,
+        3649501000,
+        3935807000,
+        3731510000,
+        3637271000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        3685922000,
+        3879308000,
+        3692081000,
+        3622381000,
+        3635677000,
+        3642657000,
+        3722538000,
+        3627847000,
+        3665073000,
+        3864742000,
+        3649853000,
+        3665806000,
+        3852619000,
+        3641785000,
+        3768804000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        2109070000,
+        2220203000,
+        2475049000,
+        2057530000,
+        2065251000,
+        2069178000,
+        2073304000,
+        2074936000,
+        2211873000,
+        2119480000,
+        2247458000,
+        2422466000,
+        2074541000,
+        2096852000,
+        2158837000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        7277172000,
+        7417888000,
+        7761921000,
+        7330011000,
+        7427842000,
+        7384550000,
+        7603774000,
+        7407244000,
+        7556316000,
+        7490670000,
+        7284720000,
+        7264497000,
+        7270124000,
+        7338579000,
+        7375842000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "sandwich_point_transform/f64/e1"
+    }
+  ],
+  "schema_version": "gafro-benchmark-bundle/v1"
+}
