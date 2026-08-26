@@ -71,6 +71,16 @@ class ContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ContractError, "inconsistent operation count"):
             validate_complete_run(self.manifest, rows, "cpp", expected_operations=3)
 
+    def test_complete_run_accepts_per_workload_operation_counts(self):
+        rows = [result(workload=item["id"]) for item in self.manifest["workloads"]]
+        expected = {}
+        for index, (row, definition) in enumerate(zip(rows, self.manifest["workloads"]), start=1):
+            row["operations_per_sample"] = index
+            row["oracle"]["value"] = definition["observable"]["reference"]
+            expected[row["workload_id"]] = index
+        checked = validate_complete_run(self.manifest, rows, "cpp", expected_operations=expected)
+        self.assertEqual(len(checked), len(rows))
+
 
 if __name__ == "__main__":
     unittest.main()

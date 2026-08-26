@@ -1,6 +1,114 @@
 {
   "results": [
     {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    },
+    {
       "host": {
         "clock": "high_resolution_clock"
       },
@@ -21,9 +129,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        303500,
-        302916,
-        302792
+        310333,
+        307625,
+        307458
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -51,9 +159,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        1083,
-        1083,
-        1041
+        1084,
+        1125,
+        1042
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -81,8 +189,8 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        709,
-        708,
+        750,
+        750,
         708
       ],
       "schema_version": "gafro-benchmark-result/v1",
@@ -111,9 +219,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        7625,
+        7958,
         6708,
-        6666
+        6750
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",

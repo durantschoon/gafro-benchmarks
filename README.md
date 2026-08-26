@@ -111,6 +111,27 @@ the local mixed-architecture installation cannot link RefC, so it is not used
 as a fallback. Robotics capability records are introduced with the canonical
 robotics IDs in Stage 05 rather than inventing placeholder operations here.
 
+### Rust CPU and batch adapter
+
+Stage 04 builds against an explicit Cargo checkout and records `rustc`, target,
+features, release profile, LTO, codegen units, and `RUSTFLAGS`. It supports the
+three convention-compatible scalar workloads plus FP64 `BatchMotorSoA`
+composition and `BatchPointSoA` transforms at 16, 256, and 4096 elements.
+Packing and unpacking are excluded from these CPU SoA workload IDs.
+
+The dense raw-multivector workload is explicitly unsupported because its
+contract operands use orthogonal `ePlus`/`eMinus` coefficients while the Rust
+public type uses null `e0`/`eInf` coefficients. Equal array indices would not
+denote equal multivectors. Run all current adapters with:
+
+```bash
+make benchmark IMPLEMENTATIONS=cpp,idris2,rust \
+  RUST_PATH=../gafro-rust/gafro-rust
+```
+
+C++ and Idris report the Rust-specific CPU SoA IDs as unsupported. Robotics is
+reconciled in Stage 05 and CUDA in Stage 07, once those contracts exist.
+
 Supplemental optimized C++ CUDA evidence is available in
 [`artifacts/raw/cpp-cuda-runpod-20260826.json`](artifacts/raw/cpp-cuda-runpod-20260826.json).
 It contains 15 CUDA-event samples for point-cloud transforms, warp- and

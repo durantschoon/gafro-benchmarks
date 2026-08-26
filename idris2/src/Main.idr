@@ -164,6 +164,17 @@ resultJSON provenance warmups operations measurement =
   "\"sample_durations_ns\":" ++ integersJSON measurement.durations ++ "," ++
   "\"oracle\":{\"value\":" ++ show measurement.oracle ++ "}}"
 
+unsupportedJSON : Provenance -> String -> String
+unsupportedJSON provenance workload =
+  "{\"schema_version\":\"gafro-benchmark-result/v1\"," ++
+  "\"implementation\":{\"family\":\"idris2\",\"name\":\"gafro-idris2\"," ++
+  "\"repository_revision\":\"" ++ provenance.revision ++ "\"," ++
+  "\"dirty\":" ++ boolJSON provenance.dirty ++ "," ++
+  "\"compiler\":\"" ++ provenance.compiler ++ "\",\"backend\":\"" ++ provenance.backend ++ "\"," ++
+  "\"flags\":[\"generated-c-compiler: " ++ provenance.cCompiler ++ "\",\"generated-c-flags: " ++ provenance.cFlags ++ "\"]}," ++
+  "\"host\":{},\"workload_id\":\"" ++ workload ++ "\",\"status\":\"unsupported\"," ++
+  "\"reason\":\"gafro-idris2 exposes no CPU SoA batch API\"}"
+
 valueAfter : String -> List String -> Maybe String
 valueAfter key (candidate :: value :: rest) = if candidate == key then Just value else valueAfter key (value :: rest)
 valueAfter key _ = Nothing
@@ -193,4 +204,13 @@ main = do
   composition <- measure "motor_composition_gp/f64/scalar" 1.0 motorComposition warmups operations sampleCount
   transform <- measure "sandwich_point_transform/f64/e1" 3.5 pointTransform warmups operations sampleCount
   outer <- measure "point_pair_outer_product/f64/e12" 1.0 pointPairOuter warmups operations sampleCount
-  putStrLn ("{\"results\":[" ++ joinBy "," (map (resultJSON provenance warmups operations) [dense, composition, transform, outer]) ++ "]}")
+  let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer]
+      unsupported = map (unsupportedJSON provenance)
+        [ "batch_motor_composition/f64/n16/scalar_lane0"
+        , "batch_motor_composition/f64/n256/scalar_lane0"
+        , "batch_motor_composition/f64/n4096/scalar_lane0"
+        , "batch_point_transform/f64/n16/e1_lane0"
+        , "batch_point_transform/f64/n256/e1_lane0"
+        , "batch_point_transform/f64/n4096/e1_lane0"
+        ]
+  putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ unsupported) ++ "]}")

@@ -5,7 +5,7 @@ edition = "2021"
 authors = ["Durant Schoon <durant.schoon@gmail.com>"]
 
 [dependencies]
-gafro = { path = "../../gafro-rust" }
+gafro = { path = "__GAFRO_RUST_PATH__" }
 
 [profile.release]
 opt-level = 3

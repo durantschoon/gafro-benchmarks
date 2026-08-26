@@ -102,7 +102,7 @@ def reconcile_results(manifest: Mapping[str, Any], results: Iterable[Mapping[str
     return sorted(reconciled, key=lambda item: (item["workload_id"], item["implementation"]["family"]))
 
 
-def validate_complete_run(manifest: Mapping[str, Any], results: Iterable[Mapping[str, Any]], family: str, *, expected_operations: int | None = None) -> list[dict[str, Any]]:
+def validate_complete_run(manifest: Mapping[str, Any], results: Iterable[Mapping[str, Any]], family: str, *, expected_operations: int | Mapping[str, int] | None = None) -> list[dict[str, Any]]:
     checked_manifest = validate_manifest(manifest)
     reconciled = reconcile_results(checked_manifest, results)
     expected_ids = {item["id"] for item in checked_manifest["workloads"]}
@@ -114,7 +114,8 @@ def validate_complete_run(manifest: Mapping[str, Any], results: Iterable[Mapping
     for result in reconciled:
         if result["implementation"]["family"] != family or result["status"] != "supported":
             continue
-        if expected_operations is not None and result["operations_per_sample"] != expected_operations:
+        expected = expected_operations.get(result["workload_id"]) if isinstance(expected_operations, Mapping) else expected_operations
+        if expected is not None and result["operations_per_sample"] != expected:
             raise ContractError(f"{result['workload_id']}: inconsistent operation count")
         observable = definitions[result["workload_id"]]["observable"]
         actual = result["oracle"].get("value") if isinstance(result["oracle"], Mapping) else None

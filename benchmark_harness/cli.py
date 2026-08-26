@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import shutil
 import subprocess
@@ -118,6 +119,43 @@ def benchmark_idris2(args: argparse.Namespace, root: Path, manifest: dict[str, o
     return write_bundle(root, "idris2", args.profile, checked)
 
 
+def benchmark_rust(args: argparse.Namespace, root: Path, manifest: dict[str, object], expected_operations: dict[str, int]) -> Path:
+    found = discover(root, "rust", args.rust_path)
+    if found["status"] != "available":
+        raise SystemExit(found["reason"])
+    implementation_path = Path(found["path"])
+    cargo = shutil.which(args.cargo)
+    rustc = shutil.which(args.rustc)
+    if cargo is None or rustc is None:
+        raise SystemExit(f"Rust toolchain unavailable: cargo={args.cargo}, rustc={args.rustc}")
+    metadata = parse_json(subprocess.run([cargo, "metadata", "--no-deps", "--format-version", "1"], cwd=implementation_path, check=True, text=True, capture_output=True).stdout)
+    packages = metadata.get("packages", [])
+    if not any(package.get("name") == "gafro" for package in packages):
+        raise SystemExit("Rust checkout Cargo metadata has no gafro package")
+    revision, dirty = repository_identity(implementation_path)
+    rustc_verbose = subprocess.run([rustc, "-Vv"], check=True, text=True, capture_output=True).stdout
+    compiler = next((line for line in rustc_verbose.splitlines() if line.startswith("rustc ")), "rustc unknown")
+    target = next((line.split(":", 1)[1].strip() for line in rustc_verbose.splitlines() if line.startswith("host:")), "unknown")
+    rustflags = os.environ.get("RUSTFLAGS", "none")
+    with tempfile.TemporaryDirectory(prefix="gafro-benchmark-rust-") as directory:
+        staging = Path(directory)
+        source = staging / "adapter"
+        shutil.copytree(root / "rust", source)
+        cargo_toml = source / "Cargo.toml"
+        cargo_toml.write_text(cargo_toml.read_text().replace("__GAFRO_RUST_PATH__", str(implementation_path)))
+        target_dir = staging / "target"
+        environment = {**os.environ, "CARGO_TARGET_DIR": str(target_dir)}
+        subprocess.run([cargo, "build", "--release", "--locked"], cwd=source, env=environment, check=True)
+        completed = subprocess.run([
+            str(target_dir / "release/gafro-bench-rust"), "--profile", args.profile,
+            "--revision", revision, "--dirty", str(dirty).lower(), "--compiler", compiler,
+            "--target", target, "--rustflags", rustflags,
+        ], check=True, text=True, capture_output=True)
+    bundle = parse_json(completed.stdout)
+    checked = validate_complete_run(manifest, bundle.get("results", []), "rust", expected_operations=expected_operations)
+    return write_bundle(root, "rust", args.profile, checked)
+
+
 def benchmark(args: argparse.Namespace, root: Path) -> int:
     requested = tuple(part.strip() for part in args.implementations.split(",") if part.strip())
     unknown = sorted(set(requested) - set(IMPLEMENTATIONS))
@@ -125,13 +163,18 @@ def benchmark(args: argparse.Namespace, root: Path) -> int:
         raise SystemExit(f"unknown implementations: {', '.join(unknown)}")
     manifest = validate_manifest(json.loads((root / "contracts/workloads-v1.json").read_text()))
     expected_operations = 1000 if args.profile == "smoke" else 10000
+    definitions = {item["id"]: item for item in manifest["workloads"]}
+    expected_by_workload = {
+        workload_id: (item["operands"].get("batch_size", expected_operations) if args.profile == "smoke" else item["operations_per_sample"])
+        for workload_id, item in definitions.items()
+    }
     destinations = []
     if "cpp" in requested:
         destinations.append(benchmark_cpp(args, root, manifest, expected_operations))
     if "idris2" in requested:
         destinations.append(benchmark_idris2(args, root, manifest, expected_operations))
     if "rust" in requested:
-        raise SystemExit("Rust adapter is introduced in Stage 04")
+        destinations.append(benchmark_rust(args, root, manifest, expected_by_workload))
     for destination in destinations:
         print(destination)
     return 0
@@ -146,6 +189,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--cpp-compiler")
     result.add_argument("--idris2-compiler", default="idris2")
     result.add_argument("--idris2-backend", default="chez", choices=("chez", "refc"))
+    result.add_argument("--cargo", default="cargo")
+    result.add_argument("--rustc", default="rustc")
     result.add_argument("--implementations", default="cpp")
     result.add_argument("--profile", choices=("smoke", "full"), default="full")
     return result

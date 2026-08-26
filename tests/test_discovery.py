@@ -41,6 +41,14 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn('"--c-compiler"', source)
         self.assertIn('"--c-flags"', source)
 
+    def test_rust_adapter_reports_batch_capabilities_and_provenance(self):
+        source = (Path(__file__).resolve().parents[1] / "rust/src/main.rs").read_text()
+        self.assertIn("BatchMotorSoA", source)
+        self.assertIn("BatchPointSoA", source)
+        self.assertIn('"--rustflags"', source)
+        self.assertIn("codegen-units: 1", source)
+        self.assertIn("lto: fat", source)
+
 
 if __name__ == "__main__":
     unittest.main()

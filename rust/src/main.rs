@@ -1,222 +1,142 @@
-// SPDX-FileCopyrightText: Idiap Research Institute <contact@idiap.ch>
-// SPDX-FileContributor: Tobias Loew <tobias.loew@idiap.ch>
-// SPDX-FileContributor: Durant Schoon <durant.schoon@gmail.com>
-//
-// SPDX-License-Identifier: MPL-2.0
-
+use std::env;
 use std::hint::black_box;
 use std::time::Instant;
-use std::env;
 
-use gafro::algebra::blades::*;
-use gafro::algebra::cga::point::Point;
-use gafro::algebra::cga::rotor::Rotor;
-use gafro::algebra::cga::translator::Translator;
+use gafro::algebra::blades::E12;
+use gafro::algebra::cga::batch_motor::BatchMotorSoA;
+use gafro::algebra::cga::batch_point::BatchPointSoA;
 use gafro::algebra::cga::motor::Motor;
-use gafro::robots::joint::Joint;
-use gafro::robots::kinematic_chain::KinematicChain;
-use gafro::constants::TAU;
+use gafro::algebra::cga::point::Point;
+use gafro::algebra::cga::translator::Translator;
 
-struct BenchmarkResult {
-    name: &'static str,
-    iterations: u64,
-    total_time_ms: f64,
-    ns_per_op: f64,
-    ops_per_sec: f64,
+struct Provenance { revision: String, dirty: bool, compiler: String, target: String, flags: String }
+
+struct ResultRow {
+    id: &'static str, status: &'static str, reason: &'static str,
+    warmup_operations: u64, operations_per_sample: u64,
+    durations_ns: Vec<u128>, oracle: Option<f64>,
 }
 
-fn run_benchmark<F>(name: &'static str, iterations: u64, mut func: F) -> BenchmarkResult
-where
-    F: FnMut(u64),
-{
-    // Warmup
-    for i in 0..(iterations / 10 + 1) {
-        func(i);
+fn argument(args: &[String], key: &str, fallback: &str) -> String {
+    args.windows(2).find(|p| p[0] == key).map(|p| p[1].clone()).unwrap_or_else(|| fallback.to_owned())
+}
+
+fn require_close(id: &str, actual: f64, expected: f64) {
+    if !actual.is_finite() || (actual - expected).abs() > 1.0e-10 {
+        panic!("{id} oracle mismatch: expected {expected}, got {actual}");
     }
+}
 
-    let start = Instant::now();
-    for i in 0..iterations {
-        func(i);
+fn measure<F>(id: &'static str, expected: f64, warmup_invocations: u64,
+    sample_invocations: u64, operations_per_invocation: u64, sample_count: usize,
+    mut operation: F) -> ResultRow
+where F: FnMut(u64) -> f64 {
+    require_close(id, operation(0), expected);
+    let mut warmup_accumulator = 0.0;
+    for index in 0..warmup_invocations { warmup_accumulator += operation(index); }
+    black_box(warmup_accumulator);
+    let mut durations_ns = Vec::with_capacity(sample_count);
+    for _ in 0..sample_count {
+        let start = Instant::now();
+        let mut accumulator = 0.0;
+        for index in 0..sample_invocations { accumulator += operation(index); }
+        let duration = start.elapsed().as_nanos();
+        black_box(accumulator);
+        assert!(duration > 0, "{id}: zero-duration sample");
+        durations_ns.push(duration);
     }
-    let elapsed = start.elapsed();
+    ResultRow { id, status: "supported", reason: "",
+        warmup_operations: warmup_invocations * operations_per_invocation,
+        operations_per_sample: sample_invocations * operations_per_invocation,
+        durations_ns, oracle: Some(expected) }
+}
 
-    let total_time_ns = elapsed.as_nanos() as f64;
-    let total_time_ms = total_time_ns / 1e6;
-    let ns_per_op = total_time_ns / iterations as f64;
-    let ops_per_sec = (iterations as f64 / total_time_ns) * 1e9;
+fn unsupported(id: &'static str, reason: &'static str) -> ResultRow {
+    ResultRow { id, status: "unsupported", reason, warmup_operations: 0,
+        operations_per_sample: 0, durations_ns: Vec::new(), oracle: None }
+}
 
-    BenchmarkResult {
-        name,
-        iterations,
-        total_time_ms,
-        ns_per_op,
-        ops_per_sec,
+fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
+    let first = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
+    let second = Motor::from(Translator::from_displacement(-0.5, 0.25, 1.5));
+    let left = BatchMotorSoA::<f64, N>::from_slice(&vec![first; N]);
+    let right = BatchMotorSoA::<f64, N>::from_slice(&vec![second; N]);
+    let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
+    let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
+    let samples = if profile == "smoke" { 3 } else { 15 };
+    measure(id, 1.0, warmups.max(1), invocations.max(1), N as u64, samples, |index| {
+        let result = if index & 1 == 0 { black_box(&left).compose(black_box(&right)) }
+                     else { black_box(&right).compose(black_box(&left)) };
+        black_box(result.blades[0][0])
+    })
+}
+
+fn batch_point<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
+    let motor = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
+    let points = BatchPointSoA::<f64, N>::from_slice(&vec![Point::new(2.5, -1.5, 4.0); N]);
+    let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
+    let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
+    let samples = if profile == "smoke" { 3 } else { 15 };
+    measure(id, 3.5, warmups.max(1), invocations.max(1), N as u64, samples, |_| {
+        let result = black_box(&points).transform(black_box(&motor));
+        black_box(result.x[0])
+    })
+}
+
+fn durations_json(values: &[u128]) -> String {
+    values.iter().map(u128::to_string).collect::<Vec<_>>().join(",")
+}
+
+fn row_json(row: &ResultRow, p: &Provenance) -> String {
+    let identity = format!("\"implementation\":{{\"family\":\"rust\",\"name\":\"gafro-rust\",\"repository_revision\":\"{}\",\"dirty\":{},\"compiler\":\"{}\",\"backend\":\"cpu-release\",\"flags\":[\"target: {}\",\"features: default\",\"profile: release\",\"codegen-units: 1\",\"lto: fat\",\"RUSTFLAGS: {}\"]}}", p.revision, p.dirty, p.compiler, p.target, p.flags);
+    match row.oracle {
+        Some(oracle) => format!("{{\"schema_version\":\"gafro-benchmark-result/v1\",{},\"host\":{{\"clock\":\"std::time::Instant\"}},\"workload_id\":\"{}\",\"status\":\"supported\",\"reason\":\"\",\"warmup_operations\":{},\"operations_per_sample\":{},\"sample_durations_ns\":[{}],\"oracle\":{{\"value\":{}}}}}", identity, row.id, row.warmup_operations, row.operations_per_sample, durations_json(&row.durations_ns), oracle),
+        None => format!("{{\"schema_version\":\"gafro-benchmark-result/v1\",{},\"host\":{{}},\"workload_id\":\"{}\",\"status\":\"{}\",\"reason\":\"{}\"}}", identity, row.id, row.status, row.reason),
     }
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let json_output = args.len() > 1 && args[1] == "--json";
-
-    let mut results = Vec::new();
-
-    // 1. Geometric Product (Motor composition)
-    {
-        let t1 = Translator::from_displacement(1.0, 2.0, 3.0);
-        let r1 = Rotor::from_axis_angle(0.1, 0.2, 0.3, TAU / 8.0);
-        let m1 = Motor::from_translator_rotor(&t1, &r1);
-
-        let t2 = Translator::from_displacement(0.5, -1.0, 1.5);
-        let r2 = Rotor::from_axis_angle(-0.1, 0.4, 0.2, TAU / 6.0);
-        let m2 = Motor::from_translator_rotor(&t2, &r2);
-
-        let res = run_benchmark("motor_composition_gp", 2_000_000, |_| {
-            let prod = black_box(m1) * black_box(m2);
-            black_box(prod.scalar());
-        });
-        results.push(res);
-    }
-
-    // 2. Sandwich Product on Point
-    {
-        let t = Translator::from_displacement(1.0, 2.0, 3.0);
-        let r = Rotor::from_axis_angle(0.1, 0.2, 0.3, TAU / 8.0);
-        let m = Motor::from_translator_rotor(&t, &r);
-        let p = Point::new(2.5, -1.5, 4.0);
-
-        let res = run_benchmark("sandwich_point_transform", 2_000_000, |_| {
-            let p_out = black_box(&m).apply(black_box(&p));
-            black_box(p_out.mv.get(E0));
-        });
-        results.push(res);
-    }
-
-    // 3. Dense Multivector Outer Product
-    {
-        let p1 = Point::new(1.0, 0.0, 0.0);
-        let p2 = Point::new(0.0, 1.0, 0.0);
-
-        let res = run_benchmark("point_pair_outer_product", 2_000_000, |_| {
-            let pp = black_box(p1.mv) ^ black_box(p2.mv);
-            black_box(pp.get(E01));
-        });
-        results.push(res);
-    }
-
-    // 4. Forward Kinematics 6-DOF
-    {
-        let mut chain = KinematicChain::new();
-        for i in 0..6 {
-            let trans = Translator::from_displacement(0.0, 0.2, 0.0);
-            let axis = if i % 2 == 0 { [0.0, 0.0, 1.0] } else { [1.0, 0.0, 0.0] };
-            chain.add_joint(Joint::revolute(axis, Motor::from(trans)));
-        }
-
-        let q = [TAU / 8.0, TAU / 4.0, -TAU / 8.0, TAU / 6.0, 0.0, TAU / 4.0];
-
-        let res = run_benchmark("kinematics_fk_6dof", 500_000, |_| {
-            let fk = black_box(&chain).forward_kinematics(black_box(&q));
-            black_box(fk.scalar());
-        });
-        results.push(res);
-    }
-
-    // 5. Geometric Jacobian 6-DOF
-    {
-        let mut chain = KinematicChain::new();
-        for i in 0..6 {
-            let trans = Translator::from_displacement(0.0, 0.2, 0.0);
-            let axis = if i % 2 == 0 { [0.0, 0.0, 1.0] } else { [1.0, 0.0, 0.0] };
-            chain.add_joint(Joint::revolute(axis, Motor::from(trans)));
-        }
-
-        let q = [TAU / 8.0, TAU / 4.0, -TAU / 8.0, TAU / 6.0, 0.0, TAU / 4.0];
-
-        let res = run_benchmark("kinematics_geometric_jacobian_6dof", 500_000, |_| {
-            let jac = black_box(&chain).geometric_jacobian(black_box(&q));
-            black_box(jac[0].e12());
-        });
-        results.push(res);
-    }
-
-    // 6. Fused Forward Kinematics + Geometric Jacobian 6-DOF (Single Pass)
-    {
-        let mut chain = KinematicChain::new();
-        for i in 0..6 {
-            let trans = Translator::from_displacement(0.0, 0.2, 0.0);
-            let axis = if i % 2 == 0 { [0.0, 0.0, 1.0] } else { [1.0, 0.0, 0.0] };
-            chain.add_joint(Joint::revolute(axis, Motor::from(trans)));
-        }
-
-        let q = [TAU / 8.0, TAU / 4.0, -TAU / 8.0, TAU / 6.0, 0.0, TAU / 4.0];
-
-        let res = run_benchmark("fused_fk_and_jacobian_6dof", 500_000, |_| {
-            let (fk, jac) = black_box(&chain).forward_kinematics_and_jacobian(black_box(&q));
-            black_box(fk.scalar() + jac[0].e12());
-        });
-        results.push(res);
-    }
-
-    // 7. BatchMotorSoA Composition (4,096 parallel motors)
-    {
-        use gafro::algebra::cga::batch_motor::BatchMotorSoA;
-        const BATCH_SIZE: usize = 4096;
-        let batch_a = BatchMotorSoA::<BATCH_SIZE>::new();
-        let batch_b = BatchMotorSoA::<BATCH_SIZE>::new();
-
-        let batch_iters = 2_000; // 2,000 * 4,096 = 8,192,000 motor compositions
-        let res = run_benchmark("batch_motor_soa_compose_4096", batch_iters, |_| {
-            let res_batch = black_box(&batch_a).compose(black_box(&batch_b));
-            black_box(res_batch.blades[0][0]);
-        });
-
-        // Report per-motor op latency (total time / (iterations * BATCH_SIZE))
-        let per_motor_ns = res.ns_per_op / BATCH_SIZE as f64;
-        let per_motor_ops = res.ops_per_sec * BATCH_SIZE as f64;
-
-        results.push(BenchmarkResult {
-            name: "batch_motor_soa_per_motor",
-            iterations: res.iterations * BATCH_SIZE as u64,
-            total_time_ms: res.total_time_ms,
-            ns_per_op: per_motor_ns,
-            ops_per_sec: per_motor_ops,
-        });
-    }
-
-    if json_output {
-        println!("{{");
-        println!("  \"language\": \"rust\",");
-        println!("  \"implementation\": \"gafro-rust\",");
-        println!("  \"results\": [");
-        for (i, r) in results.iter().enumerate() {
-            println!("    {{");
-            println!("      \"benchmark\": \"{}\",", r.name);
-            println!("      \"iterations\": {},", r.iterations);
-            println!("      \"total_time_ms\": {:.4},", r.total_time_ms);
-            println!("      \"time_per_op_ns\": {:.2},", r.ns_per_op);
-            println!("      \"ops_per_sec\": {:.0}", r.ops_per_sec);
-            print!("    }}");
-            if i + 1 < results.len() {
-                println!(",");
-            } else {
-                println!();
-            }
-        }
-        println!("  ]");
-        println!("}}");
-    } else {
-        println!("\n================ Gafro Rust Performance Benchmarks ================");
-        println!(
-            "{:<35} {:>12} {:>15} {:>15} {:>18}",
-            "Benchmark", "Iterations", "Time (ms)", "ns / op", "ops / sec"
-        );
-        println!("{}", "-".repeat(95));
-        for r in &results {
-            println!(
-                "{:<35} {:>12} {:>15.2} {:>15.2} {:>18.0}",
-                r.name, r.iterations, r.total_time_ms, r.ns_per_op, r.ops_per_sec
-            );
-        }
-        println!("{}\n", "=".repeat(95));
-    }
+    let profile = argument(&args, "--profile", "full");
+    let provenance = Provenance {
+        revision: argument(&args, "--revision", "unknown"),
+        dirty: argument(&args, "--dirty", "false") == "true",
+        compiler: argument(&args, "--compiler", "rustc unknown"),
+        target: argument(&args, "--target", "unknown"),
+        flags: argument(&args, "--rustflags", "none"),
+    };
+    let warmups = if profile == "smoke" { 8 } else { 1_000 };
+    let operations = if profile == "smoke" { 1_000 } else { 10_000 };
+    let samples = if profile == "smoke" { 3 } else { 15 };
+    let first_motor = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
+    let second_motor = Motor::from(Translator::from_displacement(-0.5, 0.25, 1.5));
+    let first_point = Point::new(2.5, -1.5, 4.0);
+    let second_point = Point::new(3.0, 2.0, -1.0);
+    let outer_left = [Point::new(1.0, 0.0, 0.0), Point::new(1.125, 0.0, 0.0)];
+    let outer_right = [Point::new(0.0, 1.0, 0.0), Point::new(0.0, 1.0 / 1.125, 0.0)];
+    let mut rows = vec![unsupported("dense_geometric_product/f64/scalar",
+        "contract operands use the orthogonal ePlus/eMinus layout; gafro-rust exposes a null e0/eInf layout")];
+    rows.push(measure("motor_composition_gp/f64/scalar", 1.0, warmups, operations, 1, samples, |i| {
+        let result = if i & 1 == 0 { black_box(&first_motor).compose(black_box(&second_motor)) }
+                     else { black_box(&second_motor).compose(black_box(&first_motor)) };
+        black_box(result.scalar())
+    }));
+    rows.push(measure("sandwich_point_transform/f64/e1", 3.5, warmups, operations, 1, samples, |i| {
+        let result = if i & 1 == 0 { black_box(&first_motor).apply(black_box(&first_point)) }
+                     else { black_box(&second_motor).apply(black_box(&second_point)) };
+        black_box(result.x())
+    }));
+    rows.push(measure("point_pair_outer_product/f64/e12", 1.0, warmups, operations, 1, samples, |i| {
+        let lane = (i & 1) as usize;
+        let result = black_box(&outer_left[lane].mv).outer_product(black_box(&outer_right[lane].mv));
+        black_box(result.get(E12))
+    }));
+    rows.push(batch_motor::<16>(&profile, "batch_motor_composition/f64/n16/scalar_lane0"));
+    rows.push(batch_motor::<256>(&profile, "batch_motor_composition/f64/n256/scalar_lane0"));
+    rows.push(batch_motor::<4096>(&profile, "batch_motor_composition/f64/n4096/scalar_lane0"));
+    rows.push(batch_point::<16>(&profile, "batch_point_transform/f64/n16/e1_lane0"));
+    rows.push(batch_point::<256>(&profile, "batch_point_transform/f64/n256/e1_lane0"));
+    rows.push(batch_point::<4096>(&profile, "batch_point_transform/f64/n4096/e1_lane0"));
+    let json = rows.iter().map(|row| row_json(row, &provenance)).collect::<Vec<_>>().join(",");
+    println!("{{\"results\":[{json}]}}");
 }
