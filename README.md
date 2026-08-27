@@ -132,6 +132,23 @@ make benchmark IMPLEMENTATIONS=cpp,idris2,rust \
 C++ and Idris report the Rust-specific CPU SoA IDs as unsupported. Robotics is
 reconciled in Stage 05 and CUDA in Stage 07, once those contracts exist.
 
+### Canonical robotics workloads
+
+Stage 05 defines one language-neutral 2R chain rather than reusing the unlike
+legacy 6-DOF loops. Both revolute joints use positive Z axes and fixed
+translations of `(0, 1, 0)`; each joint composes `fixed_frame * rotor(q)`, with
+identity base and tool frames. The deterministic input sequence alternates the
+oracle vector `[0, tau/4]` with a small equal-and-opposite perturbation.
+
+C++ passes the full eight-coefficient FK motor oracle and the column-major 6x2
+base-frame spatial Jacobian oracle. Rust passes the same FK oracle. Its current
+Jacobian API omits a joint's own origin transform while placing that joint axis,
+so that workload is explicitly unsupported rather than compared as equivalent.
+Idris 2 remains unsupported for both IDs because this benchmark has no validated
+adapter from its robotics surface to the canonical chain. Chain construction is
+outside every timed region; allocation counts are omitted because no comparable,
+documented allocator instrumentation is enabled.
+
 Supplemental optimized C++ CUDA evidence is available in
 [`artifacts/raw/cpp-cuda-runpod-20260826.json`](artifacts/raw/cpp-cuda-runpod-20260826.json).
 It contains 15 CUDA-event samples for point-cloud transforms, warp- and

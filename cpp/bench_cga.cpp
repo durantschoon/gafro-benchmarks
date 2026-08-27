@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <iomanip>
 #include <iostream>
+#include <numbers>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -69,6 +70,38 @@ int main(int argc, char **argv) try {
         Point<double>(Eigen::Vector3d(1.0, 0.0, 0.0)), Point<double>(Eigen::Vector3d(1.125, 0.0, 0.0))};
     const std::vector<Point<double>> outer_right{
         Point<double>(Eigen::Vector3d(0.0, 1.0, 0.0)), Point<double>(Eigen::Vector3d(0.0, 1.0 / 1.125, 0.0))};
+    RevoluteJoint<double> robotics_joint_0;
+    RevoluteJoint<double> robotics_joint_1;
+    const Motor<double> robotics_frame(Translator<double>(Translator<double>::Generator({0.0, 1.0, 0.0})));
+    robotics_joint_0.setAxis(RevoluteJoint<double>::Axis({1.0, 0.0, 0.0}));
+    robotics_joint_1.setAxis(RevoluteJoint<double>::Axis({1.0, 0.0, 0.0}));
+    robotics_joint_0.setFrame(robotics_frame);
+    robotics_joint_1.setFrame(robotics_frame);
+    KinematicChain<double> robotics_chain("canonical-2r");
+    robotics_chain.addActuatedJoint(&robotics_joint_0);
+    robotics_chain.addActuatedJoint(&robotics_joint_1);
+    const std::vector<Eigen::Vector2d> robotics_positions{
+        Eigen::Vector2d(0.0, std::numbers::pi / 2.0),
+        Eigen::Vector2d(1.0 / 1024.0, std::numbers::pi / 2.0 - 1.0 / 1024.0)};
+    const Motor<double> robotics_oracle_motor = robotics_chain.computeMotor<2>(robotics_positions[0]);
+    require_close("robotics FK scalar", robotics_oracle_motor.template get<blades::scalar>(), std::sqrt(0.5));
+    require_close("robotics FK e12", robotics_oracle_motor.template get<blades::e12>(), -std::sqrt(0.5));
+    require_close("robotics FK e13", robotics_oracle_motor.template get<blades::e13>(), 0.0);
+    require_close("robotics FK e23", robotics_oracle_motor.template get<blades::e23>(), 0.0);
+    require_close("robotics FK e1i", robotics_oracle_motor.template get<blades::e1i>(), -std::sqrt(0.5));
+    require_close("robotics FK e2i", robotics_oracle_motor.template get<blades::e2i>(), -std::sqrt(0.5));
+    require_close("robotics FK e3i", robotics_oracle_motor.template get<blades::e3i>(), 0.0);
+    require_close("robotics FK e123i", robotics_oracle_motor.template get<blades::e123i>(), 0.0);
+    const auto robotics_oracle_jacobian = robotics_chain.computeGeometricJacobian<2>(robotics_positions[0]);
+    const double robotics_expected_jacobian[2][6]{{1.0, 0.0, 0.0, 1.0, 0.0, 0.0}, {1.0, 0.0, 0.0, 2.0, 0.0, 0.0}};
+    for (int column = 0; column < 2; ++column) {
+        const auto &twist = robotics_oracle_jacobian.getCoefficient(0, column);
+        const double actual[6]{twist.template get<blades::e12>(), twist.template get<blades::e13>(),
+            twist.template get<blades::e23>(), twist.template get<blades::e1i>(),
+            twist.template get<blades::e2i>(), twist.template get<blades::e3i>()};
+        for (int coefficient = 0; coefficient < 6; ++coefficient)
+            require_close("robotics Jacobian coefficient", actual[coefficient], robotics_expected_jacobian[column][coefficient]);
+    }
     std::vector<Result> results;
     using Dense = Multivector<double,
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -89,6 +122,24 @@ int main(int argc, char **argv) try {
     }));
     results.push_back(measure("point_pair_outer_product/f64/e12", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
         return (outer_left[i % 2] ^ outer_right[i % 2]).template get<blades::e12>();
+    }));
+    results.push_back(measure("robotics_forward_kinematics_2r/f64/motor_checksum", warmup, operations, samples, -std::sqrt(2.0), [&](std::uint64_t i) {
+        const Motor<double> motor = robotics_chain.computeMotor<2>(robotics_positions[i % 2]);
+        return motor.template get<blades::scalar>() + motor.template get<blades::e12>() +
+               motor.template get<blades::e13>() + motor.template get<blades::e23>() +
+               motor.template get<blades::e1i>() + motor.template get<blades::e2i>() +
+               motor.template get<blades::e3i>() + motor.template get<blades::e123i>();
+    }));
+    results.push_back(measure("robotics_geometric_jacobian_2r/f64/base_checksum", warmup, operations, samples, 5.0, [&](std::uint64_t i) {
+        const auto jacobian = robotics_chain.computeGeometricJacobian<2>(robotics_positions[i % 2]);
+        double checksum = 0.0;
+        for (int column = 0; column < 2; ++column) {
+            const auto &twist = jacobian.getCoefficient(0, column);
+            checksum += twist.template get<blades::e12>() + twist.template get<blades::e13>() +
+                        twist.template get<blades::e23>() + twist.template get<blades::e1i>() +
+                        twist.template get<blades::e2i>() + twist.template get<blades::e3i>();
+        }
+        return checksum;
     }));
     const std::vector<std::string> unsupported{
         "batch_motor_composition/f64/n16/scalar_lane0",

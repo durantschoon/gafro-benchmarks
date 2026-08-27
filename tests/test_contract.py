@@ -81,6 +81,25 @@ class ContractTests(unittest.TestCase):
         checked = validate_complete_run(self.manifest, rows, "cpp", expected_operations=expected)
         self.assertEqual(len(checked), len(rows))
 
+    def test_robotics_contract_fixes_axes_frames_and_layout(self):
+        definitions = {item["id"]: item for item in self.manifest["workloads"]}
+        fk = definitions["robotics_forward_kinematics_2r/f64/motor_checksum"]
+        jac = definitions["robotics_geometric_jacobian_2r/f64/base_checksum"]
+        for definition in (fk, jac):
+            operands = definition["operands"]
+            self.assertEqual(operands["joint_types"], ["revolute", "revolute"])
+            self.assertEqual(operands["ordered_axes_xyz"], [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]])
+            self.assertEqual([frame["translation_xyz"] for frame in operands["joint_fixed_frames"]],
+                             [[0.0, 1.0, 0.0], [0.0, 1.0, 0.0]])
+            self.assertIn("fixed_frame_0 * rotor_z(q0)", operands["composition_order"])
+            self.assertEqual(len(operands["joint_vectors_radians"]), 2)
+        self.assertEqual(jac["oracle"]["frame"], "base")
+        self.assertEqual(jac["oracle"]["matrix_layout"], "column-major 6x2; one twist column per joint")
+        self.assertEqual(jac["oracle"]["twist_coefficient_order"],
+                         ["e12", "e13", "e23", "e1i", "e2i", "e3i"])
+        self.assertEqual(jac["oracle"]["columns"],
+                         [[1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [1.0, 0.0, 0.0, 2.0, 0.0, 0.0]])
+
 
 if __name__ == "__main__":
     unittest.main()

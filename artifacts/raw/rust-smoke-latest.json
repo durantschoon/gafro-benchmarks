@@ -26,9 +26,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        167,
-        167,
-        166
+        208,
+        166,
+        208
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -61,9 +61,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        2833,
-        2750,
-        2750
+        3041,
+        3042,
+        3291
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -96,9 +96,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        71042,
-        74459,
-        74042
+        80041,
+        78375,
+        73750
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -131,9 +131,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        250,
-        42,
-        41
+        334,
+        125,
+        83
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -167,8 +167,8 @@
       "reason": "",
       "sample_durations_ns": [
         958,
-        791,
-        750
+        875,
+        875
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -201,9 +201,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        10709,
-        10834,
-        10709
+        12125,
+        12375,
+        12250
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -259,9 +259,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        2375,
-        2417,
-        2292
+        2625,
+        2833,
+        3500
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -294,9 +294,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        41917,
-        41750,
-        41750
+        47625,
+        47709,
+        47042
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -325,13 +325,71 @@
       },
       "operations_per_sample": 1000,
       "oracle": {
+        "value": -1.4142135623730951
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        101334,
+        101375,
+        102291
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "dfa8e66d6625a5d039e911e949738973cd0e1e19"
+      },
+      "reason": "gafro-rust geometric_jacobian omits each joint origin transform when placing that joint axis, so it fails the canonical base-frame oracle",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "dfa8e66d6625a5d039e911e949738973cd0e1e19"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
         "value": 3.5
       },
       "reason": "",
       "sample_durations_ns": [
-        5125,
-        4833,
-        4916
+        6000,
+        5667,
+        5542
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",

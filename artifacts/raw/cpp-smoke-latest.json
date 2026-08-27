@@ -129,9 +129,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        310333,
-        307625,
-        307458
+        306958,
+        306250,
+        306333
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -159,9 +159,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
+        1208,
         1084,
-        1125,
-        1042
+        1083
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -189,9 +189,9 @@
       },
       "reason": "",
       "sample_durations_ns": [
-        750,
-        750,
-        708
+        791,
+        792,
+        750
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
@@ -215,13 +215,73 @@
       },
       "operations_per_sample": 1000,
       "oracle": {
+        "value": -1.4142135623730951
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        84792,
+        84625,
+        84500
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "host": {
+        "clock": "high_resolution_clock"
+      },
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        169000,
+        139166,
+        138583
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "host": {
+        "clock": "high_resolution_clock"
+      },
+      "implementation": {
+        "backend": "cpu-scalar",
+        "compiler": "AppleClang-21.0.0.21000101-cxx26",
+        "dirty": true,
+        "family": "cpp",
+        "flags": [
+          "-std=c++2c -O3 -march=native -DNDEBUG"
+        ],
+        "name": "gafro-cpp",
+        "repository_revision": "cb9969a6702fb7eda22c566a0939384aca57a7d1"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
         "value": 3.5
       },
       "reason": "",
       "sample_durations_ns": [
-        7958,
-        6708,
-        6750
+        6792,
+        6833,
+        6708
       ],
       "schema_version": "gafro-benchmark-result/v1",
       "status": "supported",
