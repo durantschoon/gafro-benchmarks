@@ -65,6 +65,9 @@ firstMotor = translator (translation True)
 secondMotor : Versor Trans
 secondMotor = translator (translation False)
 
+rotorConstruction : Bool -> Double
+rotorConstruction _ = coeff scalarBlade (Versor.mv (rotor unitBivectorE12 (pi / 2.0)))
+
 firstPoint : Point
 firstPoint = up (point True)
 
@@ -269,6 +272,7 @@ main = do
   composition <- measure "motor_composition_gp/f64/scalar" 1.0 motorComposition warmups operations sampleCount
   transform <- measure "sandwich_point_transform/f64/e1" 3.5 pointTransform warmups operations sampleCount
   outer <- measure "point_pair_outer_product/f64/e12" 1.0 pointPairOuter warmups operations sampleCount
+  rotor <- measure "rotor_construction/f64/scalar" (sqrt 0.5) rotorConstruction warmups operations sampleCount
   fk <- measure "robotics_forward_kinematics_2r/f64/motor_checksum" (-sqrt 2.0) roboticsMotorChecksum warmups operations sampleCount
   if roboticsJacobianOracle True
      then pure ()
@@ -276,7 +280,7 @@ main = do
        putStrLn "oracle mismatch for robotics_geometric_jacobian_2r/f64/base_checksum: full matrix"
        exitFailure
   jacobian <- measure "robotics_geometric_jacobian_2r/f64/base_checksum" 5.0 roboticsJacobianChecksum warmups operations sampleCount
-  let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer]
+  let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer, rotor]
       unsupported = map (unsupportedJSON provenance)
         [ "batch_motor_composition/f64/n16/scalar_lane0"
         , "batch_motor_composition/f64/n256/scalar_lane0"
