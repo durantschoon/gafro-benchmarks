@@ -4,18 +4,17 @@
 
 The shared fixture is a unit z-axis quarter-turn (`axis=[0,0,1]`, `angle=pi/2`)
 and displacement `[1,2,3]`, both IEEE binary64. Production inventory found
-axis-angle rotor and displacement translator constructors in gafro-cpp and
-gafro-rust, and the translator constructor in gafro-idris2. Idris 2's rotor
-constructor requires a fallible, non-exported `UnitBivector` construction path,
-so its gap is reported explicitly. Existing point-pair and robotics rows were
-left unchanged. Dynamics and typed line/plane/sphere observables remain
-deferred because no shared three-adapter oracle was found.
+axis-angle rotor and displacement translator constructors in all three
+implementations after the Idris 2 `unitBivectorE12` fixture helper was exposed.
+Existing point-pair and robotics rows were left unchanged. Dynamics and typed
+line/plane/sphere observables remain deferred because no shared three-adapter
+oracle was found.
 
 ## Workloads and compatibility
 
 | Workload | C++ | Rust | Idris 2 |
 |---|---|---|---|
-| `rotor_construction/f64/scalar` | supported | supported | unsupported: no exposed deterministic `UnitBivector` constructor |
+| `rotor_construction/f64/scalar` | supported | supported | supported |
 | `translator_construction/f64/e1i` | supported | supported | supported |
 
 Each supported adapter validates the scalar oracle before timing; the C++ and
@@ -34,7 +33,5 @@ measurements from the failed aggregate run are not evidence.
 
 ## Follow-up gaps
 
-Add an exported total Idris rotor fixture constructor (or a fixture-level
-oracle that does not require the private unit-bivector constructor), then add
-forward/inverse dynamics and typed line, plane, and sphere observables only
+Add forward/inverse dynamics and typed line, plane, and sphere observables only
 after equivalent production APIs and complete-output oracles exist.
