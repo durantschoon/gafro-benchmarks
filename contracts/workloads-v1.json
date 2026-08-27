@@ -90,6 +90,62 @@
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coordinate", "name": "e1_lane0", "reference": 3.5, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "robotics_forward_kinematics_2r/f64/motor_checksum",
+      "operation": "forward kinematics of the canonical two-revolute-joint serial chain",
+      "operands": {
+        "kind": "canonical_serial_chain",
+        "joint_types": ["revolute", "revolute"],
+        "ordered_axes_xyz": [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]],
+        "joint_fixed_frames": [
+          {"translation_xyz": [0.0, 1.0, 0.0], "rotation": "identity"},
+          {"translation_xyz": [0.0, 1.0, 0.0], "rotation": "identity"}
+        ],
+        "composition_order": "base_identity * (fixed_frame_0 * rotor_z(q0)) * (fixed_frame_1 * rotor_z(q1)) * tool_identity",
+        "joint_vectors_radians": [[0.0, 1.5707963267948966], [0.0009765625, 1.5698197642948966]],
+        "variation": "alternate joint vectors by invocation index",
+        "requested_end_effector_frame": "tool identity after joint 1"
+      },
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {
+        "joint_vector_index": 0,
+        "motor_coefficient_order": ["scalar", "e12", "e13", "e23", "e1i", "e2i", "e3i", "e123i"],
+        "motor_coefficients": [0.7071067811865476, -0.7071067811865475, 0.0, 0.0, -0.7071067811865475, -0.7071067811865476, 0.0, 0.0],
+        "sign_convention": "positive z rotation has negative e12 rotor coefficient"
+      },
+      "observable": {"kind": "coefficient_checksum", "name": "sum_motor_coefficients", "reference": -1.414213562373095, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "robotics_geometric_jacobian_2r/f64/base_checksum",
+      "operation": "base-frame spatial geometric Jacobian of the canonical two-revolute-joint serial chain",
+      "operands": {
+        "kind": "canonical_serial_chain",
+        "joint_types": ["revolute", "revolute"],
+        "ordered_axes_xyz": [[0.0, 0.0, 1.0], [0.0, 0.0, 1.0]],
+        "joint_fixed_frames": [
+          {"translation_xyz": [0.0, 1.0, 0.0], "rotation": "identity"},
+          {"translation_xyz": [0.0, 1.0, 0.0], "rotation": "identity"}
+        ],
+        "composition_order": "base_identity * (fixed_frame_0 * rotor_z(q0)) * (fixed_frame_1 * rotor_z(q1)) * tool_identity",
+        "joint_vectors_radians": [[0.0, 1.5707963267948966], [0.0009765625, 1.5698197642948966]],
+        "variation": "alternate joint vectors by invocation index",
+        "requested_end_effector_frame": "tool identity after joint 1"
+      },
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {
+        "joint_vector_index": 0,
+        "frame": "base",
+        "matrix_layout": "column-major 6x2; one twist column per joint",
+        "twist_coefficient_order": ["e12", "e13", "e23", "e1i", "e2i", "e3i"],
+        "columns": [[1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [1.0, 0.0, 0.0, 2.0, 0.0, 0.0]],
+        "sign_convention": "positive z angular velocity is +e12; translated z axes contribute +e1i"
+      },
+      "observable": {"kind": "matrix_checksum", "name": "sum_column_major_twist_coefficients", "reference": 5.0, "absolute_tolerance": 1e-10}
     }
   ]
 }

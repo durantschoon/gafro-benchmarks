@@ -8,6 +8,7 @@ use gafro::algebra::cga::batch_point::BatchPointSoA;
 use gafro::algebra::cga::motor::Motor;
 use gafro::algebra::cga::point::Point;
 use gafro::algebra::cga::translator::Translator;
+use gafro::robots::{Joint, KinematicChain};
 
 struct Provenance { revision: String, dirty: bool, compiler: String, target: String, flags: String }
 
@@ -114,6 +115,18 @@ fn main() {
     let second_point = Point::new(3.0, 2.0, -1.0);
     let outer_left = [Point::new(1.0, 0.0, 0.0), Point::new(1.125, 0.0, 0.0)];
     let outer_right = [Point::new(0.0, 1.0, 0.0), Point::new(0.0, 1.0 / 1.125, 0.0)];
+    let robotics_frame = Motor::from(Translator::from_displacement(0.0, 1.0, 0.0));
+    let mut robotics_chain = KinematicChain::new();
+    robotics_chain.add_joint(Joint::revolute([0.0, 0.0, 1.0], robotics_frame));
+    robotics_chain.add_joint(Joint::revolute([0.0, 0.0, 1.0], robotics_frame));
+    let robotics_positions = [[0.0, std::f64::consts::FRAC_PI_2],
+        [1.0 / 1024.0, std::f64::consts::FRAC_PI_2 - 1.0 / 1024.0]];
+    let robotics_oracle_motor = robotics_chain.forward_kinematics(&robotics_positions[0]);
+    let robotics_expected_motor = [std::f64::consts::FRAC_1_SQRT_2, -std::f64::consts::FRAC_1_SQRT_2,
+        0.0, 0.0, -std::f64::consts::FRAC_1_SQRT_2, -std::f64::consts::FRAC_1_SQRT_2, 0.0, 0.0];
+    for (actual, expected) in robotics_oracle_motor.blades.iter().zip(robotics_expected_motor) {
+        require_close("robotics FK coefficient", *actual, expected);
+    }
     let mut rows = vec![unsupported("dense_geometric_product/f64/scalar",
         "contract operands use the orthogonal ePlus/eMinus layout; gafro-rust exposes a null e0/eInf layout")];
     rows.push(measure("motor_composition_gp/f64/scalar", 1.0, warmups, operations, 1, samples, |i| {
@@ -131,6 +144,13 @@ fn main() {
         let result = black_box(&outer_left[lane].mv).outer_product(black_box(&outer_right[lane].mv));
         black_box(result.get(E12))
     }));
+    rows.push(measure("robotics_forward_kinematics_2r/f64/motor_checksum", -std::f64::consts::SQRT_2,
+        warmups, operations, 1, samples, |i| {
+            let motor = black_box(&robotics_chain).forward_kinematics(black_box(&robotics_positions[(i & 1) as usize]));
+            black_box(motor.blades.iter().sum())
+        }));
+    rows.push(unsupported("robotics_geometric_jacobian_2r/f64/base_checksum",
+        "gafro-rust geometric_jacobian omits each joint origin transform when placing that joint axis, so it fails the canonical base-frame oracle"));
     rows.push(batch_motor::<16>(&profile, "batch_motor_composition/f64/n16/scalar_lane0"));
     rows.push(batch_motor::<256>(&profile, "batch_motor_composition/f64/n256/scalar_lane0"));
     rows.push(batch_motor::<4096>(&profile, "batch_motor_composition/f64/n4096/scalar_lane0"));

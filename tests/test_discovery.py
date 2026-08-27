@@ -49,6 +49,21 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("codegen-units: 1", source)
         self.assertIn("lto: fat", source)
 
+    def test_robotics_adapters_declare_matching_capabilities(self):
+        root = Path(__file__).resolve().parents[1]
+        cpp = (root / "cpp/bench_cga.cpp").read_text()
+        rust = (root / "rust/src/main.rs").read_text()
+        idris = (root / "idris2/src/Main.idr").read_text()
+        fk = "robotics_forward_kinematics_2r/f64/motor_checksum"
+        jacobian = "robotics_geometric_jacobian_2r/f64/base_checksum"
+        self.assertIn(fk, cpp)
+        self.assertIn(jacobian, cpp)
+        self.assertIn(fk, rust)
+        self.assertIn("fails the canonical base-frame oracle", rust)
+        self.assertIn(fk, idris)
+        self.assertIn(jacobian, idris)
+        self.assertIn("no canonical robotics adapter validated", idris)
+
 
 if __name__ == "__main__":
     unittest.main()

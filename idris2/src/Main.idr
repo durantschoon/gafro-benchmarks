@@ -164,8 +164,8 @@ resultJSON provenance warmups operations measurement =
   "\"sample_durations_ns\":" ++ integersJSON measurement.durations ++ "," ++
   "\"oracle\":{\"value\":" ++ show measurement.oracle ++ "}}"
 
-unsupportedJSON : Provenance -> String -> String
-unsupportedJSON provenance workload =
+unsupportedJSONWithReason : Provenance -> String -> String -> String
+unsupportedJSONWithReason provenance reason workload =
   "{\"schema_version\":\"gafro-benchmark-result/v1\"," ++
   "\"implementation\":{\"family\":\"idris2\",\"name\":\"gafro-idris2\"," ++
   "\"repository_revision\":\"" ++ provenance.revision ++ "\"," ++
@@ -173,7 +173,13 @@ unsupportedJSON provenance workload =
   "\"compiler\":\"" ++ provenance.compiler ++ "\",\"backend\":\"" ++ provenance.backend ++ "\"," ++
   "\"flags\":[\"generated-c-compiler: " ++ provenance.cCompiler ++ "\",\"generated-c-flags: " ++ provenance.cFlags ++ "\"]}," ++
   "\"host\":{},\"workload_id\":\"" ++ workload ++ "\",\"status\":\"unsupported\"," ++
-  "\"reason\":\"gafro-idris2 exposes no CPU SoA batch API\"}"
+  "\"reason\":\"" ++ reason ++ "\"}"
+
+unsupportedJSON : Provenance -> String -> String
+unsupportedJSON provenance = unsupportedJSONWithReason provenance "gafro-idris2 exposes no CPU SoA batch API"
+
+roboticsUnsupportedJSON : Provenance -> String -> String
+roboticsUnsupportedJSON provenance = unsupportedJSONWithReason provenance "gafro-idris2 has no canonical robotics adapter validated against this chain and oracle"
 
 valueAfter : String -> List String -> Maybe String
 valueAfter key (candidate :: value :: rest) = if candidate == key then Just value else valueAfter key (value :: rest)
@@ -213,4 +219,8 @@ main = do
         , "batch_point_transform/f64/n256/e1_lane0"
         , "batch_point_transform/f64/n4096/e1_lane0"
         ]
-  putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ unsupported) ++ "]}")
+      roboticsUnsupported = map (roboticsUnsupportedJSON provenance)
+        [ "robotics_forward_kinematics_2r/f64/motor_checksum"
+        , "robotics_geometric_jacobian_2r/f64/base_checksum"
+        ]
+  putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ unsupported ++ roboticsUnsupported) ++ "]}")
