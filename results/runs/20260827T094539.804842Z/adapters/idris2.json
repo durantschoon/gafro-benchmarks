@@ -1,0 +1,329 @@
+{
+  "results": [
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 exposes no CPU SoA batch API",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        3625395000,
+        3649450000,
+        3623356000,
+        3636011000,
+        3665981000,
+        3746988000,
+        3639047000,
+        3628201000,
+        3649632000,
+        3730925000,
+        3627383000,
+        3769745000,
+        3672048000,
+        3717692000,
+        3634477000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        3653834000,
+        3663705000,
+        3732691000,
+        3630440000,
+        3626277000,
+        3632115000,
+        3632431000,
+        3629204000,
+        3627048000,
+        3629610000,
+        3629094000,
+        3648257000,
+        3619183000,
+        3702641000,
+        3643664000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 1.0
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        2112915000,
+        2085304000,
+        2175136000,
+        2165890000,
+        2100415000,
+        2074000000,
+        2130033000,
+        2170906000,
+        2099622000,
+        2073961000,
+        2074360000,
+        2072085000,
+        2100184000,
+        2126749000,
+        2079019000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 has no canonical robotics adapter validated against this chain and oracle",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "reason": "gafro-idris2 has no canonical robotics adapter validated against this chain and oracle",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "host": {
+        "clock": "System.Clock.Monotonic"
+      },
+      "implementation": {
+        "backend": "chez",
+        "compiler": "Idris 2, version 0.7.0",
+        "dirty": false,
+        "family": "idris2",
+        "flags": [
+          "generated-c-compiler: not-applicable",
+          "generated-c-flags: not-applicable"
+        ],
+        "name": "gafro-idris2",
+        "repository_revision": "1bf475078ce50832feeab1b55961237136891daa"
+      },
+      "operations_per_sample": 10000,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        7276069000,
+        7358940000,
+        7665278000,
+        7596631000,
+        7892149000,
+        7757496000,
+        7333081000,
+        7295377000,
+        7300191000,
+        7460763000,
+        7329204000,
+        7276267000,
+        7284012000,
+        7344408000,
+        7350458000
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 1000,
+      "workload_id": "sandwich_point_transform/f64/e1"
+    }
+  ],
+  "schema_version": "gafro-benchmark-bundle/v1"
+}

@@ -62,9 +62,29 @@ result schema are versioned under [`contracts/`](contracts/). Capability status
 is one of `supported`, `unsupported`, `unavailable`, or `failed`; every status
 except `supported` requires a reason.
 
-The contract full benchmark can be invoked with `make benchmark`. It writes
-validated raw bundles per implementation and does not overwrite the legacy
-summary tables.
+The contract full benchmark can be invoked with `make benchmark`. Every
+invocation creates an append-only directory under `results/runs/<run-id>/`.
+It records the workload manifest, runner configuration, path overrides, host
+metadata, exact adapter output, stdout/stderr logs, validated bundles,
+repository revisions and dirty flags, and JSON/Markdown reports. A failed
+adapter or validation leaves that evidence and a diagnostic in the run
+directory; it does not publish a comparison or overwrite an earlier run.
+
+Rebuild a report deterministically from saved evidence with:
+
+```bash
+python3 -m benchmark_harness.cli report --run-id <run-id>
+```
+
+Reports use the median and unscaled median absolute deviation (MAD), retain all
+sample values and counts, and compute named ratios from unrounded medians.
+Ratios and apparent winners are omitted when recorded host metadata differs.
+Even for compatible metadata, an apparent winner describes only that run; it
+does not establish statistical significance. Canonical scalar GA and robotics
+computations are the primary comparisons. SoA/SIMD batch workloads are labeled
+optimization variants because layout, batching, and amortization change the
+experiment; they never replace a canonical operation. Future GPU results are
+likewise separate by backend and timing boundary.
 
 ### C++ reference adapter
 
@@ -87,8 +107,8 @@ make benchmark IMPLEMENTATIONS=cpp \
   CPP_COMPILER=/usr/bin/clang++
 ```
 
-Validated evidence is written to `artifacts/raw/cpp-full-latest.json` only after
-all workload IDs, operation counts, finite samples, and oracle values pass.
+Validated evidence is published inside the unique run directory only after all
+workload IDs, operation counts, finite samples, and oracle values pass.
 
 ### Idris 2 adapter
 
@@ -182,7 +202,11 @@ cargo run --release -- --json # Machine-readable JSON
 
 ---
 
-## Benchmark Results Preview
+## Historical benchmark results preview
+
+The table below predates the versioned workload contract and append-only run
+archive. It is retained as historical, non-reproducible context and must not be
+combined with generated reports or used as a current language ranking.
 
 | Benchmark | C++26 Latency | Rust Latency | C++26 Throughput | Rust Throughput |
 |:---|:---:|:---:|:---:|:---:|

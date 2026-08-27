@@ -1,0 +1,419 @@
+{
+  "schema_version": "gafro-benchmark-workloads/v1",
+  "workloads": [
+    {
+      "id": "dense_geometric_product/f64/scalar",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "scalar",
+        "reference": 1.0
+      },
+      "operands": {
+        "kind": "dense_multivectors",
+        "left_coefficients": "all 1.0",
+        "right_coefficients": "scalar 2.0 and all other coefficients 1.0",
+        "variation": "alternate operand order"
+      },
+      "operation": "geometric product of two dense 32-coefficient G(4,1) multivectors",
+      "operations_per_sample": 10000,
+      "warmup_operations": 1000
+    },
+    {
+      "id": "motor_composition_gp/f64/scalar",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "scalar",
+        "reference": 1.0
+      },
+      "operands": {
+        "kind": "translation_motors",
+        "translations": [
+          [
+            1.0,
+            2.0,
+            3.0
+          ],
+          [
+            -0.5,
+            0.25,
+            1.5
+          ]
+        ],
+        "variation": "alternate operand order"
+      },
+      "operation": "geometric product of two normalized rigid motors",
+      "operations_per_sample": 10000,
+      "warmup_operations": 1000
+    },
+    {
+      "id": "sandwich_point_transform/f64/e1",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "e1",
+        "reference": 3.5
+      },
+      "operands": {
+        "kind": "translated_points",
+        "points": [
+          [
+            2.5,
+            -1.5,
+            4.0
+          ],
+          [
+            3.0,
+            2.0,
+            -1.0
+          ]
+        ],
+        "translations": [
+          [
+            1.0,
+            2.0,
+            3.0
+          ],
+          [
+            -0.5,
+            0.25,
+            1.5
+          ]
+        ],
+        "variation": "matching indexed pairs"
+      },
+      "operation": "motor-point sandwich product M P reverse(M)",
+      "operations_per_sample": 10000,
+      "warmup_operations": 1000
+    },
+    {
+      "id": "point_pair_outer_product/f64/e12",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "e12",
+        "reference": 1.0
+      },
+      "operands": {
+        "base": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "kind": "conformal_points",
+        "variation": "reciprocal e1/e2 scaling by 1.125"
+      },
+      "operation": "outer product of two conformal points",
+      "operations_per_sample": 10000,
+      "warmup_operations": 1000
+    },
+    {
+      "id": "batch_motor_composition/f64/n16/scalar_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "scalar_lane0",
+        "reference": 1.0
+      },
+      "operands": {
+        "batch_size": 16,
+        "kind": "translation_motor_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "element-wise composition of 16 device-resident CPU SoA motors",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "batch_motor_composition/f64/n256/scalar_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "scalar_lane0",
+        "reference": 1.0
+      },
+      "operands": {
+        "batch_size": 256,
+        "kind": "translation_motor_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "element-wise composition of 256 device-resident CPU SoA motors",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "batch_motor_composition/f64/n4096/scalar_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient",
+        "name": "scalar_lane0",
+        "reference": 1.0
+      },
+      "operands": {
+        "batch_size": 4096,
+        "kind": "translation_motor_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "element-wise composition of 4096 device-resident CPU SoA motors",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "batch_point_transform/f64/n16/e1_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coordinate",
+        "name": "e1_lane0",
+        "reference": 3.5
+      },
+      "operands": {
+        "batch_size": 16,
+        "kind": "translated_point_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "transform 16 device-resident CPU SoA points by one translation motor",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "batch_point_transform/f64/n256/e1_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coordinate",
+        "name": "e1_lane0",
+        "reference": 3.5
+      },
+      "operands": {
+        "batch_size": 256,
+        "kind": "translated_point_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "transform 256 device-resident CPU SoA points by one translation motor",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "batch_point_transform/f64/n4096/e1_lane0",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coordinate",
+        "name": "e1_lane0",
+        "reference": 3.5
+      },
+      "operands": {
+        "batch_size": 4096,
+        "kind": "translated_point_batch",
+        "packing": "excluded",
+        "unpacking": "excluded"
+      },
+      "operation": "transform 4096 device-resident CPU SoA points by one translation motor",
+      "operations_per_sample": 16384,
+      "warmup_operations": 4096
+    },
+    {
+      "id": "robotics_forward_kinematics_2r/f64/motor_checksum",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "coefficient_checksum",
+        "name": "sum_motor_coefficients",
+        "reference": -1.414213562373095
+      },
+      "operands": {
+        "composition_order": "base_identity * (fixed_frame_0 * rotor_z(q0)) * (fixed_frame_1 * rotor_z(q1)) * tool_identity",
+        "joint_fixed_frames": [
+          {
+            "rotation": "identity",
+            "translation_xyz": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "rotation": "identity",
+            "translation_xyz": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          }
+        ],
+        "joint_types": [
+          "revolute",
+          "revolute"
+        ],
+        "joint_vectors_radians": [
+          [
+            0.0,
+            1.5707963267948966
+          ],
+          [
+            0.0009765625,
+            1.5698197642948966
+          ]
+        ],
+        "kind": "canonical_serial_chain",
+        "ordered_axes_xyz": [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "requested_end_effector_frame": "tool identity after joint 1",
+        "variation": "alternate joint vectors by invocation index"
+      },
+      "operation": "forward kinematics of the canonical two-revolute-joint serial chain",
+      "operations_per_sample": 10000,
+      "oracle": {
+        "joint_vector_index": 0,
+        "motor_coefficient_order": [
+          "scalar",
+          "e12",
+          "e13",
+          "e23",
+          "e1i",
+          "e2i",
+          "e3i",
+          "e123i"
+        ],
+        "motor_coefficients": [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          0.0,
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          0.0
+        ],
+        "sign_convention": "positive z rotation has negative e12 rotor coefficient"
+      },
+      "warmup_operations": 1000
+    },
+    {
+      "id": "robotics_geometric_jacobian_2r/f64/base_checksum",
+      "numeric_type": "ieee754-binary64",
+      "observable": {
+        "absolute_tolerance": 1e-10,
+        "kind": "matrix_checksum",
+        "name": "sum_column_major_twist_coefficients",
+        "reference": 5.0
+      },
+      "operands": {
+        "composition_order": "base_identity * (fixed_frame_0 * rotor_z(q0)) * (fixed_frame_1 * rotor_z(q1)) * tool_identity",
+        "joint_fixed_frames": [
+          {
+            "rotation": "identity",
+            "translation_xyz": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "rotation": "identity",
+            "translation_xyz": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          }
+        ],
+        "joint_types": [
+          "revolute",
+          "revolute"
+        ],
+        "joint_vectors_radians": [
+          [
+            0.0,
+            1.5707963267948966
+          ],
+          [
+            0.0009765625,
+            1.5698197642948966
+          ]
+        ],
+        "kind": "canonical_serial_chain",
+        "ordered_axes_xyz": [
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "requested_end_effector_frame": "tool identity after joint 1",
+        "variation": "alternate joint vectors by invocation index"
+      },
+      "operation": "base-frame spatial geometric Jacobian of the canonical two-revolute-joint serial chain",
+      "operations_per_sample": 10000,
+      "oracle": {
+        "columns": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            2.0,
+            0.0,
+            0.0
+          ]
+        ],
+        "frame": "base",
+        "joint_vector_index": 0,
+        "matrix_layout": "column-major 6x2; one twist column per joint",
+        "sign_convention": "positive z angular velocity is +e12; translated z axes contribute +e1i",
+        "twist_coefficient_order": [
+          "e12",
+          "e13",
+          "e23",
+          "e1i",
+          "e2i",
+          "e3i"
+        ]
+      },
+      "warmup_operations": 1000
+    }
+  ]
+}
