@@ -63,6 +63,21 @@ def repository_identity(path: Path) -> tuple[str, bool]:
     return revision, dirty
 
 
+def complete_adapter_results(manifest: dict[str, object], results: list[dict[str, object]], family: str) -> list[dict[str, object]]:
+    """Make capability gaps explicit when a legacy adapter predates new workloads."""
+    definitions = {item["id"] for item in manifest["workloads"]}
+    present = {item["workload_id"] for item in results}
+    if not results:
+        return results
+    identity = dict(results[0]["implementation"])
+    return results + [
+        {"schema_version": "gafro-benchmark-result/v1", "implementation": identity, "host": {},
+         "workload_id": workload_id, "status": "unsupported",
+         "reason": f"{family} adapter predates this canonical workload variant"}
+        for workload_id in sorted(definitions - present)
+    ]
+
+
 def write_bundle(run_dir: Path, family: str, checked: list[dict[str, object]], stdout: str, stderr: str) -> Path:
     destination = run_dir / "adapters" / f"{family}.json"
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -98,7 +113,7 @@ def benchmark_cpp(args: argparse.Namespace, root: Path, manifest: dict[str, obje
         completed = subprocess.run([str(Path(directory) / "bench_cga_cpp"), "--profile", args.profile, "--revision", revision, "--dirty", str(dirty).lower()], check=True, text=True, capture_output=True)
     preserve_adapter_output(run_dir, "cpp", completed.stdout, completed.stderr)
     bundle = parse_json(completed.stdout)
-    checked = validate_complete_run(manifest, bundle.get("results", []), "cpp", expected_operations=expected_operations)
+    checked = validate_complete_run(manifest, complete_adapter_results(manifest, bundle.get("results", []), "cpp"), "cpp", expected_operations=expected_operations)
     return write_bundle(run_dir, "cpp", checked, completed.stdout, completed.stderr)
 
 
@@ -134,7 +149,7 @@ def benchmark_idris2(args: argparse.Namespace, root: Path, manifest: dict[str, o
         completed = subprocess.run(command, check=True, text=True, capture_output=True)
     preserve_adapter_output(run_dir, "idris2", completed.stdout, completed.stderr)
     bundle = parse_json(completed.stdout)
-    checked = validate_complete_run(manifest, bundle.get("results", []), "idris2", expected_operations=expected_operations)
+    checked = validate_complete_run(manifest, complete_adapter_results(manifest, bundle.get("results", []), "idris2"), "idris2", expected_operations=expected_operations)
     return write_bundle(run_dir, "idris2", checked, completed.stdout, completed.stderr)
 
 
@@ -164,6 +179,9 @@ def benchmark_rust(args: argparse.Namespace, root: Path, manifest: dict[str, obj
         cargo_toml.write_text(cargo_toml.read_text().replace("__GAFRO_RUST_PATH__", str(implementation_path)))
         target_dir = staging / "target"
         environment = {**os.environ, "CARGO_TARGET_DIR": str(target_dir)}
+        # The copied adapter lock records the placeholder path package; refresh
+        # it after substituting the explicitly selected sibling checkout.
+        subprocess.run([cargo, "generate-lockfile", "--offline"], cwd=source, env=environment, check=True)
         subprocess.run([cargo, "build", "--release", "--locked"], cwd=source, env=environment, check=True)
         completed = subprocess.run([
             str(target_dir / "release/gafro-bench-rust"), "--profile", args.profile,
