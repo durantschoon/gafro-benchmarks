@@ -7,6 +7,7 @@ import Gafro.Core
 import Gafro.Conformal.Euclidean
 import Gafro.Conformal.Objects
 import Gafro.Conformal.Versor
+import Gafro.Robotics.Kinematics
 import Data.Fin
 import Data.Maybe
 import Data.String
@@ -101,6 +102,67 @@ pointPairOuter first =
      then coeff (MkBlade 3) (wedge outerA0 outerB0)
      else coeff (MkBlade 3) (wedge outerA1 outerB1)
 
+roboticsAxis : Either NormalizeError UnitBivector
+roboticsAxis = unitBivector 1.0e-12 (MkEuclideanBivector 0.0 0.0 1.0)
+
+roboticsChain : UnitBivector -> KinematicChain 2
+roboticsChain axis = MkKinematicChain
+  [ revoluteJoint axis (MkVec3 0.0 1.0 0.0)
+  , revoluteJoint axis (MkVec3 0.0 1.0 0.0)
+  ]
+
+roboticsAngles : Bool -> Vect 2 Scalar
+roboticsAngles first = if first
+                       then [0.0, pi / 2.0]
+                       else [0.0009765625, (pi / 2.0) - 0.0009765625]
+
+roboticsMotorChecksum : Bool -> Double
+roboticsMotorChecksum first =
+  case roboticsAxis of
+    Right bZ =>
+      let motor = Versor.mv (forwardKinematics (roboticsChain bZ) (roboticsAngles first))
+      in coeff scalarBlade motor
+         + coeff (MkBlade 3) motor + coeff (MkBlade 5) motor
+         + coeff (MkBlade 6) motor + coeff (MkBlade 17) motor
+         + coeff (MkBlade 18) motor + coeff (MkBlade 20) motor
+         + coeff (MkBlade 23) motor
+    Left _ => 0.0
+
+axisChecksum : Multivector -> Double
+axisChecksum value = coeff (MkBlade 6) value + coeff (MkBlade 5) value
+                    + coeff (MkBlade 3) value + coeff (MkBlade 17) value
+                    + coeff (MkBlade 18) value + coeff (MkBlade 20) value
+
+axisMatches : Multivector -> List Double -> Bool
+axisMatches value [a, b, c, d, e, f] =
+  abs (coeff (MkBlade 3) value - a) <= 1.0e-10
+  && abs (coeff (MkBlade 5) value - b) <= 1.0e-10
+  && abs (coeff (MkBlade 6) value - c) <= 1.0e-10
+  && abs (coeff (MkBlade 17) value - d) <= 1.0e-10
+  && abs (coeff (MkBlade 18) value - e) <= 1.0e-10
+  && abs (coeff (MkBlade 20) value - f) <= 1.0e-10
+axisMatches _ _ = False
+
+roboticsJacobianOracle : Bool -> Bool
+roboticsJacobianOracle first =
+  case roboticsAxis of
+    Right bZ =>
+      case spatialAxes (roboticsChain bZ) (roboticsAngles first) of
+        [firstAxis, secondAxis] =>
+          axisMatches firstAxis [1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+          && axisMatches secondAxis [1.0, 0.0, 0.0, 2.0, 0.0, 0.0]
+        _ => False
+    Left _ => False
+
+roboticsJacobianChecksum' : Either NormalizeError UnitBivector -> Bool -> Double
+roboticsJacobianChecksum' (Right bZ) first =
+  sum (map axisChecksum (spatialAxes (roboticsChain bZ) (roboticsAngles first)))
+roboticsJacobianChecksum' (Left _) first = 0.0
+
+roboticsJacobianChecksum : Bool -> Double
+roboticsJacobianChecksum first =
+  roboticsJacobianChecksum' roboticsAxis first
+
 runOperations : (Bool -> Double) -> Bool -> Nat -> Double -> Double
 runOperations operation first Z accumulator = accumulator
 runOperations operation first (S remaining) accumulator =
@@ -178,9 +240,6 @@ unsupportedJSONWithReason provenance reason workload =
 unsupportedJSON : Provenance -> String -> String
 unsupportedJSON provenance = unsupportedJSONWithReason provenance "gafro-idris2 exposes no CPU SoA batch API"
 
-roboticsUnsupportedJSON : Provenance -> String -> String
-roboticsUnsupportedJSON provenance = unsupportedJSONWithReason provenance "gafro-idris2 has no canonical robotics adapter validated against this chain and oracle"
-
 valueAfter : String -> List String -> Maybe String
 valueAfter key (candidate :: value :: rest) = if candidate == key then Just value else valueAfter key (value :: rest)
 valueAfter key _ = Nothing
@@ -210,6 +269,13 @@ main = do
   composition <- measure "motor_composition_gp/f64/scalar" 1.0 motorComposition warmups operations sampleCount
   transform <- measure "sandwich_point_transform/f64/e1" 3.5 pointTransform warmups operations sampleCount
   outer <- measure "point_pair_outer_product/f64/e12" 1.0 pointPairOuter warmups operations sampleCount
+  fk <- measure "robotics_forward_kinematics_2r/f64/motor_checksum" (-sqrt 2.0) roboticsMotorChecksum warmups operations sampleCount
+  if roboticsJacobianOracle True
+     then pure ()
+     else do
+       putStrLn "oracle mismatch for robotics_geometric_jacobian_2r/f64/base_checksum: full matrix"
+       exitFailure
+  jacobian <- measure "robotics_geometric_jacobian_2r/f64/base_checksum" 5.0 roboticsJacobianChecksum warmups operations sampleCount
   let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer]
       unsupported = map (unsupportedJSON provenance)
         [ "batch_motor_composition/f64/n16/scalar_lane0"
@@ -219,8 +285,5 @@ main = do
         , "batch_point_transform/f64/n256/e1_lane0"
         , "batch_point_transform/f64/n4096/e1_lane0"
         ]
-      roboticsUnsupported = map (roboticsUnsupportedJSON provenance)
-        [ "robotics_forward_kinematics_2r/f64/motor_checksum"
-        , "robotics_geometric_jacobian_2r/f64/base_checksum"
-        ]
-  putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ unsupported ++ roboticsUnsupported) ++ "]}")
+      robotics = map (resultJSON provenance warmups operations) [fk, jacobian]
+  putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ robotics ++ unsupported) ++ "]}")

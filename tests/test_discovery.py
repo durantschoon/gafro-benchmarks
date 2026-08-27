@@ -62,7 +62,8 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("corrected_jacobian_checksum", rust)
         self.assertIn(fk, idris)
         self.assertIn(jacobian, idris)
-        self.assertIn("no canonical robotics adapter validated", idris)
+        self.assertIn("forwardKinematics", idris)
+        self.assertIn("spatialAxes", idris)
 
 
 if __name__ == "__main__":
