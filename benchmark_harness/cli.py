@@ -99,7 +99,7 @@ def preserve_adapter_output(run_dir: Path, family: str, stdout: str, stderr: str
     (logs / f"{family}.stderr.log").write_text(stderr)
 
 
-def benchmark_cpp(args: argparse.Namespace, root: Path, manifest: dict[str, object], expected_operations: int, run_dir: Path) -> Path:
+def benchmark_cpp(args: argparse.Namespace, root: Path, manifest: dict[str, object], expected_operations: int | dict[str, int], run_dir: Path) -> Path:
     found = discover(root, "cpp", args.cpp_path)
     if found["status"] != "available":
         raise SystemExit(found["reason"])
@@ -262,7 +262,7 @@ def benchmark(args: argparse.Namespace, root: Path) -> int:
     destinations = []
     try:
         if "cpp" in requested:
-            destinations.append(benchmark_cpp(args, root, manifest, expected_operations, run_dir))
+            destinations.append(benchmark_cpp(args, root, manifest, expected_by_workload, run_dir))
         if "idris2" in requested:
             destinations.append(benchmark_idris2(args, root, manifest, expected_operations, run_dir))
         if "rust" in requested:
