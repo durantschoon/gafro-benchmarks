@@ -37,6 +37,18 @@ optimizations under development in C++ and Rust.
     the same NVIDIA host, workload manifest, precision, launch policy, and power
     state; publish crossover curves and profiler evidence rather than one peak
     speedup number.
+11. **Stage 11 — Rust correctness and orthogonal-layout parity.** Repair the
+    blocked Jacobian oracle and connect the orthogonal dense multivector API to
+    the canonical dense-product workload.
+12. **Stage 12 — Idris robotics parity.** Add validated 2R FK and Jacobian
+    adapters, or preserve precise production-API blockers.
+13. **Stage 13 — comparable CPU batch parity.** Add C++ and Idris batch adapters
+    where production APIs support them; retain scalar baselines and explicit
+    capability gaps.
+14. **Stage 14 — canonical workload expansion.** Extend coverage to dynamics and
+    selected geometric primitives with shared fixtures and output oracles.
+15. **Stage 15 — precision and optimization study.** Measure FP32 and FP64
+    separately, quantify error/drift, and explain whether optimizations port.
 
 ## Completion boundary
 
