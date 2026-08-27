@@ -1,0 +1,20 @@
+{
+  "cargo": "cargo",
+  "cpp_build_path": null,
+  "cpp_compiler": null,
+  "idris2_backend": "chez",
+  "idris2_compiler": "idris2",
+  "implementations": [
+    "cpp",
+    "idris2",
+    "rust"
+  ],
+  "paths": {
+    "cpp": null,
+    "idris2": null,
+    "rust": null
+  },
+  "profile": "smoke",
+  "run_id": "20260827T094308.050354Z",
+  "rustc": "rustc"
+}

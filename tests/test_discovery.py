@@ -32,7 +32,7 @@ class DiscoveryTests(unittest.TestCase):
             })()
             with patch("benchmark_harness.cli.shutil.which", return_value=None):
                 with self.assertRaisesRegex(SystemExit, "Idris 2 compiler not found"):
-                    benchmark_idris2(args, root, {"workloads": []}, 1000)
+                    benchmark_idris2(args, root, {"workloads": []}, 1000, root / "run")
 
     def test_idris_adapter_declares_totality_and_provenance(self):
         source = (Path(__file__).resolve().parents[1] / "idris2/src/Main.idr").read_text()
