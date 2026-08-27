@@ -1,42 +1,40 @@
 # Stage 14 report — canonical workload expansion
 
-## Inventory and result
+## Scope and inventory
 
-The adapter inventory found production support for translator construction and
-application, rotor-backed motor composition, point-pair construction, and the
-existing 2R kinematics operations. Those semantics are already represented by
-the canonical contract rows and were not duplicated under new IDs. The C++,
-Rust, and Idris benchmark entry points do not currently expose one shared,
-fixture-backed line/plane/sphere observable or a common spatial-inertia
-twist-to-wrench/dynamics operation. Adding a timing row without that shared
-observable would measure different work, so no new incompatible rows were
-introduced.
+The shared fixture is a unit z-axis quarter-turn (`axis=[0,0,1]`, `angle=pi/2`)
+and displacement `[1,2,3]`, both IEEE binary64. Production inventory found
+axis-angle rotor and displacement translator constructors in gafro-cpp and
+gafro-rust, and the translator constructor in gafro-idris2. Idris 2's rotor
+constructor requires a fallible, non-exported `UnitBivector` construction path,
+so its gap is reported explicitly. Existing point-pair and robotics rows were
+left unchanged. Dynamics and typed line/plane/sphere observables remain
+deferred because no shared three-adapter oracle was found.
 
-The actionable gaps are therefore:
+## Workloads and compatibility
 
-| Capability | Status | Follow-up |
-| --- | --- | --- |
-| Rotor/translator | covered by existing motor and sandwich rows | keep as canonical baselines |
-| Point-pair | covered by existing outer-product row | add a distinct construction row only with a shared fixture |
-| Line/plane/sphere | no common production observable in all adapters | expose constructors/coordinates and fixture first |
-| Spatial inertia and forward/inverse dynamics | no common benchmark API/oracle | agree on state, frame, and wrench output before timing |
+| Workload | C++ | Rust | Idris 2 |
+|---|---|---|---|
+| `rotor_construction/f64/scalar` | supported | supported | unsupported: no exposed deterministic `UnitBivector` constructor |
+| `translator_construction/f64/e1i` | supported | supported | supported |
 
-No cross-representation ranking is made in this stage. The gaps remain visible
-for the next implementation stage rather than being replaced by nearby
-operations.
+Each supported adapter validates the scalar oracle before timing; the C++ and
+Rust implementations also inspect the remaining translator coefficients.
+These are canonical constructor workloads, not layout or batch variants.
 
 ## Verification
 
-The contract and existing adapters were checked with the required repository
-gates:
+`make check` passed. `make test` passed (23 tests). The full smoke benchmark
+compiled and ran all three adapters successfully after correcting an initial
+Rust/C++ axis-coefficient convention mismatch. Run ID:
+`20260827T172841.744506Z`.
 
-- `make check` — passed
-- `make test` — passed
-- `make benchmark-smoke` — C++ built, but the gate stopped at the existing Rust
-  adapter because the checked-out sibling API no longer exports
-  `OrthogonalMultivector32`, has two generic parameters for the SoA types, and
-  exposes ambiguous `Motor::compose` implementations. This is an existing
-  cross-repository compatibility block, not a Stage 14 workload change.
-- `git diff --check` — passed
+No timing ranking is reported: this stage establishes compatible coverage;
+measurements from the failed aggregate run are not evidence.
 
-No generated benchmark run artifacts are included in the commit.
+## Follow-up gaps
+
+Add an exported total Idris rotor fixture constructor (or a fixture-level
+oracle that does not require the private unit-bivector constructor), then add
+forward/inverse dynamics and typed line, plane, and sphere observables only
+after equivalent production APIs and complete-output oracles exist.
