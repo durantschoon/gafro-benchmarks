@@ -117,8 +117,12 @@ fn durations_json(values: &[u128]) -> String {
 
 fn row_json(row: &ResultRow, p: &Provenance) -> String {
     let identity = format!("\"implementation\":{{\"family\":\"rust\",\"name\":\"gafro-rust\",\"repository_revision\":\"{}\",\"dirty\":{},\"compiler\":\"{}\",\"backend\":\"cpu-release\",\"flags\":[\"target: {}\",\"features: default\",\"profile: release\",\"codegen-units: 1\",\"lto: fat\",\"RUSTFLAGS: {}\"]}}", p.revision, p.dirty, p.compiler, p.target, p.flags);
+    let host = row.id.split("/n").nth(1).and_then(|value| value.split('/').next())
+        .and_then(|value| value.parse::<u64>().ok())
+        .map(|batch| format!("{{\"clock\":\"std::time::Instant\",\"threads\":1,\"simd\":\"compiler-target\",\"alignment\":\"native\",\"batch_size\":{batch},\"layout\":\"structure-of-arrays\",\"packing\":\"excluded\",\"allocation\":\"excluded\",\"output_validation\":\"all_lanes\"}}"))
+        .unwrap_or_else(|| "{\"clock\":\"std::time::Instant\"}".to_owned());
     match row.oracle {
-        Some(oracle) => format!("{{\"schema_version\":\"gafro-benchmark-result/v1\",{},\"host\":{{\"clock\":\"std::time::Instant\"}},\"workload_id\":\"{}\",\"status\":\"supported\",\"reason\":\"\",\"warmup_operations\":{},\"operations_per_sample\":{},\"sample_durations_ns\":[{}],\"oracle\":{{\"value\":{}}}}}", identity, row.id, row.warmup_operations, row.operations_per_sample, durations_json(&row.durations_ns), oracle),
+        Some(oracle) => format!("{{\"schema_version\":\"gafro-benchmark-result/v1\",{},\"host\":{},\"workload_id\":\"{}\",\"status\":\"supported\",\"reason\":\"\",\"warmup_operations\":{},\"operations_per_sample\":{},\"sample_durations_ns\":[{}],\"oracle\":{{\"value\":{}}}}}", identity, host, row.id, row.warmup_operations, row.operations_per_sample, durations_json(&row.durations_ns), oracle),
         None => format!("{{\"schema_version\":\"gafro-benchmark-result/v1\",{},\"host\":{{}},\"workload_id\":\"{}\",\"status\":\"{}\",\"reason\":\"{}\"}}", identity, row.id, row.status, row.reason),
     }
 }
