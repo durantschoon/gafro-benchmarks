@@ -12,9 +12,9 @@ priorities:
 
 | Priority | Evidence | Work |
 | --- | --- | --- |
-| P0 correctness | Rust geometric Jacobian is blocked by a base-frame oracle failure | Repair joint-origin placement and re-run the oracle before ranking Rust. |
+| P0 correctness | Rust joint-to-end-effector twist map (geometric Jacobian) is blocked by a base-frame oracle failure | Repair joint-origin placement and re-run the oracle before ranking Rust. |
 | P0 layout parity | Rust dense GP is reported as `alternate_api_or_layout` because the contract uses orthogonal `ePlus/eMinus` coefficients | Add the Rust orthogonal-layout adapter and measure conversion-free and conversion-inclusive paths separately. |
-| P1 capability parity | Idris 2 has no validated 2R robotics adapter | Add canonical FK and geometric-Jacobian adapters with shared oracle fixtures. |
+| P1 capability parity | Idris 2 has no validated 2R robotics adapter | Add canonical FK and joint-to-end-effector twist map (geometric Jacobian) adapters with shared oracle fixtures. |
 | P1 optimization parity | C++ and Idris have no contract CPU SoA batch APIs | Add equivalent batch adapters only after scalar semantics are validated; keep them labeled optimization variants. |
 | P1 coverage | The harness does not yet measure all commonly exposed operations | Add canonical dynamics and geometric-primitive workloads where at least one production implementation can provide an oracle. |
 | P2 performance | Rust trails C++ on point-pair outer product and motor composition, while winning 2R FK and nearly matching sandwich transform | Profile and optimize only after the corresponding parity stage is green; preserve and explain wins. |
@@ -27,11 +27,11 @@ route. The CPU parity sequence below is the prerequisite for trustworthy
 optimization conclusions and should be completed before publishing mixed
 CPU/GPU rankings:
 
-11. **Rust correctness and orthogonal-layout parity.** Fix the blocked Jacobian
+11. **Rust correctness and orthogonal-layout parity.** Fix the blocked joint-to-end-effector twist map (geometric Jacobian)
     oracle and add a canonical dense geometric-product adapter using the new
     orthogonal multivector type.
-12. **Idris robotics parity.** Implement and validate the 2R FK and geometric
-    Jacobian adapters, or record a precise blocked reason if the production API
+12. **Idris robotics parity.** Implement and validate the 2R FK and joint-to-end-effector twist map (geometric Jacobian)
+    adapters, or record a precise blocked reason if the production API
     is not available.
 13. **CPU batch parity.** Add comparable C++ and Idris SoA/batch adapters for
     the existing Rust optimization workloads, retaining scalar baselines.

@@ -3,13 +3,13 @@
 ## Motivation
 
 Run `20260827T094539.804842Z` reports Rust dense geometric product as an
-`alternate_api_or_layout` and blocks Rust geometric-Jacobian ranking because the
+`alternate_api_or_layout` and blocks Rust joint-to-end-effector twist map (geometric Jacobian) ranking because the
 base-frame oracle fails. The Rust library now provides an orthogonal dense
 multivector type; this stage connects it to the canonical benchmark contract.
 
 ## Required changes
 
-1. Correct the Rust geometric-Jacobian adapter or production call so each joint
+1. Correct the Rust joint-to-end-effector twist map (geometric Jacobian) adapter or production call so each joint
    axis includes its joint-origin transform in the declared base frame.
 2. Add a Rust canonical dense geometric-product adapter using the orthogonal
    `ePlus/eMinus` layout, with explicit conversion boundaries if conversion is
@@ -33,7 +33,7 @@ multivector type; this stage connects it to the canonical benchmark contract.
 - `make check`
 - `make test`
 - `make benchmark-smoke`
-- Rust FK and geometric-Jacobian oracle checks pass.
+- Rust FK and joint-to-end-effector twist map (geometric Jacobian) oracle checks pass.
 - Dense GP is either directly comparable or has an explicit, non-empty blocked
   reason naming the remaining boundary.
 - A report records revisions, commands, timings, conversion/allocation scope,
