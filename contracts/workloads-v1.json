@@ -11,6 +11,24 @@
       "observable": {"kind": "coefficient", "name": "scalar", "reference": 1.0, "absolute_tolerance": 1e-10}
     },
     {
+      "id": "dense_geometric_product/f64/orthogonal",
+      "operation": "geometric product of two dense 32-coefficient G(4,1) multivectors in the orthogonal ePlus/eMinus layout",
+      "operands": {"kind": "dense_multivectors", "basis": "orthogonal ePlus,e1,e2,e3,eMinus", "left_coefficients": "all 1.0", "right_coefficients": "scalar 2.0 and all other coefficients 1.0"},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "observable": {"kind": "coefficient", "name": "scalar", "reference": 1.0, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "dense_geometric_product/f64/orthogonal_conversion",
+      "operation": "orthogonal dense geometric product with explicit null-basis conversion at both boundaries",
+      "operands": {"kind": "dense_multivectors", "basis": "orthogonal ePlus,e1,e2,e3,eMinus", "conversion": "orthogonal to null before product and null to orthogonal after product", "left_coefficients": "all 1.0", "right_coefficients": "scalar 2.0 and all other coefficients 1.0"},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "observable": {"kind": "coefficient", "name": "scalar", "reference": 1.0, "absolute_tolerance": 1e-10}
+    },
+    {
       "id": "motor_composition_gp/f64/scalar",
       "operation": "geometric product of two normalized rigid motors",
       "operands": {"kind": "translation_motors", "translations": [[1.0, 2.0, 3.0], [-0.5, 0.25, 1.5]], "variation": "alternate operand order"},

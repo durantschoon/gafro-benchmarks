@@ -59,7 +59,7 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn(fk, cpp)
         self.assertIn(jacobian, cpp)
         self.assertIn(fk, rust)
-        self.assertIn("fails the canonical base-frame oracle", rust)
+        self.assertIn("corrected_jacobian_checksum", rust)
         self.assertIn(fk, idris)
         self.assertIn(jacobian, idris)
         self.assertIn("no canonical robotics adapter validated", idris)

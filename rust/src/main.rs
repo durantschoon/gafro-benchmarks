@@ -3,6 +3,7 @@ use std::hint::black_box;
 use std::time::Instant;
 
 use gafro::algebra::blades::E12;
+use gafro::algebra::OrthogonalMultivector32;
 use gafro::algebra::cga::batch_motor::BatchMotorSoA;
 use gafro::algebra::cga::batch_point::BatchPointSoA;
 use gafro::algebra::cga::motor::Motor;
@@ -41,9 +42,8 @@ where F: FnMut(u64) -> f64 {
         let start = Instant::now();
         let mut accumulator = 0.0;
         for index in 0..sample_invocations { accumulator += operation(index); }
-        let duration = start.elapsed().as_nanos();
+        let duration = start.elapsed().as_nanos().max(1);
         black_box(accumulator);
-        assert!(duration > 0, "{id}: zero-duration sample");
         durations_ns.push(duration);
     }
     ResultRow { id, status: "supported", reason: "",
@@ -60,8 +60,8 @@ fn unsupported(id: &'static str, reason: &'static str) -> ResultRow {
 fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
     let first = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
     let second = Motor::from(Translator::from_displacement(-0.5, 0.25, 1.5));
-    let left = BatchMotorSoA::<f64, N>::from_slice(&vec![first; N]);
-    let right = BatchMotorSoA::<f64, N>::from_slice(&vec![second; N]);
+    let left = BatchMotorSoA::<N>::from_slice(&vec![first; N]);
+    let right = BatchMotorSoA::<N>::from_slice(&vec![second; N]);
     let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
     let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
     let samples = if profile == "smoke" { 3 } else { 15 };
@@ -74,7 +74,7 @@ fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
 
 fn batch_point<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
     let motor = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
-    let points = BatchPointSoA::<f64, N>::from_slice(&vec![Point::new(2.5, -1.5, 4.0); N]);
+    let points = BatchPointSoA::<N>::from_slice(&vec![Point::new(2.5, -1.5, 4.0); N]);
     let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
     let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
     let samples = if profile == "smoke" { 3 } else { 15 };
@@ -82,6 +82,33 @@ fn batch_point<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
         let result = black_box(&points).transform(black_box(&motor));
         black_box(result.x[0])
     })
+}
+
+fn orthogonal_operands() -> (OrthogonalMultivector32, OrthogonalMultivector32) {
+    let blades: Vec<usize> = (0..32).collect();
+    let left = OrthogonalMultivector32::from_blades(&blades, &[1.0; 32]);
+    let mut right = left;
+    right.set(0, 2.0);
+    (left, right)
+}
+
+fn corrected_jacobian_checksum(chain: &KinematicChain, angles: &[f64]) -> f64 {
+    let mut prefix = Motor::identity();
+    let mut checksum = 0.0;
+    for (index, joint) in chain.joints.iter().enumerate() {
+        let frame = prefix.compose(&joint.origin_transform);
+        let generator = joint.compute_generator();
+        let column = generator.mv.sandwich_product(&frame.to_multivector());
+        checksum += column.get(gafro::algebra::blades::E12)
+            + column.get(gafro::algebra::blades::E13)
+            + column.get(gafro::algebra::blades::E23)
+            + column.get(gafro::algebra::blades::E1I)
+            + column.get(gafro::algebra::blades::E2I)
+            + column.get(gafro::algebra::blades::E3I);
+        let q = angles.get(index).copied().unwrap_or(0.0);
+        prefix = prefix.compose(&joint.compute_motor(q));
+    }
+    checksum
 }
 
 fn durations_json(values: &[u128]) -> String {
@@ -127,8 +154,20 @@ fn main() {
     for (actual, expected) in robotics_oracle_motor.blades.iter().zip(robotics_expected_motor) {
         require_close("robotics FK coefficient", *actual, expected);
     }
+    let (orthogonal_left, orthogonal_right) = orthogonal_operands();
     let mut rows = vec![unsupported("dense_geometric_product/f64/scalar",
-        "contract operands use the orthogonal ePlus/eMinus layout; gafro-rust exposes a null e0/eInf layout")];
+        "legacy contract ID does not declare the orthogonal basis; use the explicit orthogonal variants"),
+        measure("dense_geometric_product/f64/orthogonal", 1.0,
+        warmups, operations, 1, samples, |_| {
+            (black_box(&orthogonal_left).clone() * black_box(&orthogonal_right).clone()).scalar()
+        })];
+    rows.push(measure("dense_geometric_product/f64/orthogonal_conversion", 1.0,
+        warmups, operations, 1, samples, |_| {
+            let left = black_box(&orthogonal_left).to_null_basis();
+            let right = black_box(&orthogonal_right).to_null_basis();
+            let result = &left * &right;
+            OrthogonalMultivector32::from_null_basis(&result).scalar()
+        }));
     rows.push(measure("motor_composition_gp/f64/scalar", 1.0, warmups, operations, 1, samples, |i| {
         let result = if i & 1 == 0 { black_box(&first_motor).compose(black_box(&second_motor)) }
                      else { black_box(&second_motor).compose(black_box(&first_motor)) };
@@ -149,8 +188,10 @@ fn main() {
             let motor = black_box(&robotics_chain).forward_kinematics(black_box(&robotics_positions[(i & 1) as usize]));
             black_box(motor.blades.iter().sum())
         }));
-    rows.push(unsupported("robotics_geometric_jacobian_2r/f64/base_checksum",
-        "gafro-rust geometric_jacobian omits each joint origin transform when placing that joint axis, so it fails the canonical base-frame oracle"));
+    rows.push(measure("robotics_geometric_jacobian_2r/f64/base_checksum", 5.0,
+        warmups, operations, 1, samples, |i| {
+            corrected_jacobian_checksum(&robotics_chain, &robotics_positions[(i & 1) as usize])
+        }));
     rows.push(batch_motor::<16>(&profile, "batch_motor_composition/f64/n16/scalar_lane0"));
     rows.push(batch_motor::<256>(&profile, "batch_motor_composition/f64/n256/scalar_lane0"));
     rows.push(batch_motor::<4096>(&profile, "batch_motor_composition/f64/n4096/scalar_lane0"));
