@@ -60,8 +60,8 @@ fn unsupported(id: &'static str, reason: &'static str) -> ResultRow {
 fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
     let first = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
     let second = Motor::from(Translator::from_displacement(-0.5, 0.25, 1.5));
-    let left = BatchMotorSoA::<N>::from_slice(&vec![first; N]);
-    let right = BatchMotorSoA::<N>::from_slice(&vec![second; N]);
+    let left = BatchMotorSoA::<f64, N>::from_slice(&vec![first; N]);
+    let right = BatchMotorSoA::<f64, N>::from_slice(&vec![second; N]);
     let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
     let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
     let samples = if profile == "smoke" { 3 } else { 15 };
@@ -74,7 +74,7 @@ fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
 
 fn batch_point<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
     let motor = Motor::from(Translator::from_displacement(1.0, 2.0, 3.0));
-    let points = BatchPointSoA::<N>::from_slice(&vec![Point::new(2.5, -1.5, 4.0); N]);
+    let points = BatchPointSoA::<f64, N>::from_slice(&vec![Point::new(2.5, -1.5, 4.0); N]);
     let invocations = if profile == "smoke" { 1 } else { 16_384 / N as u64 };
     let warmups = if profile == "smoke" { 1 } else { 4_096 / N as u64 };
     let samples = if profile == "smoke" { 3 } else { 15 };
@@ -93,7 +93,7 @@ fn orthogonal_operands() -> (OrthogonalMultivector32, OrthogonalMultivector32) {
 }
 
 fn corrected_jacobian_checksum(chain: &KinematicChain, angles: &[f64]) -> f64 {
-    let mut prefix = Motor::identity();
+    let mut prefix = Motor::<f64>::identity();
     let mut checksum = 0.0;
     for (index, joint) in chain.joints.iter().enumerate() {
         let frame = prefix.compose(&joint.origin_transform);
