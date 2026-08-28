@@ -4,7 +4,8 @@ import unittest
 from pathlib import Path
 
 from benchmark_harness.cli import create_run_directory
-from benchmark_harness.core import build_summary_model, render_summary_markdown
+from benchmark_harness.core import (build_summary_model, render_summary_markdown,
+                                    workload_definition_id, workload_input_digest)
 from tests.test_heterogeneous_contract import result as heterogeneous_result
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -82,16 +83,39 @@ class ReportingTests(unittest.TestCase):
     def test_summary_omits_ratio_for_mixed_heterogeneous_dimensions(self):
         cpp = heterogeneous_result(family="cpp")
         rust = heterogeneous_result(family="rust")
-        workload = "motor_composition_gp/f64/scalar"
+        workload = "batch_point_transform/f64/n256/e1_lane0"
+        definition = next(item for item in self.manifest["workloads"] if item["id"] == workload)
         cpp["workload_id"] = workload
         rust["workload_id"] = workload
-        rust["execution"]["scalar_type"] = "fp32"
-        rust["oracle"]["absolute_tolerance"] = 1e-5
-        rust["oracle"]["relative_tolerance"] = 1e-5
+        for row in (cpp, rust):
+            row["execution"].update(definition["execution_contract"])
+            row["execution"]["input_fixture_id"] = f"{workload}/inputs-v1"
+            row["execution"]["input_digest"] = workload_input_digest(definition)
+            row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+        rust["execution"]["state"] = "cold"
         model = build_summary_model(self.manifest, [cpp, rust], run_ids=["run"])
         row = next(item for item in model["workloads"] if item["workload_id"] == workload)
         self.assertEqual(row["ratios"], [])
         self.assertIn("execution dimensions differ", row["comparison_note"])
+
+    def test_summary_retains_gpu_provenance_and_rejects_cross_gpu_ratio(self):
+        cpp = heterogeneous_result("end_to_end", family="cpp")
+        rust = heterogeneous_result("end_to_end", family="rust")
+        workload = "batch_point_transform/f64/n256/e1_lane0"
+        definition = next(item for item in self.manifest["workloads"] if item["id"] == workload)
+        for row in (cpp, rust):
+            row["workload_id"] = workload
+            row["execution"].update(definition["execution_contract"])
+            row["execution"]["input_fixture_id"] = f"{workload}/inputs-v1"
+            row["execution"]["input_digest"] = workload_input_digest(definition)
+            row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+        rust["gpu"]["uuid"] = "GPU-other"
+        model = build_summary_model(self.manifest, [cpp, rust], run_ids=["run"])
+        row = next(item for item in model["workloads"] if item["workload_id"] == workload)
+        self.assertEqual(row["ratios"], [])
+        self.assertFalse(row["environments_compatible"])
+        self.assertEqual(row["cells"][0]["gpu"]["uuid"], "GPU-fixture")
+        self.assertEqual(row["cells"][2]["gpu"]["uuid"], "GPU-other")
 
 
 if __name__ == "__main__":

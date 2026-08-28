@@ -21,7 +21,7 @@
     "oracle": {},
     "execution": {
       "type": "object",
-      "required": ["operation", "batch_size", "batch_semantics", "invocations_per_sample", "input_fixture_id", "input_digest", "output_elements_per_item", "scalar_type", "input_layout", "output_layout", "device_residency", "stream_count", "state", "timing_scope", "comparison_scope", "timer", "synchronization", "packing_boundary", "allocation_boundary", "timed_phases"],
+      "required": ["operation", "batch_size", "batch_semantics", "invocations_per_sample", "input_fixture_id", "input_digest", "output_elements_per_item", "workload_definition_id", "scalar_type", "input_layout", "output_layout", "device_residency", "stream_count", "state", "timing_scope", "comparison_scope", "timer", "synchronization", "packing_boundary", "allocation_boundary", "timed_phases"],
       "properties": {
         "operation": {"type": "string", "minLength": 1},
         "batch_size": {"type": "integer", "minimum": 1},
@@ -30,6 +30,7 @@
         "input_fixture_id": {"type": "string", "minLength": 1},
         "input_digest": {"type": "string", "minLength": 1},
         "output_elements_per_item": {"type": "integer", "minimum": 1},
+        "workload_definition_id": {"type": "string", "minLength": 1},
         "scalar_type": {"enum": ["fp32", "fp64"]},
         "input_layout": {"type": "string", "minLength": 1},
         "output_layout": {"type": "string", "minLength": 1},
@@ -70,7 +71,7 @@
         "mig_state": {"type": "string", "minLength": 1},
         "launch_geometry": {"type": "object"},
         "stream": {"type": "object"},
-        "memory_bytes": {"type": "integer", "minimum": 0},
+        "memory_bytes": {"type": "integer", "minimum": 1},
         "cuda_event_timing": {"type": "object"}
       }
     }

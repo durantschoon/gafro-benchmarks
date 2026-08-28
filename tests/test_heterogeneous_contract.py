@@ -10,9 +10,12 @@ from benchmark_harness.core import (
     ContractError,
     plan_gpu_sweep,
     ratio_compatible,
+    reconcile_results,
     validate_heterogeneous_contract,
     validate_ratio_compatibility,
     validate_result,
+    workload_definition_id,
+    workload_input_digest,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,8 +56,9 @@ def execution(scope="cpu_optimized_batch", scalar_type="fp64"):
         "comparison_scope": comparison,
         "timer": "cuda_event" if scope in {"kernel", "resident_pipeline"} else "host_monotonic",
         "synchronization": synchronization,
-        "packing_boundary": "included_host_packing" if scope == "end_to_end" else "included_host_packing",
+        "packing_boundary": "excluded_prepacked" if scope in {"kernel", "resident_pipeline"} else "included_host_packing",
         "allocation_boundary": "excluded_preallocated_buffers", "timed_phases": phases,
+        "workload_definition_id": "fixture-definition",
     }
 
 
@@ -68,7 +72,9 @@ def result(scope="cpu_optimized_batch", scalar_type="fp64", family="cpp"):
         "warmup_operations": 256, "operations_per_sample": 256,
         "sample_durations_ns": [1000, 1100, 900], "execution": execution(scope, scalar_type),
         "oracle": {"value": 1.0, "deterministic_inputs": True, "full_output_checked": True,
-                   "passed": True, "reference_precision": "cpu-fp80", "comparison_method": "all coefficients",
+                   "passed": True,
+                   "reference_precision": "cpu-fp64-or-higher" if scalar_type == "fp32" else "cpu-fp80-or-higher",
+                   "comparison_method": "all coefficients", "completed_before_timing": True,
                    "checked_output_elements": 1280,
                    "absolute_tolerance": 1e-5 if scalar_type == "fp32" else 1e-10,
                    "relative_tolerance": 1e-5 if scalar_type == "fp32" else 1e-10},
@@ -113,6 +119,7 @@ class HeterogeneousContractTests(unittest.TestCase):
             other["execution"][field] = value
             if field == "scalar_type":
                 other["oracle"]["absolute_tolerance"] = other["oracle"]["relative_tolerance"] = 1e-5
+                other["oracle"]["reference_precision"] = "cpu-fp64-or-higher"
             with self.assertRaisesRegex(ContractError, field):
                 validate_ratio_compatibility(result(), other)
 
@@ -133,8 +140,15 @@ class HeterogeneousContractTests(unittest.TestCase):
             validate_result(row)
         row = result("end_to_end")
         row["execution"]["timed_phases"].remove("d2h")
-        with self.assertRaisesRegex(ContractError, "must include host packing"):
+        with self.assertRaisesRegex(ContractError, "timed_phases"):
             validate_result(row)
+
+    def test_kernel_and_resident_require_exact_timed_phases(self):
+        for scope in ("kernel", "resident_pipeline"):
+            row = result(scope)
+            row["execution"]["timed_phases"] = ["not_the_declared_boundary"]
+            with self.assertRaisesRegex(ContractError, "timed_phases"):
+                validate_result(row)
 
     def test_validation_requires_full_high_precision_oracle(self):
         row = result(scalar_type="fp32")
@@ -145,6 +159,14 @@ class HeterogeneousContractTests(unittest.TestCase):
         row["oracle"]["checked_output_elements"] -= 1
         with self.assertRaisesRegex(ContractError, "complete output"):
             validate_result(row)
+        row = result()
+        row["oracle"]["reference_precision"] = "gpu-fp16"
+        with self.assertRaisesRegex(ContractError, "reference_precision"):
+            validate_result(row)
+        row = result()
+        row["oracle"]["completed_before_timing"] = False
+        with self.assertRaisesRegex(ContractError, "completed_before_timing"):
+            validate_result(row)
 
     def test_validation_requires_cpu_and_gpu_provenance(self):
         row = result()
@@ -154,6 +176,10 @@ class HeterogeneousContractTests(unittest.TestCase):
         row = result("kernel")
         row["gpu"]["uuid"] = ""
         with self.assertRaisesRegex(ContractError, "uuid"):
+            validate_result(row)
+        row = result("kernel")
+        row["gpu"]["launch_geometry"] = {}
+        with self.assertRaisesRegex(ContractError, "launch_geometry"):
             validate_result(row)
 
     def test_memory_limit_truncates_only_suffix_with_reason(self):
@@ -185,6 +211,31 @@ class HeterogeneousContractTests(unittest.TestCase):
         del legacy["execution"]
         del legacy["cpu"]
         self.assertFalse(ratio_compatible(legacy, result(family="rust")))
+
+    def test_gpu_stream_and_hardware_configuration_must_match(self):
+        first = result("end_to_end", family="cpp")
+        second = result("end_to_end", family="rust")
+        second["execution"]["stream_count"] = 8
+        with self.assertRaisesRegex(ContractError, "stream_count"):
+            validate_ratio_compatibility(first, second)
+        second = result("end_to_end", family="rust")
+        second["gpu"]["uuid"] = "GPU-other"
+        with self.assertRaisesRegex(ContractError, "gpu_configuration"):
+            validate_ratio_compatibility(first, second)
+
+    def test_reconciliation_binds_execution_to_workload_contract(self):
+        manifest = json.loads((ROOT / "contracts/workloads-v1.json").read_text())
+        definition = next(item for item in manifest["workloads"] if item["id"] == "batch_point_transform/f64/n256/e1_lane0")
+        row = result()
+        row["workload_id"] = definition["id"]
+        row["execution"].update(definition["execution_contract"])
+        row["execution"]["input_fixture_id"] = f"{definition['id']}/inputs-v1"
+        row["execution"]["input_digest"] = workload_input_digest(definition)
+        row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+        reconcile_results(manifest, [row])
+        row["execution"]["operation"] = "batch_motor_composition"
+        with self.assertRaisesRegex(ContractError, "operation"):
+            reconcile_results(manifest, [row])
 
 
 if __name__ == "__main__":
