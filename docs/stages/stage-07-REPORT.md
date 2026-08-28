@@ -23,9 +23,9 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
 - `make check` — passed.
 - `make test` — passed, 36 tests.
 - `git diff --check` — passed.
-- `make benchmark-smoke` with explicit C++, Idris 2, and Rust paths — pending
-  after the checkpoint commit so a long or interrupted build cannot erase the
-  implementation.
+- `make benchmark-smoke CPP_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp CPP_BUILD_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp/build IDRIS2_PATH=/Users/durant/Repos/enveloped/gafro-idris2/gafro-idris2 IDRIS2_COMPILER=/opt/homebrew/bin/idris2 RUST_PATH=/Users/durant/Repos/ds/gafro-rust IDRIS2_BACKEND=chez`
+  — passed for C++, Idris 2, and Rust; run
+  `20260828T105630.526424Z` produced all three validated adapter bundles.
 
 ## Deviations and open questions
 
