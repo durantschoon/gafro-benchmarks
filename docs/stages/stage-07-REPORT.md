@@ -11,22 +11,24 @@ CPU scalar and optimized-batch rows share the `application_end_to_end`
 comparison scope with GPU `end_to_end` rows. A ratio is permitted only when all
 semantic and boundary dimensions match. CUDA kernel-only and device-resident
 pipeline rows remain distinct and cannot masquerade as CPU application speedup.
+Multiple CPU and GPU measurements from the same language and workload coexist
+as separately labelled cells, and compatibility is decided for each pair.
 
 The result contract validates CUDA-event timing and checked synchronization for
 kernel/device-resident scopes, host timing with packing, transfers, execution,
-observation, and synchronization for end-to-end scope, complete pre-timing
+synchronization, and observation for end-to-end scope, complete pre-timing
 oracles, FP32/FP64 tolerances, and CPU/GPU provenance. The CLI can produce a
 deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
 
 ## Verification
 
 - `make check` — passed.
-- `make test` — passed, 40 tests.
+- `make test` — passed, 44 tests.
 - `git diff --check` — passed.
 - `make markdownlint` — unavailable in this benchmark subrepository: `make: *** No rule to make target 'markdownlint'. Stop.` The Stage 07 prompt's discovered gates are `make check`, `make test`, and `make benchmark-smoke`.
 - `make benchmark-smoke CPP_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp CPP_BUILD_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp/build IDRIS2_PATH=/Users/durant/Repos/enveloped/gafro-idris2/gafro-idris2 IDRIS2_COMPILER=/opt/homebrew/bin/idris2 RUST_PATH=/Users/durant/Repos/ds/gafro-rust IDRIS2_BACKEND=chez`
   — passed for C++, Idris 2, and Rust; run
-  `20260828T111226.624623Z` produced all three validated adapter bundles after
+  `20260828T112844.788634Z` produced all three validated adapter bundles after
   the independent-review fixes.
 
 ## Deviations and open questions
@@ -38,6 +40,8 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
   is now bound to a manifest execution contract and definition digest, every
   timing scope has exact phases, high-precision oracle completion is explicit,
   and stream/GPU configuration participates in compatibility and reporting.
+  The final review also required same-language multi-measurement cells,
+  pairwise ratio gating, and synchronization-before-observation ordering.
 - Stages 08–10 still require production CUDA kernels and a controlled NVIDIA
   host. Stage 07 defines and validates the comparison boundary; it does not
   invent benchmark-only kernels.
