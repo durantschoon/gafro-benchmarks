@@ -71,7 +71,7 @@
     "end_to_end": {
       "timer": "host_monotonic",
       "comparison_scope": "application_end_to_end",
-      "boundary": ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"]
+      "boundary": ["host_packing", "h2d", "execution", "d2h", "host_synchronization", "host_observation"]
     }
   },
   "operation_count": "batch_size output items per invocation; operations_per_sample equals batch_size times invocations_per_sample"

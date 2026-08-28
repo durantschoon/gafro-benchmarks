@@ -42,7 +42,7 @@ def execution(scope="cpu_optimized_batch", scalar_type="fp64"):
         "cpu_optimized_batch": ["optimized_batch", "host_observation"],
         "kernel": ["kernel_execution", "event_synchronization"],
         "resident_pipeline": ["all_device_work", "device_synchronization"],
-        "end_to_end": ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"],
+        "end_to_end": ["host_packing", "h2d", "execution", "d2h", "host_synchronization", "host_observation"],
     }[scope]
     return {
         "operation": "batch_point_transform", "batch_size": 256,
@@ -142,6 +142,10 @@ class HeterogeneousContractTests(unittest.TestCase):
         row["execution"]["timed_phases"].remove("d2h")
         with self.assertRaisesRegex(ContractError, "timed_phases"):
             validate_result(row)
+
+    def test_end_to_end_waits_before_host_observation(self):
+        phases = result("end_to_end")["execution"]["timed_phases"]
+        self.assertLess(phases.index("host_synchronization"), phases.index("host_observation"))
 
     def test_kernel_and_resident_require_exact_timed_phases(self):
         for scope in ("kernel", "resident_pipeline"):
