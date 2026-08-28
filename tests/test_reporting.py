@@ -5,6 +5,7 @@ from pathlib import Path
 
 from benchmark_harness.cli import create_run_directory
 from benchmark_harness.core import build_summary_model, render_summary_markdown
+from tests.test_heterogeneous_contract import result as heterogeneous_result
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -77,6 +78,20 @@ class ReportingTests(unittest.TestCase):
             self.assertNotEqual(first_id, second_id)
             self.assertTrue((first / "sentinel").is_file())
             self.assertTrue(second.is_dir())
+
+    def test_summary_omits_ratio_for_mixed_heterogeneous_dimensions(self):
+        cpp = heterogeneous_result(family="cpp")
+        rust = heterogeneous_result(family="rust")
+        workload = "motor_composition_gp/f64/scalar"
+        cpp["workload_id"] = workload
+        rust["workload_id"] = workload
+        rust["execution"]["scalar_type"] = "fp32"
+        rust["oracle"]["absolute_tolerance"] = 1e-5
+        rust["oracle"]["relative_tolerance"] = 1e-5
+        model = build_summary_model(self.manifest, [cpp, rust], run_ids=["run"])
+        row = next(item for item in model["workloads"] if item["workload_id"] == workload)
+        self.assertEqual(row["ratios"], [])
+        self.assertIn("execution dimensions differ", row["comparison_note"])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,77 @@
+{
+  "schema_version": "gafro-benchmark-heterogeneous/v1",
+  "dimensions": [
+    "operation",
+    "batch_size",
+    "batch_semantics",
+    "scalar_type",
+    "input_layout",
+    "output_layout",
+    "device_residency",
+    "stream_count",
+    "state",
+    "timing_scope",
+    "comparison_scope",
+    "packing_boundary",
+    "allocation_boundary",
+    "invocations_per_sample",
+    "input_fixture_id",
+    "input_digest",
+    "output_elements_per_item"
+  ],
+  "batch_sweep": {
+    "sizes": [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 4096, 16384, 65536, 262144],
+    "latency_sensitive": [1, 2, 4, 8, 16],
+    "expected_crossover": [32, 64, 128, 256, 512, 1024, 4096],
+    "throughput": [16384, 65536, 262144],
+    "truncation_policy": "A device-memory limit may omit only the unavailable suffix; record the first omitted size, required bytes, available bytes, and a non-empty reason."
+  },
+  "precision_experiments": {
+    "fp32": {
+      "reference": "cpu-fp64-or-higher",
+      "absolute_tolerance": 1e-5,
+      "relative_tolerance": 1e-5
+    },
+    "fp64": {
+      "reference": "cpu-fp80-or-higher",
+      "absolute_tolerance": 1e-10,
+      "relative_tolerance": 1e-10
+    }
+  },
+  "oracle": {
+    "inputs": "identical deterministic input bytes and digest for every compared implementation",
+    "coverage": "all output elements and coefficients",
+    "timing": "complete before warmup and sample collection",
+    "failure_policy": "an oracle failure produces no timing samples"
+  },
+  "measurements": {
+    "cpu_scalar_loop": {
+      "timer": "host_monotonic",
+      "comparison_scope": "application_end_to_end",
+      "requires": ["thread_count", "affinity", "simd_target", "packing_boundary", "allocation_boundary"]
+    },
+    "cpu_optimized_batch": {
+      "timer": "host_monotonic",
+      "comparison_scope": "application_end_to_end",
+      "requires": ["thread_count", "affinity", "simd_target", "packing_boundary", "allocation_boundary"]
+    },
+    "kernel": {
+      "timer": "cuda_event",
+      "comparison_scope": "device_kernel",
+      "boundary": ["kernel_execution", "event_recording_on_measured_stream", "event_synchronization"],
+      "buffers": "already_device_resident"
+    },
+    "resident_pipeline": {
+      "timer": "cuda_event",
+      "comparison_scope": "device_resident_pipeline",
+      "boundary": ["all_device_work", "device_synchronization"],
+      "buffers": "already_device_resident"
+    },
+    "end_to_end": {
+      "timer": "host_monotonic",
+      "comparison_scope": "application_end_to_end",
+      "boundary": ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"]
+    }
+  },
+  "operation_count": "batch_size output items per invocation; operations_per_sample equals batch_size times invocations_per_sample"
+}

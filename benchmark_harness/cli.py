@@ -14,8 +14,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .core import (IMPLEMENTATIONS, build_summary_model, parse_json,
+                   plan_gpu_sweep,
                    reconcile_results, render_summary_markdown,
-                   summarize_results, validate_complete_run, validate_manifest)
+                   summarize_results, validate_complete_run,
+                   validate_heterogeneous_contract, validate_manifest)
 
 MARKERS = {"cpp": "CMakeLists.txt", "idris2": "gafro.ipkg", "rust": "Cargo.toml"}
 
@@ -40,6 +42,43 @@ def discover(root: Path, family: str, override: str | None) -> dict[str, str]:
 def inventory(args: argparse.Namespace, root: Path) -> int:
     rows = [discover(root, family, getattr(args, f"{family}_path")) for family in IMPLEMENTATIONS]
     print(json.dumps({"implementations": rows}, indent=2, sort_keys=True))
+    return 0
+
+
+def cuda_hardware() -> tuple[bool, int | None, str]:
+    """Report CUDA visibility without making CUDA a local test dependency."""
+    executable = shutil.which("nvidia-smi")
+    if executable is None:
+        return False, None, "CUDA hardware unavailable: nvidia-smi was not found"
+    try:
+        completed = subprocess.run(
+            [executable, "--query-gpu=memory.free", "--format=csv,noheader,nounits"],
+            check=True, text=True, capture_output=True, timeout=10,
+        )
+        free_bytes = int(completed.stdout.splitlines()[0].strip()) * 1024 * 1024
+    except (subprocess.SubprocessError, ValueError, IndexError) as exc:
+        return False, None, f"CUDA hardware unavailable: nvidia-smi query failed ({exc})"
+    return True, free_bytes, ""
+
+
+def gpu_plan(args: argparse.Namespace, root: Path) -> int:
+    contract = validate_heterogeneous_contract(
+        json.loads((root / "contracts/heterogeneous-v1.json").read_text())
+    )
+    if args.cuda_status == "auto":
+        available, detected_memory, reason = cuda_hardware()
+    elif args.cuda_status == "available":
+        available, detected_memory, reason = True, None, ""
+    else:
+        available, detected_memory, reason = False, None, args.cuda_unavailable_reason
+    memory = args.device_memory_bytes if args.device_memory_bytes is not None else detected_memory
+    plan = plan_gpu_sweep(
+        contract, operation=args.operation, scalar_type=args.scalar_type,
+        input_layout=args.input_layout, bytes_per_item=args.bytes_per_item,
+        cuda_available=available, available_memory_bytes=memory,
+        unavailable_reason=reason or args.cuda_unavailable_reason,
+    )
+    print(json.dumps(plan, indent=2, sort_keys=True))
     return 0
 
 
@@ -278,7 +317,7 @@ def benchmark(args: argparse.Namespace, root: Path) -> int:
 
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description="Gafro benchmark orchestrator")
-    result.add_argument("command", choices=("inventory", "smoke", "benchmark", "report"))
+    result.add_argument("command", choices=("inventory", "smoke", "benchmark", "report", "plan-gpu"))
     result.add_argument("--run-id")
     for family in IMPLEMENTATIONS:
         result.add_argument(f"--{family}-path")
@@ -290,6 +329,13 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--rustc", default="rustc")
     result.add_argument("--implementations", default="cpp")
     result.add_argument("--profile", choices=("smoke", "full"), default="full")
+    result.add_argument("--operation", default="batch_point_transform")
+    result.add_argument("--scalar-type", choices=("fp32", "fp64"), default="fp64")
+    result.add_argument("--input-layout", default="structure_of_arrays")
+    result.add_argument("--bytes-per-item", type=int, default=128)
+    result.add_argument("--device-memory-bytes", type=int)
+    result.add_argument("--cuda-status", choices=("auto", "available", "unavailable"), default="auto")
+    result.add_argument("--cuda-unavailable-reason", default="CUDA hardware unavailable by explicit configuration")
     return result
 
 
@@ -300,6 +346,8 @@ def main(argv: list[str] | None = None) -> int:
         return inventory(args, root)
     if args.command == "smoke":
         return smoke(root)
+    if args.command == "plan-gpu":
+        return gpu_plan(args, root)
     if args.command == "report":
         return regenerate_report(args, root)
     return benchmark(args, root)
