@@ -23,6 +23,16 @@ def evidence(family, host=None, samples=(10.0, 20.0, 30.0)):
     }
 
 
+def bind_heterogeneous(row, manifest, workload="batch_point_transform/f64/n256/e1_lane0"):
+    definition = next(item for item in manifest["workloads"] if item["id"] == workload)
+    row["workload_id"] = workload
+    row["execution"].update(definition["execution_contract"])
+    row["execution"]["input_fixture_id"] = f"{workload}/inputs-v1"
+    row["execution"]["input_digest"] = workload_input_digest(definition)
+    row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+    return row
+
+
 class ReportingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -81,17 +91,9 @@ class ReportingTests(unittest.TestCase):
             self.assertTrue(second.is_dir())
 
     def test_summary_omits_ratio_for_mixed_heterogeneous_dimensions(self):
-        cpp = heterogeneous_result(family="cpp")
-        rust = heterogeneous_result(family="rust")
         workload = "batch_point_transform/f64/n256/e1_lane0"
-        definition = next(item for item in self.manifest["workloads"] if item["id"] == workload)
-        cpp["workload_id"] = workload
-        rust["workload_id"] = workload
-        for row in (cpp, rust):
-            row["execution"].update(definition["execution_contract"])
-            row["execution"]["input_fixture_id"] = f"{workload}/inputs-v1"
-            row["execution"]["input_digest"] = workload_input_digest(definition)
-            row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+        cpp = bind_heterogeneous(heterogeneous_result(family="cpp"), self.manifest, workload)
+        rust = bind_heterogeneous(heterogeneous_result(family="rust"), self.manifest, workload)
         rust["execution"]["state"] = "cold"
         model = build_summary_model(self.manifest, [cpp, rust], run_ids=["run"])
         row = next(item for item in model["workloads"] if item["workload_id"] == workload)
@@ -99,16 +101,9 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("execution dimensions differ", row["comparison_note"])
 
     def test_summary_retains_gpu_provenance_and_rejects_cross_gpu_ratio(self):
-        cpp = heterogeneous_result("end_to_end", family="cpp")
-        rust = heterogeneous_result("end_to_end", family="rust")
         workload = "batch_point_transform/f64/n256/e1_lane0"
-        definition = next(item for item in self.manifest["workloads"] if item["id"] == workload)
-        for row in (cpp, rust):
-            row["workload_id"] = workload
-            row["execution"].update(definition["execution_contract"])
-            row["execution"]["input_fixture_id"] = f"{workload}/inputs-v1"
-            row["execution"]["input_digest"] = workload_input_digest(definition)
-            row["execution"]["workload_definition_id"] = workload_definition_id(definition)
+        cpp = bind_heterogeneous(heterogeneous_result("end_to_end", family="cpp"), self.manifest, workload)
+        rust = bind_heterogeneous(heterogeneous_result("end_to_end", family="rust"), self.manifest, workload)
         rust["gpu"]["uuid"] = "GPU-other"
         model = build_summary_model(self.manifest, [cpp, rust], run_ids=["run"])
         row = next(item for item in model["workloads"] if item["workload_id"] == workload)
@@ -116,6 +111,48 @@ class ReportingTests(unittest.TestCase):
         self.assertFalse(row["environments_compatible"])
         self.assertEqual(row["cells"][0]["gpu"]["uuid"], "GPU-fixture")
         self.assertEqual(row["cells"][2]["gpu"]["uuid"], "GPU-other")
+
+    def test_same_language_cpu_and_gpu_measurements_coexist_and_compare(self):
+        workload = "batch_point_transform/f64/n256/e1_lane0"
+        cpu = bind_heterogeneous(heterogeneous_result(family="cpp"), self.manifest, workload)
+        gpu = bind_heterogeneous(heterogeneous_result("end_to_end", family="cpp"), self.manifest, workload)
+        model = build_summary_model(self.manifest, [cpu, gpu], run_ids=["run"])
+        row = next(item for item in model["workloads"] if item["workload_id"] == workload)
+        cpp_cells = [cell for cell in row["cells"] if cell["implementation"] == "cpp"]
+        self.assertEqual(len(cpp_cells), 2)
+        self.assertEqual({cell["execution"]["timing_scope"] for cell in cpp_cells},
+                         {"cpu_optimized_batch", "end_to_end"})
+        self.assertEqual(len(row["ratios"]), 1)
+        self.assertIn("cpp/cpu_optimized_batch", row["ratios"][0]["numerator"])
+        self.assertIn("cpp/end_to_end", row["ratios"][0]["denominator"])
+        markdown = render_summary_markdown(model)
+        self.assertIn("cpp/cpu_optimized_batch", markdown)
+        self.assertIn("cpp/end_to_end", markdown)
+
+    def test_device_only_scope_coexists_without_cpu_ratio(self):
+        workload = "batch_point_transform/f64/n256/e1_lane0"
+        cpu = bind_heterogeneous(heterogeneous_result(family="cpp"), self.manifest, workload)
+        kernel = bind_heterogeneous(heterogeneous_result("kernel", family="cpp"), self.manifest, workload)
+        model = build_summary_model(self.manifest, [cpu, kernel], run_ids=["run"])
+        row = next(item for item in model["workloads"] if item["workload_id"] == workload)
+        self.assertEqual(len([cell for cell in row["cells"] if cell["implementation"] == "cpp"]), 2)
+        self.assertEqual(row["ratios"], [])
+
+    def test_three_way_stream_mismatch_omits_only_gpu_to_gpu_ratio(self):
+        workload = "batch_point_transform/f64/n256/e1_lane0"
+        cpu = bind_heterogeneous(heterogeneous_result(family="cpp"), self.manifest, workload)
+        gpu_one = bind_heterogeneous(heterogeneous_result("end_to_end", family="cpp"), self.manifest, workload)
+        gpu_eight = bind_heterogeneous(heterogeneous_result("end_to_end", family="cpp"), self.manifest, workload)
+        gpu_eight["execution"]["stream_count"] = 8
+        model = build_summary_model(self.manifest, [cpu, gpu_one, gpu_eight], run_ids=["run"])
+        row = next(item for item in model["workloads"] if item["workload_id"] == workload)
+        self.assertEqual(len(row["ratios"]), 2)
+        self.assertFalse(any(
+            "end_to_end" in ratio["numerator"] and "end_to_end" in ratio["denominator"]
+            for ratio in row["ratios"]
+        ))
+        self.assertFalse(row["execution_contracts_compatible"])
+        self.assertIsNone(row["apparent_winner"])
 
 
 if __name__ == "__main__":

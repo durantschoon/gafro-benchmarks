@@ -223,10 +223,14 @@ def reconcile_results(manifest: Mapping[str, Any], results: Iterable[Mapping[str
     definitions = {item["id"]: item for item in checked_manifest["workloads"]}
     workload_ids = set(definitions)
     reconciled: list[dict[str, Any]] = []
-    seen: set[tuple[str, str]] = set()
+    seen: set[tuple[str, str, str]] = set()
     for raw in results:
         result = validate_result(raw)
-        key = (result["implementation"]["family"], result["workload_id"])
+        key = (
+            result["implementation"]["family"],
+            result["workload_id"],
+            _measurement_identity(result),
+        )
         if key in seen:
             raise ContractError(f"duplicate result: {key[0]}/{key[1]}")
         if result["workload_id"] not in workload_ids:
@@ -261,7 +265,14 @@ def reconcile_results(manifest: Mapping[str, Any], results: Iterable[Mapping[str
                 raise ContractError(f"{result['workload_id']}: execution precision does not match workload definition")
         seen.add(key)
         reconciled.append(result)
-    return sorted(reconciled, key=lambda item: (item["workload_id"], item["implementation"]["family"]))
+    return sorted(
+        reconciled,
+        key=lambda item: (
+            item["workload_id"],
+            item["implementation"]["family"],
+            _measurement_sort_key(item),
+        ),
+    )
 
 
 def validate_complete_run(manifest: Mapping[str, Any], results: Iterable[Mapping[str, Any]], family: str, *, expected_operations: int | Mapping[str, int] | None = None) -> list[dict[str, Any]]:
@@ -290,7 +301,12 @@ def validate_complete_run(manifest: Mapping[str, Any], results: Iterable[Mapping
 
 def summarize_results(results: Iterable[Mapping[str, Any]]) -> list[dict[str, Any]]:
     summary = []
-    for result in sorted(results, key=lambda item: (item["workload_id"], item["implementation"]["family"])):
+    for result in sorted(
+            results,
+            key=lambda item: (
+                item["workload_id"], item["implementation"]["family"],
+                _measurement_sort_key(item),
+            )):
         row = {"workload_id": result["workload_id"], "implementation": result["implementation"]["family"], "status": result["status"]}
         if result["status"] == "supported":
             row["median_ns_per_operation"] = median(result["sample_durations_ns"]) / result["operations_per_sample"]
@@ -321,6 +337,45 @@ def workload_input_digest(definition: Mapping[str, Any]) -> str:
     return "sha256:" + hashlib.sha256(encoded.encode()).hexdigest()
 
 
+def _measurement_identity(result: Mapping[str, Any]) -> str:
+    """Identify one execution configuration without including measured samples."""
+    if result.get("execution") is None:
+        return "legacy"
+    configuration = {
+        "execution": result["execution"],
+        "cpu": result.get("cpu"),
+        "gpu": result.get("gpu"),
+    }
+    return json.dumps(configuration, sort_keys=True, separators=(",", ":"))
+
+
+def _measurement_sort_key(result: Mapping[str, Any]) -> tuple[int, str]:
+    execution = result.get("execution")
+    if execution is None:
+        return (-1, "legacy")
+    scope_order = {
+        "cpu_scalar_loop": 0,
+        "cpu_optimized_batch": 1,
+        "kernel": 2,
+        "resident_pipeline": 3,
+        "end_to_end": 4,
+    }
+    return (scope_order[execution["timing_scope"]], _measurement_identity(result))
+
+
+def _measurement_label(result: Mapping[str, Any]) -> str:
+    family = result["implementation"]["family"]
+    execution = result.get("execution")
+    if execution is None:
+        return family
+    scope = execution["timing_scope"]
+    if result.get("cpu") is not None:
+        cpu = result["cpu"]
+        return f"{family}/{scope}/t{cpu['thread_count']}/{cpu['simd_target']}"
+    gpu = result["gpu"]
+    return f"{family}/{scope}/s{execution['stream_count']}/{gpu['uuid']}"
+
+
 def build_summary_model(
     manifest: Mapping[str, Any],
     results: Iterable[Mapping[str, Any]],
@@ -331,10 +386,10 @@ def build_summary_model(
     checked_manifest = validate_manifest(manifest)
     checked_results = reconcile_results(checked_manifest, results)
     definitions = {item["id"]: item for item in checked_manifest["workloads"]}
-    by_key = {
-        (item["implementation"]["family"], item["workload_id"]): item
-        for item in checked_results
-    }
+    by_key: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for item in checked_results:
+        key = (item["implementation"]["family"], item["workload_id"])
+        by_key.setdefault(key, []).append(item)
     rows: list[dict[str, Any]] = []
     ordered_ids = sorted(definitions, key=lambda item: (item.startswith("batch_"), item))
     for workload_id in ordered_ids:
@@ -343,50 +398,61 @@ def build_summary_model(
         cells = []
         supported = []
         for family in IMPLEMENTATIONS:
-            result = by_key.get((family, workload_id))
-            if result is None:
+            family_results = by_key.get((family, workload_id), [])
+            if not family_results:
                 cell = {"implementation": family, "status": "blocked", "reason": "no adapter evidence in this run"}
+                cell["label"] = family
                 cell["gap"] = gap_guidance("blocked", cell["reason"])
-            elif result["status"] != "supported":
-                cell = {"implementation": family, "status": result["status"], "reason": result["reason"]}
-                cell["gap"] = gap_guidance(result["status"], result["reason"])
-            else:
-                per_operation = [float(value) / result["operations_per_sample"] for value in result["sample_durations_ns"]]
-                cell = {
-                    "implementation": family,
-                    "status": "supported",
-                    "sample_count": len(per_operation),
-                    "samples_ns_per_operation": per_operation,
-                    "median_ns_per_operation": median(per_operation),
-                    "mad_ns_per_operation": median_absolute_deviation(per_operation),
-                    "dispersion": "unscaled median absolute deviation (MAD)",
-                    "environment": {
-                        "host": result["host"],
-                        "compiler": result["implementation"]["compiler"],
-                        "backend": result["implementation"]["backend"],
-                        "flags": result["implementation"]["flags"],
-                    },
-                    "repository_revision": result["implementation"]["repository_revision"],
-                    "dirty": result["implementation"]["dirty"],
-                    "capability_class": "equivalent_supported",
-                    "execution": result.get("execution"),
-                    "cpu": result.get("cpu"),
-                    "gpu": result.get("gpu"),
-                }
-                supported.append(cell)
-            cells.append(cell)
+                cells.append(cell)
+                continue
+            base_labels = [_measurement_label(result) for result in family_results]
+            label_counts = {label: base_labels.count(label) for label in set(base_labels)}
+            label_ordinals: dict[str, int] = {}
+            for result, base_label in zip(family_results, base_labels):
+                label_ordinals[base_label] = label_ordinals.get(base_label, 0) + 1
+                label = base_label
+                if label_counts[base_label] > 1:
+                    label = f"{base_label}#{label_ordinals[base_label]}"
+                if result["status"] != "supported":
+                    cell = {"implementation": family, "label": label, "status": result["status"], "reason": result["reason"]}
+                    cell["gap"] = gap_guidance(result["status"], result["reason"])
+                else:
+                    per_operation = [float(value) / result["operations_per_sample"] for value in result["sample_durations_ns"]]
+                    cell = {
+                        "implementation": family,
+                        "label": label,
+                        "status": "supported",
+                        "sample_count": len(per_operation),
+                        "samples_ns_per_operation": per_operation,
+                        "median_ns_per_operation": median(per_operation),
+                        "mad_ns_per_operation": median_absolute_deviation(per_operation),
+                        "dispersion": "unscaled median absolute deviation (MAD)",
+                        "environment": {
+                            "host": result["host"],
+                            "compiler": result["implementation"]["compiler"],
+                            "backend": result["implementation"]["backend"],
+                            "flags": result["implementation"]["flags"],
+                        },
+                        "repository_revision": result["implementation"]["repository_revision"],
+                        "dirty": result["implementation"]["dirty"],
+                        "capability_class": "equivalent_supported",
+                        "execution": result.get("execution"),
+                        "cpu": result.get("cpu"),
+                        "gpu": result.get("gpu"),
+                    }
+                    supported.append(cell)
+                cells.append(cell)
         environment_compatible = _compatible_environments(supported)
         execution_compatible = _compatible_execution_contracts(supported)
         compatible = environment_compatible and execution_compatible
         ratios = []
-        if compatible:
-            for numerator in supported:
-                for denominator in supported:
-                    if numerator["implementation"] >= denominator["implementation"]:
-                        continue
+        for index, numerator in enumerate(supported):
+            for denominator in supported[index + 1:]:
+                if (_compatible_environments([numerator, denominator]) and
+                        _compatible_execution_contracts([numerator, denominator])):
                     ratios.append({
-                        "numerator": numerator["implementation"],
-                        "denominator": denominator["implementation"],
+                        "numerator": numerator["label"],
+                        "denominator": denominator["label"],
                         "median_ratio": numerator["median_ns_per_operation"] / denominator["median_ns_per_operation"],
                     })
         winner = None
@@ -395,7 +461,7 @@ def build_summary_model(
             reason = ("batch size, structure-of-arrays layout, and SIMD amortization are likely contributors"
                       if category == "optimization_variant" else
                       "representation, compiler, and backend code generation are likely contributors")
-            winner = {"implementation": fastest["implementation"], "scope": "this compatible run only", "likely_reason": reason}
+            winner = {"implementation": fastest["label"], "scope": "this compatible run only", "likely_reason": reason}
         rows.append({
             "workload_id": workload_id,
             "category": category,
@@ -403,9 +469,10 @@ def build_summary_model(
             "cells": cells,
             "environments_compatible": environment_compatible,
             "execution_contracts_compatible": execution_compatible,
-            "ratio_compatible": compatible,
+            "ratio_compatible": bool(ratios),
             "comparison_note": ("compatible within recorded metadata" if compatible else
                                 "rankings omitted: fewer than two supported implementations" if len(supported) < 2 else
+                                "partial comparison: incompatible measurement pairs omitted" if ratios else
                                 "rankings omitted: heterogeneous execution dimensions differ" if not execution_compatible else
                                 "rankings omitted: host or build metadata differ"),
             "ratios": ratios,
@@ -430,15 +497,25 @@ def render_summary_markdown(model: Mapping[str, Any]) -> str:
         "| Workload | C++ | Idris 2 | Rust | Comparison |", "| --- | ---: | ---: | ---: | --- |",
     ]
     for workload in model["workloads"]:
-        cells = {cell["implementation"]: cell for cell in workload["cells"]}
+        cells = {
+            family: [cell for cell in workload["cells"] if cell["implementation"] == family]
+            for family in IMPLEMENTATIONS
+        }
         rendered = []
         for family in IMPLEMENTATIONS:
-            cell = cells[family]
-            if cell["status"] == "supported":
-                rendered.append(f"{cell['median_ns_per_operation']:.3f} +/- {cell['mad_ns_per_operation']:.3f} (n={cell['sample_count']})")
-            else:
-                gap = cell["gap"]
-                rendered.append(f"{gap['classification']}: {cell['reason']} Action: {gap['required_work']} Tradeoffs: {gap['tradeoffs']}")
+            family_rendered = []
+            for cell in cells[family]:
+                prefix = f"{cell['label']}: " if cell["label"] != family else ""
+                if cell["status"] == "supported":
+                    family_rendered.append(
+                        f"{prefix}{cell['median_ns_per_operation']:.3f} +/- {cell['mad_ns_per_operation']:.3f} (n={cell['sample_count']})"
+                    )
+                else:
+                    gap = cell["gap"]
+                    family_rendered.append(
+                        f"{prefix}{gap['classification']}: {cell['reason']} Action: {gap['required_work']} Tradeoffs: {gap['tradeoffs']}"
+                    )
+            rendered.append("<br>".join(family_rendered))
         ratios = "; ".join(
             f"{ratio['numerator']}/{ratio['denominator']}={ratio['median_ratio']:.3f}"
             for ratio in workload["ratios"]
@@ -512,10 +589,11 @@ def _compatible_execution_contracts(cells: list[Mapping[str, Any]]) -> bool:
     for execution in executions[1:]:
         if any(first[field] != execution[field] for field in RATIO_DIMENSIONS):
             return False
-        if first["stream_count"] > 0 and execution["stream_count"] > 0:
-            if first["stream_count"] != execution["stream_count"]:
-                return False
-    return True
+    positive_stream_counts = {
+        execution["stream_count"] for execution in executions
+        if execution["stream_count"] > 0
+    }
+    return len(positive_stream_counts) <= 1
 
 
 def _gpu_compatibility_key(result: Mapping[str, Any]) -> dict[str, Any] | None:
@@ -594,7 +672,7 @@ def _validate_execution(data: Mapping[str, Any], *, require_evidence: bool) -> N
         "cpu_optimized_batch": ["optimized_batch", "host_observation"],
         "kernel": ["kernel_execution", "event_synchronization"],
         "resident_pipeline": ["all_device_work", "device_synchronization"],
-        "end_to_end": ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"],
+        "end_to_end": ["host_packing", "h2d", "execution", "d2h", "host_synchronization", "host_observation"],
     }[scope]
     if phases != expected_phases:
         raise ContractError(f"{workload_id}: timed_phases do not match {scope} boundary")
