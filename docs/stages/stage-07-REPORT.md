@@ -26,7 +26,8 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
 - `make markdownlint` — unavailable in this benchmark subrepository: `make: *** No rule to make target 'markdownlint'. Stop.` The Stage 07 prompt's discovered gates are `make check`, `make test`, and `make benchmark-smoke`.
 - `make benchmark-smoke CPP_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp CPP_BUILD_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp/build IDRIS2_PATH=/Users/durant/Repos/enveloped/gafro-idris2/gafro-idris2 IDRIS2_COMPILER=/opt/homebrew/bin/idris2 RUST_PATH=/Users/durant/Repos/ds/gafro-rust IDRIS2_BACKEND=chez`
   — passed for C++, Idris 2, and Rust; run
-  `20260828T105630.526424Z` produced all three validated adapter bundles.
+  `20260828T111226.624623Z` produced all three validated adapter bundles after
+  the independent-review fixes.
 
 ## Deviations and open questions
 
