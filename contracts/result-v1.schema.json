@@ -18,6 +18,61 @@
     "warmup_operations": {"type": "integer", "minimum": 0},
     "operations_per_sample": {"type": "integer", "minimum": 1},
     "sample_durations_ns": {"type": "array", "items": {"type": "number", "exclusiveMinimum": 0}},
-    "oracle": {}
+    "oracle": {},
+    "execution": {
+      "type": "object",
+      "required": ["operation", "batch_size", "batch_semantics", "invocations_per_sample", "input_fixture_id", "input_digest", "output_elements_per_item", "scalar_type", "input_layout", "output_layout", "device_residency", "stream_count", "state", "timing_scope", "comparison_scope", "timer", "synchronization", "packing_boundary", "allocation_boundary", "timed_phases"],
+      "properties": {
+        "operation": {"type": "string", "minLength": 1},
+        "batch_size": {"type": "integer", "minimum": 1},
+        "batch_semantics": {"type": "string", "minLength": 1},
+        "invocations_per_sample": {"type": "integer", "minimum": 1},
+        "input_fixture_id": {"type": "string", "minLength": 1},
+        "input_digest": {"type": "string", "minLength": 1},
+        "output_elements_per_item": {"type": "integer", "minimum": 1},
+        "scalar_type": {"enum": ["fp32", "fp64"]},
+        "input_layout": {"type": "string", "minLength": 1},
+        "output_layout": {"type": "string", "minLength": 1},
+        "device_residency": {"enum": ["host", "device", "host_and_device"]},
+        "stream_count": {"type": "integer", "minimum": 0},
+        "state": {"enum": ["warm", "cold"]},
+        "timing_scope": {"enum": ["cpu_scalar_loop", "cpu_optimized_batch", "kernel", "resident_pipeline", "end_to_end"]},
+        "comparison_scope": {"enum": ["application_end_to_end", "device_kernel", "device_resident_pipeline"]},
+        "timer": {"enum": ["host_monotonic", "cuda_event"]},
+        "synchronization": {"type": "string", "minLength": 1},
+        "packing_boundary": {"type": "string", "minLength": 1},
+        "allocation_boundary": {"type": "string", "minLength": 1},
+        "timed_phases": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "cpu": {
+      "type": "object",
+      "required": ["thread_count", "affinity", "simd_target"],
+      "properties": {
+        "thread_count": {"type": "integer", "minimum": 1},
+        "affinity": {"type": "string", "minLength": 1},
+        "simd_target": {"type": "string", "minLength": 1}
+      }
+    },
+    "gpu": {
+      "type": "object",
+      "required": ["model", "uuid", "compute_capability", "driver", "runtime", "toolkit", "clocks", "power_mode", "ecc_state", "mig_state", "launch_geometry", "stream", "memory_bytes", "cuda_event_timing"],
+      "properties": {
+        "model": {"type": "string", "minLength": 1},
+        "uuid": {"type": "string", "minLength": 1},
+        "compute_capability": {"type": "string", "minLength": 1},
+        "driver": {"type": "string", "minLength": 1},
+        "runtime": {"type": "string", "minLength": 1},
+        "toolkit": {"type": "string", "minLength": 1},
+        "clocks": {"type": ["string", "null"]},
+        "power_mode": {"type": ["string", "null"]},
+        "ecc_state": {"type": "string", "minLength": 1},
+        "mig_state": {"type": "string", "minLength": 1},
+        "launch_geometry": {"type": "object"},
+        "stream": {"type": "object"},
+        "memory_bytes": {"type": "integer", "minimum": 0},
+        "cuda_event_timing": {"type": "object"}
+      }
+    }
   }
 }
