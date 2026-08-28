@@ -21,8 +21,9 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
 ## Verification
 
 - `make check` — passed.
-- `make test` — passed, 36 tests.
+- `make test` — passed, 40 tests.
 - `git diff --check` — passed.
+- `make markdownlint` — unavailable in this benchmark subrepository: `make: *** No rule to make target 'markdownlint'. Stop.` The Stage 07 prompt's discovered gates are `make check`, `make test`, and `make benchmark-smoke`.
 - `make benchmark-smoke CPP_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp CPP_BUILD_PATH=/Users/durant/Repos/enveloped/gafro-cpp/gafro-cpp/build IDRIS2_PATH=/Users/durant/Repos/enveloped/gafro-idris2/gafro-idris2 IDRIS2_COMPILER=/opt/homebrew/bin/idris2 RUST_PATH=/Users/durant/Repos/ds/gafro-rust IDRIS2_BACKEND=chez`
   — passed for C++, Idris 2, and Rust; run
   `20260828T105630.526424Z` produced all three validated adapter bundles.
@@ -32,6 +33,10 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
 - Existing v1 adapter rows remain valid without `execution` metadata so prior
   evidence stays readable. A mixed legacy/heterogeneous pair is never directly
   ratio-compatible.
+- Independent review tightened the initial checkpoint: heterogeneous evidence
+  is now bound to a manifest execution contract and definition digest, every
+  timing scope has exact phases, high-precision oracle completion is explicit,
+  and stream/GPU configuration participates in compatibility and reporting.
 - Stages 08–10 still require production CUDA kernels and a controlled NVIDIA
   host. Stage 07 defines and validates the comparison boundary; it does not
   invent benchmark-only kernels.

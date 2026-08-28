@@ -25,6 +25,7 @@ RATIO_DIMENSIONS = (
     "input_layout", "output_layout", "comparison_scope", "state",
     "packing_boundary", "allocation_boundary", "invocations_per_sample",
     "input_fixture_id", "input_digest", "output_elements_per_item",
+    "workload_definition_id",
 )
 
 
@@ -60,6 +61,11 @@ def validate_manifest(value: Any) -> dict[str, Any]:
         _positive_int(item, "warmup_operations", allow_zero=True)
         _positive_int(item, "operations_per_sample")
         _mapping(item["observable"], f"workloads[{index}].observable")
+        if "execution_contract" in item:
+            execution_contract = _mapping(item["execution_contract"], f"workloads[{index}].execution_contract")
+            for field in ("operation", "batch_semantics", "input_layout", "output_layout"):
+                _nonempty_string(execution_contract, field)
+            _positive_int(execution_contract, "output_elements_per_item")
     return dict(data)
 
 
@@ -144,8 +150,15 @@ def validate_ratio_compatibility(left: Mapping[str, Any], right: Mapping[str, An
             raise ContractError("ratio compatibility requires two supported results")
         if "execution" not in result:
             raise ContractError("ratio compatibility requires heterogeneous execution metadata")
+    if checked[0]["workload_id"] != checked[1]["workload_id"]:
+        raise ContractError("ratio-incompatible workload_id")
     left_execution, right_execution = (item["execution"] for item in checked)
     mismatches = [field for field in RATIO_DIMENSIONS if left_execution[field] != right_execution[field]]
+    if left_execution["stream_count"] > 0 and right_execution["stream_count"] > 0:
+        if left_execution["stream_count"] != right_execution["stream_count"]:
+            mismatches.append("stream_count")
+        if _gpu_compatibility_key(checked[0]) != _gpu_compatibility_key(checked[1]):
+            mismatches.append("gpu_configuration")
     if mismatches:
         raise ContractError(f"ratio-incompatible execution dimensions: {', '.join(mismatches)}")
 
@@ -207,7 +220,8 @@ def plan_gpu_sweep(
 
 def reconcile_results(manifest: Mapping[str, Any], results: Iterable[Mapping[str, Any]]) -> list[dict[str, Any]]:
     checked_manifest = validate_manifest(manifest)
-    workload_ids = {item["id"] for item in checked_manifest["workloads"]}
+    definitions = {item["id"]: item for item in checked_manifest["workloads"]}
+    workload_ids = set(definitions)
     reconciled: list[dict[str, Any]] = []
     seen: set[tuple[str, str]] = set()
     for raw in results:
@@ -217,6 +231,34 @@ def reconcile_results(manifest: Mapping[str, Any], results: Iterable[Mapping[str
             raise ContractError(f"duplicate result: {key[0]}/{key[1]}")
         if result["workload_id"] not in workload_ids:
             raise ContractError(f"unknown workload: {result['workload_id']}")
+        execution = result.get("execution")
+        if execution is not None:
+            definition = definitions[result["workload_id"]]
+            expected_definition = workload_definition_id(definition)
+            if execution["workload_definition_id"] != expected_definition:
+                raise ContractError(f"{result['workload_id']}: execution metadata does not match workload definition")
+            execution_contract = definition.get("execution_contract")
+            if not isinstance(execution_contract, Mapping):
+                raise ContractError(f"{result['workload_id']}: workload has no heterogeneous execution contract")
+            expected_execution = {
+                **execution_contract,
+                "batch_size": definition["operands"].get("batch_size"),
+                "input_fixture_id": f"{result['workload_id']}/inputs-v1",
+                "input_digest": workload_input_digest(definition),
+            }
+            mismatches = [
+                field for field, expected in expected_execution.items()
+                if execution.get(field) != expected
+            ]
+            if mismatches:
+                raise ContractError(
+                    f"{result['workload_id']}: execution metadata disagrees with contract: {', '.join(mismatches)}"
+                )
+            expected_scalar = {"ieee754-binary32": "fp32", "ieee754-binary64": "fp64"}.get(
+                definitions[result["workload_id"]].get("numeric_type")
+            )
+            if expected_scalar is not None and execution["scalar_type"] != expected_scalar:
+                raise ContractError(f"{result['workload_id']}: execution precision does not match workload definition")
         seen.add(key)
         reconciled.append(result)
     return sorted(reconciled, key=lambda item: (item["workload_id"], item["implementation"]["family"]))
@@ -273,6 +315,12 @@ def workload_definition_id(definition: Mapping[str, Any]) -> str:
     return hashlib.sha256(encoded.encode()).hexdigest()
 
 
+def workload_input_digest(definition: Mapping[str, Any]) -> str:
+    """Return the canonical digest of the deterministic operand declaration."""
+    encoded = json.dumps(definition["operands"], sort_keys=True, separators=(",", ":"))
+    return "sha256:" + hashlib.sha256(encoded.encode()).hexdigest()
+
+
 def build_summary_model(
     manifest: Mapping[str, Any],
     results: Iterable[Mapping[str, Any]],
@@ -322,6 +370,8 @@ def build_summary_model(
                     "dirty": result["implementation"]["dirty"],
                     "capability_class": "equivalent_supported",
                     "execution": result.get("execution"),
+                    "cpu": result.get("cpu"),
+                    "gpu": result.get("gpu"),
                 }
                 supported.append(cell)
             cells.append(cell)
@@ -442,7 +492,11 @@ def _compatible_environments(cells: list[Mapping[str, Any]]) -> bool:
     for cell in cells:
         build_text = " ".join([cell["environment"]["backend"], *map(str, cell["environment"]["flags"])]).lower()
         modes.append("debug" if "debug" in build_text and "ndebug" not in build_text else "non-debug")
-    return len(hosts) == 1 and builds_complete and len(set(modes)) == 1
+    gpu_keys = {
+        json.dumps(_gpu_compatibility_key(cell), sort_keys=True)
+        for cell in cells if cell.get("gpu") is not None
+    }
+    return len(hosts) == 1 and builds_complete and len(set(modes)) == 1 and len(gpu_keys) <= 1
 
 
 def _compatible_execution_contracts(cells: list[Mapping[str, Any]]) -> bool:
@@ -455,10 +509,24 @@ def _compatible_execution_contracts(cells: list[Mapping[str, Any]]) -> bool:
     if any(execution is None for execution in executions):
         return False
     first = executions[0]
-    return all(
-        all(first[field] == execution[field] for field in RATIO_DIMENSIONS)
-        for execution in executions[1:]
+    for execution in executions[1:]:
+        if any(first[field] != execution[field] for field in RATIO_DIMENSIONS):
+            return False
+        if first["stream_count"] > 0 and execution["stream_count"] > 0:
+            if first["stream_count"] != execution["stream_count"]:
+                return False
+    return True
+
+
+def _gpu_compatibility_key(result: Mapping[str, Any]) -> dict[str, Any] | None:
+    gpu = result.get("gpu")
+    if gpu is None:
+        return None
+    fields = (
+        "model", "uuid", "compute_capability", "driver", "runtime", "toolkit",
+        "clocks", "power_mode", "ecc_state", "mig_state", "launch_geometry",
     )
+    return {field: gpu.get(field) for field in fields}
 
 
 def _validate_execution(data: Mapping[str, Any], *, require_evidence: bool) -> None:
@@ -469,13 +537,13 @@ def _validate_execution(data: Mapping[str, Any], *, require_evidence: bool) -> N
         "input_fixture_id", "input_digest", "output_elements_per_item",
         "input_layout", "output_layout", "device_residency", "stream_count",
         "state", "timing_scope", "comparison_scope", "timer", "synchronization",
-        "packing_boundary", "allocation_boundary", "timed_phases",
+        "packing_boundary", "allocation_boundary", "timed_phases", "workload_definition_id",
     )
     for field in required:
         if field not in execution:
             raise ContractError(f"{workload_id}: execution missing {field}")
     for field in (
-        "operation", "batch_semantics", "input_fixture_id", "input_digest",
+        "operation", "batch_semantics", "input_fixture_id", "input_digest", "workload_definition_id",
         "input_layout", "output_layout", "synchronization",
         "packing_boundary", "allocation_boundary",
     ):
@@ -521,12 +589,18 @@ def _validate_execution(data: Mapping[str, Any], *, require_evidence: bool) -> N
     if execution["synchronization"] != synchronization:
         raise ContractError(f"{workload_id}: incomplete synchronization for {scope}")
     phases = _list(execution, "timed_phases")
+    expected_phases = {
+        "cpu_scalar_loop": ["scalar_loop", "host_observation"],
+        "cpu_optimized_batch": ["optimized_batch", "host_observation"],
+        "kernel": ["kernel_execution", "event_synchronization"],
+        "resident_pipeline": ["all_device_work", "device_synchronization"],
+        "end_to_end": ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"],
+    }[scope]
+    if phases != expected_phases:
+        raise ContractError(f"{workload_id}: timed_phases do not match {scope} boundary")
     if scope == "end_to_end":
-        expected_phases = ["host_packing", "h2d", "execution", "d2h", "host_observation", "host_synchronization"]
-        if phases != expected_phases or execution["packing_boundary"] != "included_host_packing":
+        if execution["packing_boundary"] != "included_host_packing":
             raise ContractError(f"{workload_id}: end_to_end must include host packing, transfers, execution, observation, and synchronization")
-    elif not phases or any(not isinstance(phase, str) or not phase for phase in phases):
-        raise ContractError(f"{workload_id}: timed_phases must be explicit")
     if scope in GPU_TIMING_SCOPES:
         if stream_count < 1:
             raise ContractError(f"{workload_id}: GPU timing requires at least one stream")
@@ -543,8 +617,13 @@ def _validate_execution(data: Mapping[str, Any], *, require_evidence: bool) -> N
         for flag in ("deterministic_inputs", "full_output_checked", "passed"):
             if oracle.get(flag) is not True:
                 raise ContractError(f"{workload_id}: oracle.{flag} must be true before timing")
-        _nonempty_string(oracle, "reference_precision")
+        reference_precision = _nonempty_string(oracle, "reference_precision")
+        expected_reference = "cpu-fp64-or-higher" if scalar_type == "fp32" else "cpu-fp80-or-higher"
+        if reference_precision != expected_reference:
+            raise ContractError(f"{workload_id}: oracle.reference_precision must be {expected_reference}")
         _nonempty_string(oracle, "comparison_method")
+        if oracle.get("completed_before_timing") is not True:
+            raise ContractError(f"{workload_id}: oracle.completed_before_timing must be true")
         checked_elements = _positive_int(oracle, "checked_output_elements")
         if checked_elements != execution["batch_size"] * output_elements_per_item:
             raise ContractError(f"{workload_id}: oracle.checked_output_elements must cover the complete output")
@@ -582,10 +661,21 @@ def _validate_gpu_metadata(data: Mapping[str, Any], scope: str) -> None:
         if value is not None and (not isinstance(value, str) or not value.strip()):
             raise ContractError(f"{workload_id}: gpu.{field} must be null or a non-empty string")
     for field in ("launch_geometry", "stream", "cuda_event_timing"):
-        _mapping(gpu.get(field), f"gpu.{field}")
+        value = _mapping(gpu.get(field), f"gpu.{field}")
+        if not value:
+            raise ContractError(f"{workload_id}: gpu.{field} must not be empty")
+    geometry = gpu["launch_geometry"]
+    for field in ("grid", "block"):
+        values = geometry.get(field)
+        if (not isinstance(values, list) or not values or
+                any(not isinstance(value, int) or isinstance(value, bool) or value <= 0 for value in values)):
+            raise ContractError(f"{workload_id}: gpu.launch_geometry.{field} must contain positive integers")
+    stream_index = gpu["stream"].get("index")
+    if not isinstance(stream_index, int) or isinstance(stream_index, bool) or stream_index < 0:
+        raise ContractError(f"{workload_id}: gpu.stream.index must be a non-negative integer")
     memory_bytes = gpu.get("memory_bytes")
-    if not isinstance(memory_bytes, int) or isinstance(memory_bytes, bool) or memory_bytes < 0:
-        raise ContractError(f"{workload_id}: gpu.memory_bytes must be a non-negative integer")
+    if not isinstance(memory_bytes, int) or isinstance(memory_bytes, bool) or memory_bytes <= 0:
+        raise ContractError(f"{workload_id}: gpu.memory_bytes must be a positive integer")
     event = _mapping(gpu["cuda_event_timing"], "gpu.cuda_event_timing")
     if scope in {"kernel", "resident_pipeline"}:
         if event.get("used") is not True or event.get("stream_matches_launch") is not True:

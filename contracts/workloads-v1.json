@@ -60,6 +60,7 @@
       "operation": "element-wise composition of 16 device-resident CPU SoA motors",
       "operands": {"kind": "translation_motor_batch", "batch_size": 16, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_motor_composition", "batch_semantics": "one independently composed motor per output item", "input_layout": "structure_of_arrays_motor8", "output_layout": "structure_of_arrays_motor8", "output_elements_per_item": 8},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coefficient", "name": "scalar_lane0", "reference": 1.0, "absolute_tolerance": 1e-10}
@@ -69,6 +70,7 @@
       "operation": "element-wise composition of 256 device-resident CPU SoA motors",
       "operands": {"kind": "translation_motor_batch", "batch_size": 256, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_motor_composition", "batch_semantics": "one independently composed motor per output item", "input_layout": "structure_of_arrays_motor8", "output_layout": "structure_of_arrays_motor8", "output_elements_per_item": 8},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coefficient", "name": "scalar_lane0", "reference": 1.0, "absolute_tolerance": 1e-10}
@@ -78,6 +80,7 @@
       "operation": "element-wise composition of 4096 device-resident CPU SoA motors",
       "operands": {"kind": "translation_motor_batch", "batch_size": 4096, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_motor_composition", "batch_semantics": "one independently composed motor per output item", "input_layout": "structure_of_arrays_motor8", "output_layout": "structure_of_arrays_motor8", "output_elements_per_item": 8},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coefficient", "name": "scalar_lane0", "reference": 1.0, "absolute_tolerance": 1e-10}
@@ -87,6 +90,7 @@
       "operation": "transform 16 device-resident CPU SoA points by one translation motor",
       "operands": {"kind": "translated_point_batch", "batch_size": 16, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_point_transform", "batch_semantics": "one independently transformed point per output item", "input_layout": "structure_of_arrays_point5", "output_layout": "structure_of_arrays_point5", "output_elements_per_item": 5},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coordinate", "name": "e1_lane0", "reference": 3.5, "absolute_tolerance": 1e-10}
@@ -96,6 +100,7 @@
       "operation": "transform 256 device-resident CPU SoA points by one translation motor",
       "operands": {"kind": "translated_point_batch", "batch_size": 256, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_point_transform", "batch_semantics": "one independently transformed point per output item", "input_layout": "structure_of_arrays_point5", "output_layout": "structure_of_arrays_point5", "output_elements_per_item": 5},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coordinate", "name": "e1_lane0", "reference": 3.5, "absolute_tolerance": 1e-10}
@@ -105,6 +110,7 @@
       "operation": "transform 4096 device-resident CPU SoA points by one translation motor",
       "operands": {"kind": "translated_point_batch", "batch_size": 4096, "packing": "excluded", "unpacking": "excluded"},
       "numeric_type": "ieee754-binary64",
+      "execution_contract": {"operation": "batch_point_transform", "batch_semantics": "one independently transformed point per output item", "input_layout": "structure_of_arrays_point5", "output_layout": "structure_of_arrays_point5", "output_elements_per_item": 5},
       "warmup_operations": 4096,
       "operations_per_sample": 16384,
       "observable": {"kind": "coordinate", "name": "e1_lane0", "reference": 3.5, "absolute_tolerance": 1e-10}
