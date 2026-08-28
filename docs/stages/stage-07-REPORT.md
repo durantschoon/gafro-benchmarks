@@ -30,6 +30,11 @@ deterministic GPU sweep or a clean unavailable plan without CUDA hardware.
   — passed for C++, Idris 2, and Rust; run
   `20260828T112844.788634Z` produced all three validated adapter bundles after
   the independent-review fixes.
+- After the envelope-managed Rust checkout advanced to `3d1f24c` (a descendant
+  of the requested `6051ab9`), the Rust adapter was updated for explicit
+  precision-generic batch types and motor identity. The unqualified default
+  `make benchmark-smoke` then passed for all three adapters; run
+  `20260828T161952.688070Z` contains the validated bundles.
 
 ## Deviations and open questions
 
