@@ -56,6 +56,26 @@
       "observable": {"kind": "coefficient", "name": "e12", "reference": 1.0, "absolute_tolerance": 1e-10}
     },
     {
+      "id": "rotor_construction/f64/scalar",
+      "operation": "construct a normalized z-axis rotor for a quarter-turn",
+      "operands": {"kind": "axis_angle", "axis_xyz": [0.0, 0.0, 1.0], "angle_radians": 1.5707963267948966},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {"coefficients": {"scalar": 0.7071067811865476}},
+      "observable": {"kind": "coefficient", "name": "scalar", "reference": 0.7071067811865476, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "translator_construction/f64/e1i",
+      "operation": "construct a normalized translator from a displacement vector",
+      "operands": {"kind": "displacement_xyz", "displacement_xyz": [1.0, 2.0, 3.0]},
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {"coefficients": {"e1i": -0.5, "e2i": -1.0, "e3i": -1.5}},
+      "observable": {"kind": "coefficient", "name": "e1i", "reference": -0.5, "absolute_tolerance": 1e-10}
+    },
+    {
       "id": "batch_motor_composition/f64/n16/scalar_lane0",
       "operation": "element-wise composition of 16 device-resident CPU SoA motors",
       "operands": {"kind": "translation_motor_batch", "batch_size": 16, "packing": "excluded", "unpacking": "excluded"},
