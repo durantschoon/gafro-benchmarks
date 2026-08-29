@@ -65,6 +65,7 @@ int main(int argc, char **argv) try {
     const std::vector<Motor<double>> motors{
         Motor<double>{Translator<double>{Translator<double>::Generator(translations[0])}},
         Motor<double>{Translator<double>{Translator<double>::Generator(translations[1])}}};
+    const Rotor<double>::Generator rotor_axis({0.0, 0.0, 1.0});
     const std::vector<Point<double>> conformal_points{Point<double>(points[0]), Point<double>(points[1])};
     const std::vector<Point<double>> outer_left{
         Point<double>(Eigen::Vector3d(1.0, 0.0, 0.0)), Point<double>(Eigen::Vector3d(1.125, 0.0, 0.0))};
@@ -122,6 +123,16 @@ int main(int argc, char **argv) try {
     }));
     results.push_back(measure("point_pair_outer_product/f64/e12", warmup, operations, samples, 1.0, [&](std::uint64_t i) {
         return (outer_left[i % 2] ^ outer_right[i % 2]).template get<blades::e12>();
+    }));
+    results.push_back(measure("rotor_construction/f64/scalar", warmup, operations, samples, std::sqrt(0.5), [&](std::uint64_t i) {
+        const Rotor<double> rotor(rotor_axis, (i % 2 == 0) ? std::numbers::pi / 2.0 : std::numbers::pi / 2.0);
+        return rotor.template get<blades::scalar>();
+    }));
+    results.push_back(measure("translator_construction/f64/e1i", warmup, operations, samples, -0.5, [&](std::uint64_t) {
+        const Translator<double> translator{Translator<double>::Generator(translations[0])};
+        require_close("translator construction e2i", translator.template get<blades::e2i>(), -1.0);
+        require_close("translator construction e3i", translator.template get<blades::e3i>(), -1.5);
+        return translator.template get<blades::e1i>();
     }));
     results.push_back(measure("robotics_forward_kinematics_2r/f64/motor_checksum", warmup, operations, samples, -std::sqrt(2.0), [&](std::uint64_t i) {
         const Motor<double> motor = robotics_chain.computeMotor<2>(robotics_positions[i % 2]);

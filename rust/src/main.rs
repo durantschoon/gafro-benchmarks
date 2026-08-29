@@ -7,6 +7,7 @@ use gafro::algebra::OrthogonalMultivector32;
 use gafro::algebra::cga::batch_motor::BatchMotorSoA;
 use gafro::algebra::cga::batch_point::BatchPointSoA;
 use gafro::algebra::cga::motor::Motor;
+use gafro::algebra::cga::rotor::Rotor;
 use gafro::algebra::cga::point::Point;
 use gafro::algebra::cga::translator::Translator;
 use gafro::robots::{Joint, KinematicChain};
@@ -186,6 +187,17 @@ fn main() {
         let lane = (i & 1) as usize;
         let result = black_box(&outer_left[lane].mv).outer_product(black_box(&outer_right[lane].mv));
         black_box(result.get(E12))
+    }));
+    rows.push(measure("rotor_construction/f64/scalar", std::f64::consts::FRAC_1_SQRT_2,
+        warmups, operations, 1, samples, |_| {
+            let rotor = Rotor::from_axis_angle(0.0, 0.0, 1.0, std::f64::consts::FRAC_PI_2);
+            rotor.scalar()
+        }));
+    rows.push(measure("translator_construction/f64/e1i", -0.5, warmups, operations, 1, samples, |_| {
+        let translator = Translator::from_displacement(1.0, 2.0, 3.0);
+        require_close("translator construction e2i", translator.blades[2], -1.0);
+        require_close("translator construction e3i", translator.blades[3], -1.5);
+        translator.blades[1]
     }));
     rows.push(measure("robotics_forward_kinematics_2r/f64/motor_checksum", -std::f64::consts::SQRT_2,
         warmups, operations, 1, samples, |i| {
