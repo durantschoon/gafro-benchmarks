@@ -66,7 +66,10 @@ secondMotor : Versor Trans
 secondMotor = translator (translation False)
 
 rotorConstruction : Bool -> Double
-rotorConstruction _ = coeff scalarBlade (Versor.mv (rotor unitBivectorE12 (pi / 2.0)))
+rotorConstruction _ =
+  case unitBivector 1.0e-12 (MkEuclideanBivector 0.0 0.0 1.0) of
+    Right axis => coeff scalarBlade (Versor.mv (rotor axis (pi / 2.0)))
+    Left _ => 0.0
 
 firstPoint : Point
 firstPoint = up (point True)
