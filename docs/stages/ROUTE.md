@@ -51,6 +51,8 @@ optimizations under development in C++ and Rust.
 15. **Stage 15 — precision and optimization study (completed).** Measured micro-operations,
     robotics observables, and CPU SoA batch scaling across C++, Rust, and Idris 2,
     quantifying speedups and architectural characteristics.
+16. **Stage 16 — spatial physics and inertia parity (completed).** Integrated spatial inertia action
+    and transformation workloads with shared fixtures and oracles across C++, Rust, and Idris 2.
 
 ## Completion boundary
 

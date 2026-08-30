@@ -190,6 +190,40 @@
         "sign_convention": "positive z angular velocity is +e12; translated z axes contribute +e1i"
       },
       "observable": {"kind": "matrix_checksum", "name": "sum_column_major_twist_coefficients", "reference": 5.0, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "spatial_inertia_action/f64/wrench_checksum",
+      "operation": "spatial inertia tensor action on twist computing 6D spatial wrench W = I * T",
+      "operands": {
+        "kind": "spatial_inertia_and_twist",
+        "mass": 2.0,
+        "inertia_diagonal": [0.5, 0.5, 0.8],
+        "twist_linear_xyz": [1.0, 2.0, 3.0],
+        "twist_angular_bivectors": {"e12": 0.1, "e13": 0.2, "e23": 0.3}
+      },
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {
+        "wrench_coordinates": [2.0, 4.0, 0.08, 6.0, 0.10, 0.15],
+        "coordinate_order": ["f1", "f2", "tau12", "f3", "tau13", "tau23"]
+      },
+      "observable": {"kind": "coordinate_checksum", "name": "sum_wrench_coordinates", "reference": 12.33, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "spatial_inertia_transform/f64/e01_mass",
+      "operation": "spatial inertia tensor transformation under translation motor",
+      "operands": {
+        "kind": "spatial_inertia_and_motor",
+        "mass": 2.0,
+        "inertia_diagonal": [0.5, 0.5, 0.8],
+        "motor": {"kind": "translation", "displacement_xyz": [1.0, 2.0, 3.0]}
+      },
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {"element01": {"e01": 2.0}},
+      "observable": {"kind": "coefficient", "name": "e01_mass", "reference": 2.0, "absolute_tolerance": 1e-10}
     }
   ]
 }

@@ -152,6 +152,31 @@ int main(int argc, char **argv) try {
         }
         return checksum;
     }));
+    const Inertia<double> physics_inertia(2.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.8);
+    Twist<double> physics_twist;
+    physics_twist.template set<blades::e1i>(1.0);
+    physics_twist.template set<blades::e2i>(2.0);
+    physics_twist.template set<blades::e3i>(3.0);
+    physics_twist.template set<blades::e12>(0.1);
+    physics_twist.template set<blades::e13>(0.2);
+    physics_twist.template set<blades::e23>(0.3);
+    const Wrench<double> oracle_wrench = physics_inertia(physics_twist);
+    require_close("physics wrench f1", oracle_wrench.template get<blades::e01>(), 2.0);
+    require_close("physics wrench f2", oracle_wrench.template get<blades::e02>(), 4.0);
+    require_close("physics wrench tau12", oracle_wrench.template get<blades::e12>(), 0.08);
+    require_close("physics wrench f3", oracle_wrench.template get<blades::e03>(), 6.0);
+    require_close("physics wrench tau13", oracle_wrench.template get<blades::e13>(), 0.10);
+    require_close("physics wrench tau23", oracle_wrench.template get<blades::e23>(), 0.15);
+    results.push_back(measure("spatial_inertia_action/f64/wrench_checksum", warmup, operations, samples, 12.33, [&](std::uint64_t) {
+        const Wrench<double> wrench = physics_inertia(physics_twist);
+        return wrench.template get<blades::e01>() + wrench.template get<blades::e02>() +
+               wrench.template get<blades::e12>() + wrench.template get<blades::e03>() +
+               wrench.template get<blades::e13>() + wrench.template get<blades::e23>();
+    }));
+    results.push_back(measure("spatial_inertia_transform/f64/e01_mass", warmup, operations, samples, 2.0, [&](std::uint64_t) {
+        const Inertia<double> transformed = physics_inertia.transform(motors[0]);
+        return transformed.getElement01().template get<blades::e01>();
+    }));
     const std::vector<std::string> unsupported{
         "batch_motor_composition/f64/n16/scalar_lane0",
         "batch_motor_composition/f64/n256/scalar_lane0",

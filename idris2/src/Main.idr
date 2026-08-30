@@ -8,6 +8,7 @@ import Gafro.Conformal.Euclidean
 import Gafro.Conformal.Objects
 import Gafro.Conformal.Versor
 import Gafro.Robotics.Kinematics
+import Gafro.Robotics.Physics
 import Data.Fin
 import Data.Maybe
 import Data.String
@@ -169,6 +170,24 @@ roboticsJacobianChecksum : Bool -> Double
 roboticsJacobianChecksum first =
   roboticsJacobianChecksum' roboticsAxis first
 
+physicsInertia : SpatialInertia
+physicsInertia = MkSpatialInertia
+  [ [2.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  , [0.0, 2.0, 0.0, 0.0, 0.0, 0.0]
+  , [0.0, 0.0, 0.8, 0.0, 0.0, 0.0]
+  , [0.0, 0.0, 0.0, 2.0, 0.0, 0.0]
+  , [0.0, 0.0, 0.0, 0.0, 0.5, 0.0]
+  , [0.0, 0.0, 0.0, 0.0, 0.0, 0.5]
+  ]
+
+physicsTwist : Twist
+physicsTwist = twist 0.1 0.2 0.3 1.0 2.0 3.0
+
+physicsWrenchChecksum : Bool -> Double
+physicsWrenchChecksum _ =
+  let w = applyInertia physicsInertia physicsTwist
+  in w.f1 + w.f2 + w.tau12 + w.f3 + w.tau13 + w.tau23
+
 runOperations : (Bool -> Double) -> Bool -> Nat -> Double -> Double
 runOperations operation first Z accumulator = accumulator
 runOperations operation first (S remaining) accumulator =
@@ -283,7 +302,8 @@ main = do
        putStrLn "oracle mismatch for robotics_geometric_jacobian_2r/f64/base_checksum: full matrix"
        exitFailure
   jacobian <- measure "robotics_geometric_jacobian_2r/f64/base_checksum" 5.0 roboticsJacobianChecksum warmups operations sampleCount
-  let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer, rotor]
+  inertiaAction <- measure "spatial_inertia_action/f64/wrench_checksum" 12.33 physicsWrenchChecksum warmups operations sampleCount
+  let supported = map (resultJSON provenance warmups operations) [dense, composition, transform, outer, rotor, inertiaAction]
       unsupported = map (unsupportedJSON provenance)
         [ "batch_motor_composition/f64/n16/scalar_lane0"
         , "batch_motor_composition/f64/n256/scalar_lane0"
@@ -291,6 +311,6 @@ main = do
         , "batch_point_transform/f64/n16/e1_lane0"
         , "batch_point_transform/f64/n256/e1_lane0"
         , "batch_point_transform/f64/n4096/e1_lane0"
-        ]
+        ] ++ [unsupportedJSONWithReason provenance "gafro-idris2 does not expose an inertia transformation API" "spatial_inertia_transform/f64/e01_mass"]
       robotics = map (resultJSON provenance warmups operations) [fk, jacobian]
   putStrLn ("{\"results\":[" ++ joinBy "," (supported ++ robotics ++ unsupported) ++ "]}")

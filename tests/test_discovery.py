@@ -68,6 +68,21 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("forwardKinematics", idris)
         self.assertIn("spatialAxes", idris)
 
+    def test_spatial_physics_adapters_declare_matching_capabilities(self):
+        root = Path(__file__).resolve().parents[1]
+        cpp = (root / "cpp/bench_cga.cpp").read_text()
+        rust = (root / "rust/src/main.rs").read_text()
+        idris = (root / "idris2/src/Main.idr").read_text()
+        action = "spatial_inertia_action/f64/wrench_checksum"
+        transform = "spatial_inertia_transform/f64/e01_mass"
+        self.assertIn(action, cpp)
+        self.assertIn(transform, cpp)
+        self.assertIn(action, rust)
+        self.assertIn(transform, rust)
+        self.assertIn(action, idris)
+        self.assertIn(transform, idris)
+        self.assertIn("applyInertia", idris)
+
 
 if __name__ == "__main__":
     unittest.main()
