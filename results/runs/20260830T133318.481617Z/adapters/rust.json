@@ -1,0 +1,601 @@
+{
+  "results": [
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 16,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 16,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        208,
+        83,
+        83
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 16,
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 256,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 256,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        1334,
+        1208,
+        1208
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 256,
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 4096,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 4096,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        29083,
+        28750,
+        28875
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 4096,
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 16,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 16,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        167,
+        41,
+        42
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 16,
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 256,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 256,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        417,
+        292,
+        333
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 256,
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "host": {
+        "alignment": "native",
+        "allocation": "excluded",
+        "batch_size": 4096,
+        "clock": "std::time::Instant",
+        "layout": "structure-of-arrays",
+        "output_validation": "all_lanes",
+        "packing": "excluded",
+        "simd": "compiler-target",
+        "threads": 1
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 4096,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        4792,
+        5291,
+        5375
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 4096,
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        7895500,
+        7137667,
+        6619500
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "dense_geometric_product/f64/orthogonal"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        7906875,
+        7618209,
+        7496791
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "dense_geometric_product/f64/orthogonal_conversion"
+    },
+    {
+      "host": {},
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "reason": "legacy contract ID does not declare the orthogonal basis; use the explicit orthogonal variants",
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "unsupported",
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        917,
+        833,
+        875
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 1
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        18833,
+        18875,
+        18750
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": -1.4142135623730951
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        38625,
+        38333,
+        37833
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        125458,
+        125084,
+        124959
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 0.7071067811865476
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        625,
+        625,
+        583
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "rotor_construction/f64/scalar"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": 3.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        1958,
+        1917,
+        1875
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "sandwich_point_transform/f64/e1"
+    },
+    {
+      "host": {
+        "clock": "std::time::Instant"
+      },
+      "implementation": {
+        "backend": "cpu-release",
+        "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+        "dirty": false,
+        "family": "rust",
+        "flags": [
+          "target: aarch64-apple-darwin",
+          "features: default",
+          "profile: release",
+          "codegen-units: 1",
+          "lto: fat",
+          "RUSTFLAGS: none"
+        ],
+        "name": "gafro-rust",
+        "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae"
+      },
+      "operations_per_sample": 1000,
+      "oracle": {
+        "value": -0.5
+      },
+      "reason": "",
+      "sample_durations_ns": [
+        625,
+        583,
+        583
+      ],
+      "schema_version": "gafro-benchmark-result/v1",
+      "status": "supported",
+      "warmup_operations": 8,
+      "workload_id": "translator_construction/f64/e1i"
+    }
+  ],
+  "schema_version": "gafro-benchmark-bundle/v1"
+}

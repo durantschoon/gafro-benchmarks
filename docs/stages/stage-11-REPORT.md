@@ -1,5 +1,14 @@
 # Stage 11 report — Rust correctness and orthogonal-layout parity
 
+## Current verification snapshot (2026-08-29)
+
+The envelope-managed Rust checkout is now at `145e95e`, a descendant of the
+`6051ab9` revision used for the original Stage 11 verification. The latest
+default smoke run (`20260829T071519.563336Z`) passed for C++, Idris 2, and Rust;
+the repository gates passed with 44 tests. The Rust adapter still reports the
+legacy dense scalar ID as an explicit alternate-layout unsupported row while
+the resident and conversion orthogonal variants remain supported.
+
 ## Outcome
 
 Stage 11 connects the Rust benchmark adapter to the new orthogonal dense
@@ -75,3 +84,6 @@ remain present.
   count instead of the current `1 ns` lower bound?
 - The next parity stage should add Idris 2 canonical robotics adapters before
   comparing optimization or precision choices.
+
+Stage 12 subsequently resolved that final question: Idris 2 now emits validated
+canonical FK and joint-to-end-effector twist-map (geometric Jacobian) rows.

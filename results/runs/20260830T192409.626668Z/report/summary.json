@@ -1,0 +1,1727 @@
+{
+  "comparison_policy": "Canonical GA computations are primary. Optimization variants are reported separately and never replace a canonical operation.",
+  "input_run_ids": [
+    "20260830T192409.626668Z"
+  ],
+  "schema_version": "gafro-benchmark-summary/v1",
+  "statistics": {
+    "center": "median",
+    "dispersion": "unscaled median absolute deviation (MAD)"
+  },
+  "workloads": [
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "cpp adapter predates this canonical workload variant",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "idris2 adapter predates this canonical workload variant",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 1318.3340000000007,
+          "median_ns_per_operation": 9868.084,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            11667.084,
+            9868.084,
+            8549.75
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "d12b646ea7a09ba007a1db77eb48ba62fcaaf3beaf399efce27616975f1f4c28",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "cpp adapter predates this canonical workload variant",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "idris2 adapter predates this canonical workload variant",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 808.75,
+          "median_ns_per_operation": 9006.0,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            10193.25,
+            9006.0,
+            8197.25
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "3ca75c2bc5b00f700444b6dedbefa021ccc976c0522e7a47d4fb3b5bd2ba180f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal_conversion"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "cpp",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.125,
+          "median_ns_per_operation": 269.542,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            270.209,
+            269.542,
+            269.417
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 4298.0,
+          "median_ns_per_operation": 332295.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            350287.0,
+            327997.0,
+            332295.0
+          ],
+          "status": "supported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "legacy contract ID does not declare the orthogonal basis; use the explicit orthogonal variants",
+          "status": "unsupported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "f34591e86a9f26e8dd94a66f527a579fe7683be9218f093bb3b9b74a3880b1b2",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 0.0008111527407875531,
+          "numerator": "cpp"
+        }
+      ],
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.958,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.958,
+            0.958,
+            0.958
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 931.0,
+          "median_ns_per_operation": 329504.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            329504.0,
+            328573.0,
+            331488.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0010000000000000009,
+          "median_ns_per_operation": 0.917,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.959,
+            0.917,
+            0.916
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "8ed382a086d4ac63eb32c38cfb0585ee38beedba9ea95c996e54bff92c838ab2",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 2.9074002136544623e-06,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 1.044711014176663,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 359328.24427480914,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "cpp",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.666,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.75,
+            0.666,
+            0.666
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 128.0,
+          "median_ns_per_operation": 188472.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            188472.0,
+            188344.0,
+            189275.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0010000000000012221,
+          "median_ns_per_operation": 17.959,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            18.5,
+            17.958,
+            17.959
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9cce23f918372750e44144cea2d4db19c186c4f00121057ff0317ba744972517",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 3.5336813956449767e-06,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 0.037084470182081414,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 10494.570967203073,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.8329999999999984,
+          "median_ns_per_operation": 75.458,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            74.625,
+            80.25,
+            75.458
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 9985.0,
+          "median_ns_per_operation": 4201560.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            4191224.0,
+            4201560.0,
+            4211545.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.2079999999999984,
+          "median_ns_per_operation": 38.375,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            39.083,
+            38.375,
+            38.167
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "48445ec1053cc407f1d43684d802d9937d814bd0e7ac40ba11f66522a77a3898",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 1.7959519797408582e-05,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 1.9663322475570033,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 109486.90553745929,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "cpp",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.25,
+          "median_ns_per_operation": 122.667,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            122.917,
+            122.667,
+            121.959
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 2493.0,
+          "median_ns_per_operation": 7387860.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            7385367.0,
+            7387860.0,
+            7601077.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.2079999999999984,
+          "median_ns_per_operation": 126.708,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            127.959,
+            126.5,
+            126.708
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "333418fcc7bff6dbc30cf923c052027e00b2969a72027518324c31cd58a1f4b8",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 1.6603860928604496e-05,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 0.9681077753575149,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 58306.18429775547,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "cpp",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.458,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.458,
+            0.458,
+            0.417
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 1728.0,
+          "median_ns_per_operation": 563466.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            563466.0,
+            568700.0,
+            561738.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.625,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.625,
+            0.625,
+            0.583
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "795127780af7f006151f093b6f2bd16b21afbb46488cd1fa7e03bb614ba246b6",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 8.128263284741226e-07,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 0.7328,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 901545.6,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "rotor_construction/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.04100000000000037,
+          "median_ns_per_operation": 5.958,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            6.041,
+            5.958,
+            5.917
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "chez",
+            "compiler": "Idris 2, version 0.7.0",
+            "flags": [
+              "generated-c-compiler: not-applicable",
+              "generated-c-flags: not-applicable"
+            ],
+            "host": {
+              "clock": "System.Clock.Monotonic",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "idris2",
+          "label": "idris2",
+          "mad_ns_per_operation": 456.0,
+          "median_ns_per_operation": 660539.0,
+          "repository_revision": "3215c8f5dcc433c2ac6527ce1a9d2ed7ac3f57c1",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            660083.0,
+            671033.0,
+            660539.0
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.040999999999999925,
+          "median_ns_per_operation": 2.0,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            2.083,
+            2.0,
+            1.959
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9d5bfc2e2134cc4a0c505dbd143c84ca213d71c5b247bd1414a523c0bb49b3d3",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "idris2",
+          "median_ratio": 9.019906470321964e-06,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 2.979,
+          "numerator": "cpp"
+        },
+        {
+          "denominator": "rust",
+          "median_ratio": 330269.5,
+          "numerator": "idris2"
+        }
+      ],
+      "workload_id": "sandwich_point_transform/f64/e1"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-scalar",
+            "compiler": "AppleClang-21.0.0.21000101-cxx26",
+            "flags": [
+              "-std=c++2c -O3 -march=native -DNDEBUG"
+            ],
+            "host": {
+              "clock": "high_resolution_clock",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "cpp",
+          "label": "cpp",
+          "mad_ns_per_operation": 0.08399999999999963,
+          "median_ns_per_operation": 4.209,
+          "repository_revision": "ca6ac2ebd91492e00d38686553ddec188651c377",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            4.125,
+            4.209,
+            4.459
+          ],
+          "status": "supported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "idris2 adapter predates this canonical workload variant",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.625,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            0.625,
+            0.625,
+            0.583
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9f3d798334a511e5c0af86aabcd344dca86111c4bc165f3a0aff632ea026ac7f",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "rust",
+          "median_ratio": 6.734399999999999,
+          "numerator": "cpp"
+        }
+      ],
+      "workload_id": "translator_construction/f64/e1i"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 16,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0625,
+          "median_ns_per_operation": 5.25,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            10.375,
+            5.1875,
+            5.25
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "84db362fa477b235b0d0e1d87d38e71eecc37ffbb48a57979aedc687d00a9948",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 256,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.00390625,
+          "median_ns_per_operation": 4.71875,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            4.72265625,
+            4.55859375,
+            4.71875
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "2a6e87e91e3eb7ff40690bccc50d457d0cf6baf20a87461b7c346a18cad1158f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 4096,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.11181640625,
+          "median_ns_per_operation": 8.1787109375,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            7.171630859375,
+            8.29052734375,
+            8.1787109375
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "521130976525c399d802f3eaa836c68a846e45ecb679b1a5465b6e508e7f4734",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 16,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0625,
+          "median_ns_per_operation": 2.625,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            7.8125,
+            2.5625,
+            2.625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "ffdd92bd647a4d3bb83c1ebfc101ae959ce326107fa6c5bbaa819f3d3b209213",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 256,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 1.3046875,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            1.3046875,
+            1.3046875,
+            1.30078125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "7099490d7687320fb7d3a8f70e57e0c5e6bd8b38a109dc330172a4c90d230156",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "gafro-cpp CPU adapter has no contract SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "gafro-idris2 exposes no CPU SoA batch API",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.97.1 (8bab26f4f 2026-07-14)",
+            "flags": [
+              "target: aarch64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 4096,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.14.7",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.030517578125,
+          "median_ns_per_operation": 1.28173828125,
+          "repository_revision": "3953df863952bc8ccb6bb51235681ca1fbde55ae",
+          "sample_count": 3,
+          "samples_ns_per_operation": [
+            1.129150390625,
+            1.312255859375,
+            1.28173828125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "dd502a7087eaf9eb321191bb664f2514bae6b63cc7123bb5a31e34dfe89e565c",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    }
+  ]
+}
