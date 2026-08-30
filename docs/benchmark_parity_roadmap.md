@@ -42,6 +42,8 @@ CPU/GPU rankings:
 15. **Completed — precision and optimization study.** Measured FP64 micro-operations,
     robotics observables, and CPU SoA batch scaling across C++, Rust, and Idris 2,
     quantifying speedups and architectural characteristics.
+16. **Completed — spatial physics and inertia parity.** Added spatial inertia action and
+    transformation workloads with shared fixtures, output oracles, and capability reporting.
 
 Every stage must distinguish genuinely missing functionality from an alternate
 API/layout and from an environment or validation block. A faster result is only

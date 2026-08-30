@@ -2,7 +2,7 @@ use std::env;
 use std::hint::black_box;
 use std::time::Instant;
 
-use gafro::algebra::blades::E12;
+use gafro::algebra::blades::{E01, E12};
 use gafro::algebra::OrthogonalMultivector32;
 use gafro::algebra::cga::batch_motor::BatchMotorSoA;
 use gafro::algebra::cga::batch_point::BatchPointSoA;
@@ -10,6 +10,7 @@ use gafro::algebra::cga::motor::Motor;
 use gafro::algebra::cga::rotor::Rotor;
 use gafro::algebra::cga::point::Point;
 use gafro::algebra::cga::translator::Translator;
+use gafro::physics::{Inertia, Twist};
 use gafro::robots::{Joint, KinematicChain};
 
 struct Provenance { revision: String, dirty: bool, compiler: String, target: String, flags: String }
@@ -214,6 +215,25 @@ fn main() {
     rows.push(measure("robotics_geometric_jacobian_2r/f64/base_checksum", 5.0,
         warmups, operations, 1, samples, |i| {
             corrected_jacobian_checksum(&robotics_chain, &robotics_positions[(i & 1) as usize])
+        }));
+    let physics_inertia = Inertia::from_mass_inertia(2.0, 0.5, 0.0, 0.0, 0.5, 0.0, 0.8);
+    let physics_twist = Twist::new(0.1, 0.2, 0.3, 1.0, 2.0, 3.0);
+    let oracle_wrench = physics_inertia.apply(&physics_twist);
+    require_close("physics wrench f1", oracle_wrench.blades[0], 2.0);
+    require_close("physics wrench f2", oracle_wrench.blades[1], 4.0);
+    require_close("physics wrench tau12", oracle_wrench.blades[2], 0.08);
+    require_close("physics wrench f3", oracle_wrench.blades[3], 6.0);
+    require_close("physics wrench tau13", oracle_wrench.blades[4], 0.10);
+    require_close("physics wrench tau23", oracle_wrench.blades[5], 0.15);
+    rows.push(measure("spatial_inertia_action/f64/wrench_checksum", 12.33,
+        warmups, operations, 1, samples, |_| {
+            let wrench = black_box(&physics_inertia).apply(black_box(&physics_twist));
+            black_box(wrench.blades.iter().sum())
+        }));
+    rows.push(measure("spatial_inertia_transform/f64/e01_mass", 2.0,
+        warmups, operations, 1, samples, |_| {
+            let transformed = black_box(&physics_inertia).transform(black_box(&first_motor));
+            black_box(transformed.elements[0].get(E01))
         }));
     rows.push(batch_motor::<16>(&profile, "batch_motor_composition/f64/n16/scalar_lane0"));
     rows.push(batch_motor::<256>(&profile, "batch_motor_composition/f64/n256/scalar_lane0"));
