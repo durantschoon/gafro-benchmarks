@@ -20,3 +20,7 @@ BENCHMARK_OPTIONS = $(if $(CPP_PATH),--cpp-path "$(CPP_PATH)",) $(if $(CPP_BUILD
 
 inventory:
 	$(PYTHON) -m benchmark_harness.cli inventory $(if $(CPP_PATH),--cpp-path "$(CPP_PATH)",) $(if $(IDRIS2_PATH),--idris2-path "$(IDRIS2_PATH)",) $(if $(RUST_PATH),--rust-path "$(RUST_PATH)",)
+
+plan-gpu:
+	$(PYTHON) -m benchmark_harness.cli plan-gpu --cuda-status $(if $(CUDA_STATUS),$(CUDA_STATUS),auto)
+
