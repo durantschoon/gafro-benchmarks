@@ -1,0 +1,1 @@
+CalledProcessError: Command '['/opt/homebrew/bin/idris2', '--source-dir', '/tmp/gafro-benchmark-idris2-jtefhcd_/src', '--build-dir', '/tmp/gafro-benchmark-idris2-jtefhcd_/build', '--output-dir', '/tmp/gafro-benchmark-idris2-jtefhcd_/bin', '--codegen', 'chez', '-o', 'bench-cga-idris2', '/tmp/gafro-benchmark-idris2-jtefhcd_/src/Main.idr']' returned non-zero exit status 1.

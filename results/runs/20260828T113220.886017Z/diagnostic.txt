@@ -1,0 +1,1 @@
+CalledProcessError: Command '['/Users/durant/.cargo/bin/cargo', 'build', '--release', '--locked']' returned non-zero exit status 101.
