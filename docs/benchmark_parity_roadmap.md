@@ -44,6 +44,8 @@ CPU/GPU rankings:
     quantifying speedups and architectural characteristics.
 16. **Completed — spatial physics and inertia parity.** Added spatial inertia action and
     transformation workloads with shared fixtures, output oracles, and capability reporting.
+17. **Completed — CUDA heterogeneous adapter integration.** Integrated heterogeneous GPU planning,
+    CLI batch sweeps across latency/crossover/throughput tiers, and multi-backend GPU reporting.
 
 Every stage must distinguish genuinely missing functionality from an alternate
 API/layout and from an environment or validation block. A faster result is only

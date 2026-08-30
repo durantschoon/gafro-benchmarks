@@ -53,6 +53,8 @@ optimizations under development in C++ and Rust.
     quantifying speedups and architectural characteristics.
 16. **Stage 16 — spatial physics and inertia parity (completed).** Integrated spatial inertia action
     and transformation workloads with shared fixtures and oracles across C++, Rust, and Idris 2.
+17. **Stage 17 — CUDA heterogeneous adapter integration (completed).** Integrated heterogeneous GPU
+    planning, CLI batch sweeps across latency/crossover/throughput tiers, and multi-backend GPU reporting.
 
 ## Completion boundary
 
