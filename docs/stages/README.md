@@ -46,6 +46,31 @@ harness must accept explicit implementation paths and record their revisions.
   oracle, and operation-count definition unless the report labels them as
   separate experiments.
 
+## GPU execution environment (decision, 2026-09-12)
+
+Cross-language GPU (CUDA) runs use exactly **one rented NVIDIA pod**
+(RunPod or equivalent) per comparison run: every implementation family is
+built and measured on that same instance, in the same session.
+
+Justification:
+- The permanent rules above already forbid presenting results from
+  different machines, compiler modes, or dependency revisions as a direct
+  language ranking. One pod per run is the cheapest arrangement that
+  satisfies the same-host requirement by construction instead of by
+  after-the-fact filtering.
+- One pod means one GPU model, one driver/toolkit version, one thermal and
+  clock envelope — the `host`/`gpu` metadata blocks describe every row
+  identically, so ratios need no compatibility carve-outs.
+- Cloud noisy-neighbor variance differs pod to pod; a single dedicated
+  (secure-cloud) instance makes variance a shared property of the run
+  rather than a per-language confound.
+- Reproducibility: the pod is provisioned from a pinned container image,
+  and the image digest + GPU model are recorded with the run. A later run
+  on a different pod is a NEW experiment, never merged into an old
+  ranking.
+- The development machine is Apple Silicon (no CUDA); local runs cover CPU
+  rows only, so the pod is the family's sole CUDA ground truth.
+
 ## Gates
 
 Stage 01 defines stable Make targets. From that stage onward every report runs:
