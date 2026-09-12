@@ -489,12 +489,15 @@ def build_summary_model(
 
 def render_summary_markdown(model: Mapping[str, Any]) -> str:
     """Render a deterministic human report from a summary model."""
+    display_names = {"cpp": "C++", "idris2": "Idris 2", "rust": "Rust", "julia": "Julia"}
+    header_cells = " | ".join(display_names.get(family, family) for family in IMPLEMENTATIONS)
+    header_rule = " | ".join("---:" for _ in IMPLEMENTATIONS)
     lines = [
         "# Gafro benchmark report", "",
         f"Input run IDs: {', '.join(model['input_run_ids'])}", "",
         model["comparison_policy"], "",
         "Values are median ns/op with unscaled median absolute deviation (MAD). A single run does not establish statistical significance.", "",
-        "| Workload | C++ | Idris 2 | Rust | Comparison |", "| --- | ---: | ---: | ---: | --- |",
+        f"| Workload | {header_cells} | Comparison |", f"| --- | {header_rule} | --- |",
     ]
     for workload in model["workloads"]:
         cells = {
