@@ -12,7 +12,7 @@ from typing import Any
 SCHEMA_VERSION = "gafro-benchmark-result/v1"
 MANIFEST_VERSION = "gafro-benchmark-workloads/v1"
 STATUSES = frozenset({"supported", "unsupported", "unavailable", "failed"})
-IMPLEMENTATIONS = ("cpp", "idris2", "rust")
+IMPLEMENTATIONS = ("cpp", "idris2", "rust", "julia")
 HETEROGENEOUS_VERSION = "gafro-benchmark-heterogeneous/v1"
 SCALAR_TYPES = frozenset({"fp32", "fp64"})
 TIMING_SCOPES = frozenset({
