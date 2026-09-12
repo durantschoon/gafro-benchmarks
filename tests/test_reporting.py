@@ -42,7 +42,7 @@ class ReportingTests(unittest.TestCase):
         model = build_summary_model(self.manifest, [evidence("rust", samples=(21, 23, 25)), evidence("cpp")], run_ids=["b", "a"])
         self.assertEqual(model["input_run_ids"], ["a", "b"])
         row = next(item for item in model["workloads"] if item["workload_id"].startswith("motor_composition"))
-        self.assertEqual([cell["implementation"] for cell in row["cells"]], ["cpp", "idris2", "rust"])
+        self.assertEqual([cell["implementation"] for cell in row["cells"]], ["cpp", "idris2", "rust", "julia"])
         self.assertEqual(row["cells"][1]["status"], "blocked")
         self.assertEqual(row["cells"][1]["gap"]["classification"], "blocked_validation_or_environment")
         self.assertAlmostEqual(row["ratios"][0]["median_ratio"], 20 / 23)

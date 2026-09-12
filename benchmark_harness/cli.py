@@ -19,7 +19,7 @@ from .core import (IMPLEMENTATIONS, build_summary_model, parse_json,
                    summarize_results, validate_complete_run,
                    validate_heterogeneous_contract, validate_manifest)
 
-MARKERS = {"cpp": "CMakeLists.txt", "idris2": "gafro.ipkg", "rust": "Cargo.toml"}
+MARKERS = {"cpp": "CMakeLists.txt", "idris2": "gafro.ipkg", "rust": "Cargo.toml", "julia": "Project.toml"}
 
 
 def discover(root: Path, family: str, override: str | None) -> dict[str, str]:
@@ -233,6 +233,40 @@ def benchmark_rust(args: argparse.Namespace, root: Path, manifest: dict[str, obj
     return write_bundle(run_dir, "rust", checked, completed.stdout, completed.stderr)
 
 
+def benchmark_julia(args: argparse.Namespace, root: Path, manifest: dict[str, object], expected_operations: dict[str, int], run_dir: Path) -> Path:
+    found = discover(root, "julia", args.julia_path)
+    if found["status"] != "available":
+        raise SystemExit(found["reason"])
+    implementation_path = Path(found["path"])
+    executable = shutil.which(args.julia)
+    if executable is None:
+        raise SystemExit(f"Julia executable not found: {args.julia}")
+    entry = implementation_path / "benchmark/contract_main.jl"
+    if not entry.is_file():
+        raise SystemExit(f"gafro-julia checkout has no contract runner: {entry}")
+    version = subprocess.run([executable, "--version"], check=True, text=True, capture_output=True).stdout.strip()
+    revision, dirty = repository_identity(implementation_path)
+    project = implementation_path / "benchmark"
+    # The benchmark project pins its own Manifest; instantiate resolves it
+    # against the sibling checkout before the timed process starts.
+    subprocess.run(
+        [executable, f"--project={project}", "-e", "using Pkg; Pkg.instantiate()"],
+        cwd=implementation_path, check=True, text=True, capture_output=True,
+    )
+    completed = subprocess.run(
+        [
+            executable, f"--project={project}", str(entry),
+            "--profile", args.profile, "--revision", revision,
+            "--dirty", str(dirty).lower(), "--compiler", version,
+        ],
+        cwd=implementation_path, check=True, text=True, capture_output=True,
+    )
+    preserve_adapter_output(run_dir, "julia", completed.stdout, completed.stderr)
+    bundle = parse_json(completed.stdout)
+    checked = validate_complete_run(manifest, bundle.get("results", []), "julia", expected_operations=expected_operations)
+    return write_bundle(run_dir, "julia", checked, completed.stdout, completed.stderr)
+
+
 def create_run_directory(root: Path) -> tuple[str, Path]:
     base = root / "results" / "runs"
     base.mkdir(parents=True, exist_ok=True)
@@ -287,7 +321,7 @@ def benchmark(args: argparse.Namespace, root: Path) -> int:
         "paths": {family: getattr(args, f"{family}_path") for family in IMPLEMENTATIONS},
         "cpp_build_path": args.cpp_build_path, "cpp_compiler": args.cpp_compiler,
         "idris2_compiler": args.idris2_compiler, "idris2_backend": args.idris2_backend,
-        "cargo": args.cargo, "rustc": args.rustc,
+        "cargo": args.cargo, "rustc": args.rustc, "julia": args.julia,
     }
     (run_dir / "runner-config.json").write_text(json.dumps(config, indent=2, sort_keys=True) + "\n")
     host = {"system": platform.system(), "release": platform.release(), "machine": platform.machine(), "python": platform.python_version()}
@@ -306,6 +340,8 @@ def benchmark(args: argparse.Namespace, root: Path) -> int:
             destinations.append(benchmark_idris2(args, root, manifest, expected_operations, run_dir))
         if "rust" in requested:
             destinations.append(benchmark_rust(args, root, manifest, expected_by_workload, run_dir))
+        if "julia" in requested:
+            destinations.append(benchmark_julia(args, root, manifest, expected_by_workload, run_dir))
         publish_report(run_dir, manifest, run_id)
     except (Exception, SystemExit) as exc:
         (run_dir / "diagnostic.txt").write_text(f"{type(exc).__name__}: {exc}\n")
@@ -327,6 +363,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--idris2-backend", default="chez", choices=("chez", "refc"))
     result.add_argument("--cargo", default="cargo")
     result.add_argument("--rustc", default="rustc")
+    result.add_argument("--julia", default="julia")
     result.add_argument("--implementations", default="cpp")
     result.add_argument("--profile", choices=("smoke", "full"), default="full")
     result.add_argument("--operation", default="batch_point_transform")
