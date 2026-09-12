@@ -285,10 +285,16 @@ def create_run_directory(root: Path) -> tuple[str, Path]:
 def publish_report(run_dir: Path, manifest: dict[str, object], run_id: str) -> None:
     results = []
     host = json.loads((run_dir / "host-toolchain.json").read_text())
+    # "machine" describes the ORCHESTRATOR process's architecture, which an
+    # adapter's process need not share (measured: an arm64 python launching
+    # x86_64 Rosetta rust/julia adapters). Stamping it onto adapter rows
+    # asserted a fact the orchestrator does not own and vetoed honest
+    # cross-language ratios; adapters declare their own machine or none.
+    shared_host = {key: value for key, value in host.items() if key != "machine"}
     for path in sorted((run_dir / "adapters").glob("*.json")):
         bundle = parse_json(path.read_text())
         for result in bundle.get("results", []):
-            results.append({**result, "host": {**host, **result.get("host", {})}})
+            results.append({**result, "host": {**shared_host, **result.get("host", {})}})
     model = build_summary_model(manifest, results, run_ids=[run_id])
     report_dir = run_dir / "report"
     report_dir.mkdir(exist_ok=True)

@@ -561,10 +561,25 @@ def _compatible_environments(cells: list[Mapping[str, Any]]) -> bool:
     if len(cells) < 2:
         return False
     host_keys = ("system", "release", "machine", "python")
-    hosts = {
-        json.dumps({key: cell["environment"]["host"].get(key) for key in host_keys}, sort_keys=True)
+    # A host key constrains compatibility only where BOTH sides declare it:
+    # absent metadata is unknown, never a mismatch. Adapters report host
+    # facts in their own vocabulary and to different depths (the rust
+    # runner declares none of these keys; the julia runner declares
+    # system/machine), and demanding textual identity of undeclared fields
+    # silently vetoed every cross-language ratio.
+    host_values = [
+        {key: cell["environment"]["host"].get(key) for key in host_keys}
         for cell in cells
-    }
+    ]
+    hosts_ok = all(
+        all(
+            first[key] == other[key]
+            for key in host_keys
+            if first[key] is not None and other[key] is not None
+        )
+        for first in host_values[:1]
+        for other in host_values[1:]
+    )
     # Compiler names necessarily differ by language. Backend and flags are build
     # provenance, not required to be textually identical, but must be present.
     builds_complete = all(cell["environment"]["compiler"] and cell["environment"]["backend"] for cell in cells)
@@ -576,7 +591,7 @@ def _compatible_environments(cells: list[Mapping[str, Any]]) -> bool:
         json.dumps(_gpu_compatibility_key(cell), sort_keys=True)
         for cell in cells if cell.get("gpu") is not None
     }
-    return len(hosts) == 1 and builds_complete and len(set(modes)) == 1 and len(gpu_keys) <= 1
+    return hosts_ok and builds_complete and len(set(modes)) == 1 and len(gpu_keys) <= 1
 
 
 def _compatible_execution_contracts(cells: list[Mapping[str, Any]]) -> bool:

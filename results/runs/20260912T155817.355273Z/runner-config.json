@@ -1,0 +1,21 @@
+{
+  "cargo": "cargo",
+  "cpp_build_path": null,
+  "cpp_compiler": null,
+  "idris2_backend": "chez",
+  "idris2_compiler": "idris2",
+  "implementations": [
+    "rust",
+    "julia"
+  ],
+  "julia": "julia",
+  "paths": {
+    "cpp": null,
+    "idris2": null,
+    "julia": null,
+    "rust": null
+  },
+  "profile": "full",
+  "run_id": "20260912T155817.355273Z",
+  "rustc": "rustc"
+}

@@ -1,0 +1,2634 @@
+{
+  "comparison_policy": "Canonical GA computations are primary. Optimization variants are reported separately and never replace a canonical operation.",
+  "input_run_ids": [
+    "20260912T155817.355273Z"
+  ],
+  "schema_version": "gafro-benchmark-summary/v1",
+  "statistics": {
+    "center": "median",
+    "dispersion": "unscaled median absolute deviation (MAD)"
+  },
+  "workloads": [
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 91.49159999999938,
+          "median_ns_per_operation": 7906.5583,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            7935.9166,
+            7815.0667,
+            7774.1666,
+            7768.3667,
+            7809.9417,
+            7859.2917,
+            7857.6542,
+            8046.0542,
+            7906.5583,
+            7894.9917,
+            8046.2417,
+            8013.8042,
+            7973.7792,
+            7939.5916,
+            8098.4875
+          ],
+          "status": "supported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "The algorithm may be portable only with an explicit basis/layout conversion or a new matched workload.",
+            "classification": "alternate_api_or_layout",
+            "required_work": "document and validate conversion semantics, allocation boundaries, and the same observable",
+            "tradeoffs": "conversion cost, allocation/layout changes, and reduced SIMD/GPU portability"
+          },
+          "implementation": "julia",
+          "label": "julia",
+          "reason": "gafro-julia has no orthogonal ePlus/eMinus basis layout: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so the workload's declared orthogonal operand basis cannot be constructed",
+          "status": "unsupported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "d12b646ea7a09ba007a1db77eb48ba62fcaaf3beaf399efce27616975f1f4c28",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 54.37920000000122,
+          "median_ns_per_operation": 14877.8625,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            15046.8291,
+            14869.9833,
+            14864.8458,
+            14845.7292,
+            15066.7666,
+            14741.4209,
+            16553.3792,
+            14828.325,
+            14896.7625,
+            14877.8625,
+            14846.25,
+            14682.1791,
+            14932.2417,
+            15253.7,
+            14951.8291
+          ],
+          "status": "supported"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "The algorithm may be portable only with an explicit basis/layout conversion or a new matched workload.",
+            "classification": "alternate_api_or_layout",
+            "required_work": "document and validate conversion semantics, allocation boundaries, and the same observable",
+            "tradeoffs": "conversion cost, allocation/layout changes, and reduced SIMD/GPU portability"
+          },
+          "implementation": "julia",
+          "label": "julia",
+          "reason": "gafro-julia has no orthogonal ePlus/eMinus basis layout and no null-basis conversion boundary: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so neither the declared operand basis nor the orthogonal-to-null conversion at either boundary exists",
+          "status": "unsupported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "3ca75c2bc5b00f700444b6dedbefa021ccc976c0522e7a47d4fb3b5bd2ba180f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal_conversion"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "A proven algorithm from another implementation can guide a native implementation, but cannot be benchmarked as if already present.",
+            "classification": "genuinely_missing",
+            "required_work": "add a production API plus a language-native adapter and canonical oracle tests",
+            "tradeoffs": "API complexity and maintenance; representation choices affect allocation and SIMD/GPU portability"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "legacy contract ID does not declare the orthogonal basis; use the explicit orthogonal variants",
+          "status": "unsupported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 5.416699999999992,
+          "median_ns_per_operation": 1357.0291,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1367.4542,
+            1382.9958,
+            1375.6292,
+            1369.425,
+            1362.4458,
+            1346.8166,
+            1356.4125,
+            1352.8458,
+            1353.025,
+            1349.0625,
+            1349.3417,
+            1357.0291,
+            1356.0375,
+            1358.7458,
+            1360.1042
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "f34591e86a9f26e8dd94a66f527a579fe7683be9218f093bb3b9b74a3880b1b2",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0041999999999999815,
+          "median_ns_per_operation": 1.05,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.05,
+            1.05,
+            1.0417,
+            1.0458,
+            1.0458,
+            1.0541,
+            1.05,
+            1.0667,
+            1.0584,
+            1.0583,
+            1.0458,
+            1.0541,
+            1.0584,
+            1.0584,
+            1.0458
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 1.0999999999999943,
+          "median_ns_per_operation": 89.825,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            89.6917,
+            88.2708,
+            88.925,
+            90.925,
+            88.5375,
+            88.3625,
+            89.825,
+            91.3125,
+            89.0916,
+            90.75,
+            92.6166,
+            92.675,
+            89.7416,
+            91.9417,
+            90.5541
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "8ed382a086d4ac63eb32c38cfb0585ee38beedba9ea95c996e54bff92c838ab2",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.01168939604787086,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.16669999999999874,
+          "median_ns_per_operation": 37.5667,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            37.425,
+            38.5584,
+            37.9625,
+            38.9917,
+            39.4125,
+            38.4416,
+            38.2625,
+            37.4,
+            37.4166,
+            37.5667,
+            37.4292,
+            37.4041,
+            37.9917,
+            37.5041,
+            37.4083
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.6709000000000032,
+          "median_ns_per_operation": 65.2958,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            65.1167,
+            66.2,
+            64.8584,
+            65.1708,
+            65.2958,
+            70.0375,
+            65.9667,
+            66.1958,
+            64.4333,
+            65.325,
+            66.45,
+            64.4208,
+            65.2208,
+            65.0,
+            66.5333
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9cce23f918372750e44144cea2d4db19c186c4f00121057ff0317ba744972517",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.5753310320112472,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.4457999999999984,
+          "median_ns_per_operation": 51.175,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            53.175,
+            50.8292,
+            50.55,
+            52.1125,
+            50.3834,
+            50.7834,
+            51.7167,
+            52.2042,
+            51.175,
+            51.4792,
+            49.9208,
+            51.1375,
+            50.7292,
+            51.325,
+            51.5708
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 2.1458000000000084,
+          "median_ns_per_operation": 349.8583,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            354.5792,
+            347.8166,
+            349.8708,
+            349.3792,
+            349.3292,
+            345.7625,
+            346.2334,
+            347.7125,
+            353.1459,
+            352.3917,
+            349.4125,
+            350.0208,
+            356.2042,
+            353.1,
+            349.8583
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "48445ec1053cc407f1d43684d802d9937d814bd0e7ac40ba11f66522a77a3898",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.1462735055878337,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 1.1707999999999856,
+          "median_ns_per_operation": 280.7375,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            278.95,
+            281.4625,
+            278.0459,
+            279.7125,
+            281.8042,
+            278.2792,
+            281.825,
+            280.7375,
+            278.4125,
+            281.6375,
+            277.3208,
+            279.5667,
+            281.95,
+            281.9209,
+            280.9
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 40.3708000000006,
+          "median_ns_per_operation": 7625.4583,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            9069.575,
+            7715.0958,
+            7603.2125,
+            7763.3083,
+            7812.5042,
+            7602.9292,
+            7585.0875,
+            7564.1916,
+            7625.4583,
+            7667.775,
+            7622.0208,
+            7600.6875,
+            7866.4875,
+            7599.625,
+            7640.275
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "333418fcc7bff6dbc30cf923c052027e00b2969a72027518324c31cd58a1f4b8",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.03681581997504334,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.525,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            0.525,
+            0.525,
+            0.525,
+            0.5292,
+            0.5292,
+            0.525,
+            0.525,
+            0.5291,
+            0.525,
+            0.5291,
+            0.525,
+            0.525,
+            0.5291,
+            0.5292,
+            0.525
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.2541999999999991,
+          "median_ns_per_operation": 15.8333,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            16.0042,
+            15.6041,
+            15.5625,
+            15.8333,
+            15.5791,
+            16.7208,
+            15.7625,
+            16.525,
+            16.0333,
+            16.5083,
+            16.0333,
+            15.5625,
+            15.5708,
+            15.5667,
+            15.8375
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "795127780af7f006151f093b6f2bd16b21afbb46488cd1fa7e03bb614ba246b6",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.03315796454308325,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "rotor_construction/f64/scalar"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.012599999999999945,
+          "median_ns_per_operation": 3.3834,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            3.3291,
+            3.5042,
+            3.6834,
+            3.3833,
+            3.375,
+            3.375,
+            3.3875,
+            3.3791,
+            3.3708,
+            3.3834,
+            3.6584,
+            3.4209,
+            3.4167,
+            3.4041,
+            3.3833
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 1.7333999999999605,
+          "median_ns_per_operation": 303.825,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            307.1917,
+            302.0916,
+            303.825,
+            308.8042,
+            302.9166,
+            306.25,
+            311.3375,
+            304.6875,
+            302.7083,
+            303.1792,
+            309.8208,
+            301.6208,
+            306.1084,
+            302.5417,
+            303.6625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9d5bfc2e2134cc4a0c505dbd143c84ca213d71c5b247bd1414a523c0bb49b3d3",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.011136015798568256,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "sandwich_point_transform/f64/e1"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "representation, compiler, and backend code generation are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "clock": "std::time::Instant",
+              "machine": "x86_64",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "system": "Darwin"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0,
+          "median_ns_per_operation": 0.525,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            0.525,
+            0.5292,
+            0.525,
+            0.5292,
+            0.525,
+            0.525,
+            0.525,
+            0.525,
+            0.525,
+            0.5292,
+            0.525,
+            0.525,
+            0.5333,
+            0.5292,
+            0.5291
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.033399999999999874,
+          "median_ns_per_operation": 3.3084,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            6.3209,
+            3.2792,
+            3.3,
+            3.7417,
+            3.3167,
+            3.275,
+            3.2792,
+            3.3208,
+            3.3084,
+            3.5458,
+            3.3166,
+            3.25,
+            3.2459,
+            3.5458,
+            3.275
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "9f3d798334a511e5c0af86aabcd344dca86111c4bc165f3a0aff632ea026ac7f",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.15868697859992748,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "translator_construction/f64/e1i"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 16,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.02288818359375,
+          "median_ns_per_operation": 5.80853271484375,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            5.76275634765625,
+            5.77801513671875,
+            5.78814697265625,
+            5.79071044921875,
+            5.7882080078125,
+            5.80853271484375,
+            5.793212890625,
+            5.79071044921875,
+            5.8135986328125,
+            5.83392333984375,
+            5.83392333984375,
+            5.859375,
+            5.83648681640625,
+            5.8314208984375,
+            6.03997802734375
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 16,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 1024,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.01019287109375,
+          "median_ns_per_operation": 5.950927734375,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            6.21795654296875,
+            6.2357177734375,
+            5.9407958984375,
+            5.938232421875,
+            5.94073486328125,
+            6.10858154296875,
+            5.9915771484375,
+            5.9560546875,
+            5.9534912109375,
+            5.938232421875,
+            5.94586181640625,
+            5.94073486328125,
+            5.94329833984375,
+            5.950927734375,
+            6.1136474609375
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "84db362fa477b235b0d0e1d87d38e71eecc37ffbb48a57979aedc687d00a9948",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.9760717948717949,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "rust",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 256,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.0126953125,
+          "median_ns_per_operation": 5.48046875,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            5.4779052734375,
+            5.44488525390625,
+            5.462646484375,
+            5.48046875,
+            5.47283935546875,
+            5.4779052734375,
+            5.4931640625,
+            5.48809814453125,
+            5.6915283203125,
+            5.5211181640625,
+            5.48297119140625,
+            5.49566650390625,
+            5.46771240234375,
+            5.48046875,
+            5.50335693359375
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 256,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 64,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.0126953125,
+          "median_ns_per_operation": 5.69403076171875,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            5.69403076171875,
+            5.93310546875,
+            5.994140625,
+            5.95599365234375,
+            6.08062744140625,
+            5.68133544921875,
+            5.68389892578125,
+            5.68389892578125,
+            5.86700439453125,
+            5.84161376953125,
+            5.68896484375,
+            5.9661865234375,
+            5.68389892578125,
+            5.68646240234375,
+            5.68389892578125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "2a6e87e91e3eb7ff40690bccc50d457d0cf6baf20a87461b7c346a18cad1158f",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 0.9624937025007771,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "julia",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 4096,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.3916015625,
+          "median_ns_per_operation": 24.22076416015625,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            25.616943359375,
+            24.6124267578125,
+            23.681640625,
+            24.20550537109375,
+            24.5386962890625,
+            23.82916259765625,
+            24.51324462890625,
+            24.37335205078125,
+            24.22076416015625,
+            25.1617431640625,
+            24.08087158203125,
+            23.01025390625,
+            23.56719970703125,
+            23.712158203125,
+            24.57171630859375
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 4096,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 4,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.7298583984375,
+          "median_ns_per_operation": 9.429931640625,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            10.576904296875,
+            9.735107421875,
+            9.429931640625,
+            10.32513427734375,
+            9.7071533203125,
+            10.1597900390625,
+            10.20556640625,
+            10.2030029296875,
+            8.928955078125,
+            8.7890625,
+            8.77886962890625,
+            8.56268310546875,
+            8.55511474609375,
+            8.65423583984375,
+            9.23919677734375
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "521130976525c399d802f3eaa836c68a846e45ecb679b1a5465b6e508e7f4734",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 2.568498381877023,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "julia",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 16,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.00506591796875,
+          "median_ns_per_operation": 1.77764892578125,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.8031005859375,
+            1.78277587890625,
+            1.787841796875,
+            1.7801513671875,
+            1.787841796875,
+            1.77764892578125,
+            1.7725830078125,
+            1.77764892578125,
+            1.7725830078125,
+            1.77508544921875,
+            1.77001953125,
+            1.76751708984375,
+            1.7725830078125,
+            1.7801513671875,
+            1.77508544921875
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 16,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 1024,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.00250244140625,
+          "median_ns_per_operation": 1.5106201171875,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.508056640625,
+            1.5106201171875,
+            1.50555419921875,
+            1.5106201171875,
+            1.5106201171875,
+            1.508056640625,
+            1.51318359375,
+            1.51312255859375,
+            1.50811767578125,
+            1.5106201171875,
+            1.51312255859375,
+            1.50555419921875,
+            1.5106201171875,
+            1.50555419921875,
+            1.508056640625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "ffdd92bd647a4d3bb83c1ebfc101ae959ce326107fa6c5bbaa819f3d3b209213",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 1.1767676767676767,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "julia",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 256,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.00250244140625,
+          "median_ns_per_operation": 1.421630859375,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.469970703125,
+            1.4190673828125,
+            1.421630859375,
+            1.41650390625,
+            1.42156982421875,
+            1.42413330078125,
+            1.4190673828125,
+            1.42413330078125,
+            1.42156982421875,
+            1.421630859375,
+            1.42413330078125,
+            1.42156982421875,
+            1.4241943359375,
+            1.42413330078125,
+            1.42413330078125
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 256,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 64,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.00506591796875,
+          "median_ns_per_operation": 1.080810546875,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.07830810546875,
+            1.080810546875,
+            1.080810546875,
+            1.07318115234375,
+            1.07830810546875,
+            1.080810546875,
+            1.07574462890625,
+            1.07574462890625,
+            1.2054443359375,
+            1.1138916015625,
+            1.09100341796875,
+            1.08843994140625,
+            1.08587646484375,
+            1.07830810546875,
+            1.08087158203125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "7099490d7687320fb7d3a8f70e57e0c5e6bd8b38a109dc330172a4c90d230156",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 1.3153377004743618,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "apparent_winner": {
+        "implementation": "julia",
+        "likely_reason": "batch size, structure-of-arrays layout, and SIMD amortization are likely contributors",
+        "scope": "this compatible run only"
+      },
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": true,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "cpu-release",
+            "compiler": "rustc 1.98.0 (88d9e12ae 2026-08-18) (Homebrew)",
+            "flags": [
+              "target: x86_64-apple-darwin",
+              "features: default",
+              "profile: release",
+              "codegen-units: 1",
+              "lto: fat",
+              "RUSTFLAGS: none"
+            ],
+            "host": {
+              "alignment": "native",
+              "allocation": "excluded",
+              "batch_size": 4096,
+              "clock": "std::time::Instant",
+              "layout": "structure-of-arrays",
+              "machine": "x86_64",
+              "output_validation": "all_lanes",
+              "packing": "excluded",
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "simd": "compiler-target",
+              "system": "Darwin",
+              "threads": 1
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "rust",
+          "label": "rust",
+          "mad_ns_per_operation": 0.043212890625,
+          "median_ns_per_operation": 1.67083740234375,
+          "repository_revision": "0520f3d9eb90325ac301ade6db561707c3d3a1c2",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            2.3447265625,
+            1.59710693359375,
+            1.59454345703125,
+            1.818359375,
+            1.66070556640625,
+            1.68359375,
+            1.665771484375,
+            1.8106689453125,
+            1.67083740234375,
+            1.703857421875,
+            1.6199951171875,
+            1.62506103515625,
+            1.65557861328125,
+            1.71405029296875,
+            1.6810302734375
+          ],
+          "status": "supported"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.12.7",
+            "flags": [
+              "julia: 1.12.7",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 4096,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 4,
+              "julia_version": "1.12.7",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.0",
+              "release": "25.6.0",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Darwin",
+              "target_triple": "x86_64-apple-darwin24.6.0",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.007568359375,
+          "median_ns_per_operation": 1.06298828125,
+          "repository_revision": "63ef05e84ceee4c0aa2d08b8662059efa6ce74ca",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1.1265869140625,
+            1.06304931640625,
+            1.07318115234375,
+            1.0782470703125,
+            1.07574462890625,
+            1.06048583984375,
+            1.05535888671875,
+            1.0706787109375,
+            1.06298828125,
+            1.04779052734375,
+            1.0655517578125,
+            1.05792236328125,
+            1.06048583984375,
+            1.05792236328125,
+            1.055419921875
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "compatible within recorded metadata",
+      "definition_id": "dd502a7087eaf9eb321191bb664f2514bae6b63cc7123bb5a31e34dfe89e565c",
+      "environments_compatible": true,
+      "execution_contracts_compatible": true,
+      "ratio_compatible": true,
+      "ratios": [
+        {
+          "denominator": "julia",
+          "median_ratio": 1.5718305006890216,
+          "numerator": "rust"
+        }
+      ],
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    }
+  ]
+}
