@@ -86,6 +86,33 @@ retro cycle.
   time). Prompts that add such code must state where it falls in the load
   order or explicitly allow new files.
 
+### Cross-pollinated from family retros (2026-09-12)
+
+Deliberate pass over every gafro-family repo's accumulated retros (user
+direction): each repo adopts the practices proven elsewhere that it lacked.
+Provenance tagged per item.
+
+- **Mechanical rename/move scout** (idris2, stages 05–07 retro): before
+  sealing, grep the harness, contracts and docs for every identifier AND
+  concept phrase a prompt moves/renames/deletes/adds, and disposition every
+  hit in the prompt.
+- **Toolchain existence check** (idris2, fc-07-a): every library function a
+  prompt's formulas name must exist in the pinned toolchain/interpreter
+  version — verify before sealing.
+- **Assertion strengthening is sanctioned, not a Deviation** (idris2): adding
+  assertions/samples inside an enumerated check is silently fine; dropping or
+  weakening one remains a Deviation.
+- **Resumed executor re-verifies isolation first** (idris2, pv-07-a) and
+  **pre-launch divergence check** (idris2, pv-01-a): verify checkout
+  isolation after any interruption, and fetch/verify the default branch
+  before provisioning.
+- **Measurement procedures, not expected numbers** (gafro-julia, stage-14
+  retro): prompts specify how to measure and which gate to satisfy — never
+  pre-computed expected values.
+- **Known-problems register** (julia/rust/cpp convention): adopt
+  `docs/stages/known-problems/KP-NNN-<slug>.md` for defects and environment
+  hazards that outlive a stage.
+
 ## Route
 
 See [ROUTE.md](ROUTE.md) for the staged sequence and completion boundaries.
