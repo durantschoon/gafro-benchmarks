@@ -11,7 +11,6 @@ Runs C++26, Rust and F*/Low* implementations, collects standardized JSON
 metrics, and generates side-by-side comparisons and markdown reports.
 """
 
-import os
 import sys
 import json
 import subprocess
