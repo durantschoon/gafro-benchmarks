@@ -1,0 +1,2119 @@
+{
+  "comparison_policy": "Canonical GA computations are primary. Optimization variants are reported separately and never replace a canonical operation.",
+  "input_run_ids": [
+    "20261114T031811.838307Z"
+  ],
+  "schema_version": "gafro-benchmark-summary/v1",
+  "statistics": {
+    "center": "median",
+    "dispersion": "unscaled median absolute deviation (MAD)"
+  },
+  "workloads": [
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "The algorithm may be portable only with an explicit basis/layout conversion or a new matched workload.",
+            "classification": "alternate_api_or_layout",
+            "required_work": "document and validate conversion semantics, allocation boundaries, and the same observable",
+            "tradeoffs": "conversion cost, allocation/layout changes, and reduced SIMD/GPU portability"
+          },
+          "implementation": "julia",
+          "label": "julia",
+          "reason": "gafro-julia has no orthogonal ePlus/eMinus basis layout: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so the workload's declared orthogonal operand basis cannot be constructed",
+          "status": "unsupported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "d12b646ea7a09ba007a1db77eb48ba62fcaaf3beaf399efce27616975f1f4c28",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "The algorithm may be portable only with an explicit basis/layout conversion or a new matched workload.",
+            "classification": "alternate_api_or_layout",
+            "required_work": "document and validate conversion semantics, allocation boundaries, and the same observable",
+            "tradeoffs": "conversion cost, allocation/layout changes, and reduced SIMD/GPU portability"
+          },
+          "implementation": "julia",
+          "label": "julia",
+          "reason": "gafro-julia has no orthogonal ePlus/eMinus basis layout and no null-basis conversion boundary: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so neither the declared operand basis nor the orthogonal-to-null conversion at either boundary exists",
+          "status": "unsupported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "3ca75c2bc5b00f700444b6dedbefa021ccc976c0522e7a47d4fb3b5bd2ba180f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/orthogonal_conversion"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 1139.1916999999994,
+          "median_ns_per_operation": 8458.6818,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            7716.3582,
+            11298.7091,
+            8136.5889,
+            9685.1698,
+            6970.7678,
+            8458.6818,
+            9597.8735,
+            10332.3805,
+            13979.9067,
+            7939.7548,
+            8196.0558,
+            11347.7094,
+            10018.9459,
+            7611.8828,
+            8098.1138
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "f34591e86a9f26e8dd94a66f527a579fe7683be9218f093bb3b9b74a3880b1b2",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "dense_geometric_product/f64/scalar"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 68.6377,
+          "median_ns_per_operation": 451.1975,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            840.9532,
+            477.4018,
+            305.2178,
+            449.4809,
+            526.0436,
+            483.3768,
+            451.1975,
+            489.2435,
+            610.8689,
+            503.8603,
+            382.5598,
+            323.7179,
+            304.6553,
+            281.8052,
+            422.3224
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "8ed382a086d4ac63eb32c38cfb0585ee38beedba9ea95c996e54bff92c838ab2",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "motor_composition_gp/f64/scalar"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 83.31700000000001,
+          "median_ns_per_operation": 394.3556,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            512.9853,
+            468.6309,
+            394.3556,
+            464.1517,
+            477.6726,
+            387.6973,
+            321.1721,
+            273.1761,
+            218.6924,
+            253.5718,
+            359.543,
+            1139.496,
+            521.8437,
+            309.7095,
+            414.7474
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "9cce23f918372750e44144cea2d4db19c186c4f00121057ff0317ba744972517",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "point_pair_outer_product/f64/e12"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 307.2554,
+          "median_ns_per_operation": 2487.3469,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            2471.3927,
+            2424.3091,
+            1543.7266,
+            2746.752,
+            3372.0335,
+            2609.2348,
+            2739.4061,
+            2857.0107,
+            2079.7662,
+            1272.084,
+            2180.0915,
+            2346.1421,
+            2487.3469,
+            7133.8143,
+            7327.3275
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "48445ec1053cc407f1d43684d802d9937d814bd0e7ac40ba11f66522a77a3898",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "robotics_forward_kinematics_2r/f64/motor_checksum"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 13194.533000000003,
+          "median_ns_per_operation": 49486.0068,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            91705.478,
+            89924.5421,
+            71536.398,
+            98212.2899,
+            76221.7322,
+            43651.5682,
+            55203.27,
+            36682.1921,
+            30395.2309,
+            43622.9722,
+            32928.1112,
+            49933.1793,
+            45326.7078,
+            36291.4738,
+            49486.0068
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "333418fcc7bff6dbc30cf923c052027e00b2969a72027518324c31cd58a1f4b8",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "robotics_geometric_jacobian_2r/f64/base_checksum"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 3.3706999999999994,
+          "median_ns_per_operation": 191.7798,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            195.0883,
+            204.6425,
+            209.7425,
+            222.0675,
+            203.0133,
+            194.3507,
+            189.1424,
+            191.7798,
+            188.4091,
+            189.5257,
+            194.7174,
+            187.2007,
+            186.3757,
+            185.6048,
+            189.2258
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "795127780af7f006151f093b6f2bd16b21afbb46488cd1fa7e03bb614ba246b6",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "rotor_construction/f64/scalar"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 562.5771,
+          "median_ns_per_operation": 1981.8241,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1673.8063,
+            1955.5448,
+            1419.247,
+            3529.6549,
+            5695.6964,
+            1236.7671,
+            1060.0999,
+            1828.1194,
+            2105.9704,
+            1406.8969,
+            2800.5855,
+            2617.039,
+            1981.8241,
+            2242.1751,
+            2365.9839
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "9d5bfc2e2134cc4a0c505dbd143c84ca213d71c5b247bd1414a523c0bb49b3d3",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "sandwich_point_transform/f64/e1"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 188.05909999999994,
+          "median_ns_per_operation": 1404.2678,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            1555.8808,
+            1605.1269,
+            1909.2363,
+            1592.3269,
+            1160.8002,
+            1162.0294,
+            1392.9594,
+            1297.7799,
+            1533.5433,
+            1577.6976,
+            1634.8437,
+            800.953,
+            820.8823,
+            1404.2678,
+            1353.0925
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "601a39a2953305dd0579625a4703456f0b6de4e4b8ca83878fcf3cdf35c0c075",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "spatial_inertia_action/f64/wrench_checksum"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 1255.8422,
+          "median_ns_per_operation": 7914.813,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            6534.7537,
+            6919.9677,
+            6265.5736,
+            6541.6912,
+            5827.1761,
+            9977.025,
+            6658.9708,
+            8383.7482,
+            8445.5234,
+            8173.6683,
+            10799.7281,
+            8397.2482,
+            5756.5133,
+            7914.813,
+            8865.9625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "f58263fce2fcfcb48ce1a2aa3e82ce7d0fb896e6f6ffd8cf08a3537f4339ea02",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "spatial_inertia_transform/f64/e01_mass"
+    },
+    {
+      "apparent_winner": null,
+      "category": "canonical",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the result is a stack-allocated immutable value",
+              "batch_size": 1,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "invocations_per_sample": 10000,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "single_value_static (Gafro.Multivector32 over StaticArrays.SVector{32,Float64})",
+              "packing_boundary": "not-applicable: no packing step in a scalar workload",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "scalar_loop",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_scalar_loop"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.012500000000001066,
+          "median_ns_per_operation": 9.0833,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            9.0958,
+            8.5334,
+            11.1001,
+            9.0792,
+            9.0792,
+            9.2001,
+            9.0709,
+            9.0792,
+            9.0792,
+            9.1,
+            10.3543,
+            8.9875,
+            9.0833,
+            10.4084,
+            9.0875
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "9f3d798334a511e5c0af86aabcd344dca86111c4bc165f3a0aff632ea026ac7f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "translator_construction/f64/e1i"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 16,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 1024,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 3.4510498046875,
+          "median_ns_per_operation": 25.210205078125,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            28.226318359375,
+            103.59228515625,
+            25.5560302734375,
+            22.5780029296875,
+            22.27789306640625,
+            21.4208984375,
+            25.91204833984375,
+            21.7591552734375,
+            37.8597412109375,
+            34.988525390625,
+            21.14617919921875,
+            22.22454833984375,
+            32.03594970703125,
+            25.210205078125,
+            20.7647705078125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "84db362fa477b235b0d0e1d87d38e71eecc37ffbb48a57979aedc687d00a9948",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n16/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 256,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 64,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.57733154296875,
+          "median_ns_per_operation": 50.67974853515625,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            52.06573486328125,
+            50.67974853515625,
+            60.5445556640625,
+            51.52655029296875,
+            49.6904296875,
+            50.93658447265625,
+            51.32818603515625,
+            51.086669921875,
+            50.47625732421875,
+            51.025634765625,
+            49.8226318359375,
+            50.63140869140625,
+            49.99560546875,
+            50.440673828125,
+            50.1024169921875
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "2a6e87e91e3eb7ff40690bccc50d457d0cf6baf20a87461b7c346a18cad1158f",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n256/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 4096,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "invocations_per_sample": 4,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_motor8 (Gafro.BatchMotorSoA: 8 parallel Vector{Float64}, one per motor blade)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 1.0579833984375,
+          "median_ns_per_operation": 21.44122314453125,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            28.1220703125,
+            21.54296875,
+            20.26885986328125,
+            21.68792724609375,
+            20.121337890625,
+            36.69244384765625,
+            20.38323974609375,
+            20.622314453125,
+            22.14825439453125,
+            30.1082763671875,
+            28.69677734375,
+            20.12896728515625,
+            21.189453125,
+            21.44122314453125,
+            20.718994140625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "521130976525c399d802f3eaa836c68a846e45ecb679b1a5465b6e508e7f4734",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_motor_composition/f64/n4096/scalar_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 16,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 1024,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.348388671875,
+          "median_ns_per_operation": 4.2825927734375,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            4.20892333984375,
+            4.23175048828125,
+            4.2825927734375,
+            4.83453369140625,
+            3.89105224609375,
+            3.88848876953125,
+            3.9342041015625,
+            4.26739501953125,
+            4.7989501953125,
+            4.79888916015625,
+            5.345703125,
+            4.51666259765625,
+            4.72515869140625,
+            4.48358154296875,
+            4.0740966796875
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "ffdd92bd647a4d3bb83c1ebfc101ae959ce326107fa6c5bbaa819f3d3b209213",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n16/e1_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 256,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 64,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.76031494140625,
+          "median_ns_per_operation": 6.5994873046875,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            8.074462890625,
+            6.5816650390625,
+            7.35980224609375,
+            6.5994873046875,
+            6.67572021484375,
+            7.10296630859375,
+            6.8868408203125,
+            6.6070556640625,
+            6.853759765625,
+            2.886474609375,
+            3.35443115234375,
+            2.69573974609375,
+            2.6829833984375,
+            2.62451171875,
+            2.60162353515625
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "7099490d7687320fb7d3a8f70e57e0c5e6bd8b38a109dc330172a4c90d230156",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n256/e1_lane0"
+    },
+    {
+      "apparent_winner": null,
+      "category": "optimization_variant",
+      "cells": [
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "cpp",
+          "label": "cpp",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "idris2",
+          "label": "idris2",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "gap": {
+            "algorithm_portability": "Do not port for timing until the environment or canonical oracle is satisfied.",
+            "classification": "blocked_validation_or_environment",
+            "required_work": "restore the toolchain/checkout or adapt the existing API and pass the full oracle",
+            "tradeoffs": "correctness risk first; added adapter and maintenance work"
+          },
+          "implementation": "rust",
+          "label": "rust",
+          "reason": "no adapter evidence in this run",
+          "status": "blocked"
+        },
+        {
+          "capability_class": "equivalent_supported",
+          "cpu": null,
+          "dirty": false,
+          "dispersion": "unscaled median absolute deviation (MAD)",
+          "environment": {
+            "backend": "llvm-jit",
+            "compiler": "julia version 1.13.1",
+            "flags": [
+              "julia: 1.13.1",
+              "opt_level: 2",
+              "check_bounds: 0",
+              "inline: 1",
+              "cpu_target: westmere",
+              "word_size: 64"
+            ],
+            "host": {
+              "affinity": "not-pinned: Julia sets no CPU affinity and the runner requests none",
+              "allocation_boundary": "excluded: the output batch is preallocated before the timer starts",
+              "batch_size": 4096,
+              "clock": "Base.time_ns (host monotonic)",
+              "comparison_scope": "application_end_to_end",
+              "device_residency": "host",
+              "input_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "invocations_per_sample": 4,
+              "julia_version": "1.13.1",
+              "machine": "x86_64",
+              "output_layout": "structure_of_arrays_cartesian3 (Gafro.BatchPointSoA: 3 parallel Vector{Float64}; NOT the manifest's structure_of_arrays_point5 conformal layout)",
+              "packing_boundary": "excluded: SoA operands built before the timer starts",
+              "process_threads_available": 1,
+              "python": "3.12.12",
+              "release": "7.2.12-orbstack-00394-gbecdd6130068",
+              "scalar_type": "fp64",
+              "simd_target": "westmere",
+              "state": "warm",
+              "stream_count": 0,
+              "synchronization": "completed_before_host_timer_stop",
+              "system": "Linux",
+              "target_triple": "x86_64-linux-gnu",
+              "thread_count": 1,
+              "timed_phases": [
+                "optimized_batch",
+                "host_observation"
+              ],
+              "timing_resolution_clamped": false,
+              "timing_scope": "cpu_optimized_batch"
+            }
+          },
+          "execution": null,
+          "gpu": null,
+          "implementation": "julia",
+          "label": "julia",
+          "mad_ns_per_operation": 0.20343017578125,
+          "median_ns_per_operation": 6.75714111328125,
+          "repository_revision": "0cbf25a13245bb74c7c49e1298fd24c9f5c966e3",
+          "sample_count": 15,
+          "samples_ns_per_operation": [
+            6.66558837890625,
+            7.97021484375,
+            7.1182861328125,
+            6.5511474609375,
+            6.5537109375,
+            6.57147216796875,
+            6.57403564453125,
+            7.33441162109375,
+            7.41583251953125,
+            8.1456298828125,
+            6.61468505859375,
+            6.5765380859375,
+            6.7774658203125,
+            7.32171630859375,
+            6.75714111328125
+          ],
+          "status": "supported"
+        }
+      ],
+      "comparison_note": "rankings omitted: fewer than two supported implementations",
+      "definition_id": "dd502a7087eaf9eb321191bb664f2514bae6b63cc7123bb5a31e34dfe89e565c",
+      "environments_compatible": false,
+      "execution_contracts_compatible": false,
+      "ratio_compatible": false,
+      "ratios": [],
+      "workload_id": "batch_point_transform/f64/n4096/e1_lane0"
+    }
+  ]
+}

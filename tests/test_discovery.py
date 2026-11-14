@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from benchmark_harness.cli import benchmark_idris2, discover
+from benchmark_harness.cli import benchmark_idris2, benchmark_julia, discover
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -33,6 +33,30 @@ class DiscoveryTests(unittest.TestCase):
             with patch("benchmark_harness.cli.shutil.which", return_value=None):
                 with self.assertRaisesRegex(SystemExit, "Idris 2 compiler not found"):
                     benchmark_idris2(args, root, {"workloads": []}, 1000, root / "run")
+
+    def test_julia_missing_executable_is_clear(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            implementation = root / "implementation"
+            implementation.mkdir()
+            (implementation / "Project.toml").write_text('name = "Fixture"\n')
+            args = type("Args", (), {"julia_path": str(implementation), "julia": "missing-julia", "profile": "smoke"})()
+            with patch("benchmark_harness.cli.shutil.which", return_value=None):
+                with self.assertRaisesRegex(SystemExit, "Julia executable not found"):
+                    benchmark_julia(args, root, {"workloads": []}, {}, root / "run")
+
+    def test_julia_checkout_without_contract_runner_is_clear(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            implementation = root / "implementation"
+            (implementation / "benchmark").mkdir(parents=True)
+            (implementation / "Project.toml").write_text('name = "Fixture"\n')
+            args = type("Args", (), {"julia_path": str(implementation), "julia": "julia", "profile": "smoke"})()
+            with patch("benchmark_harness.cli.shutil.which", return_value="/fixture/bin/julia"):
+                with patch("benchmark_harness.cli.subprocess.run") as run:
+                    with self.assertRaisesRegex(SystemExit, "no contract runner"):
+                        benchmark_julia(args, root, {"workloads": []}, {}, root / "run")
+                    run.assert_not_called()
 
     def test_idris_adapter_declares_totality_and_provenance(self):
         source = (Path(__file__).resolve().parents[1] / "idris2/src/Main.idr").read_text()

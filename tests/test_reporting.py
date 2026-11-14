@@ -48,6 +48,23 @@ class ReportingTests(unittest.TestCase):
         self.assertAlmostEqual(row["ratios"][0]["median_ratio"], 20 / 23)
         self.assertIn("10.000 +/- 5.000", render_summary_markdown(model))
 
+    def test_julia_column_is_rendered_and_rows_match_header_width(self):
+        model = build_summary_model(self.manifest, [evidence("julia", samples=(30, 34, 38)), evidence("cpp")], run_ids=["run"])
+        markdown = render_summary_markdown(model)
+        table = [line for line in markdown.splitlines() if line.startswith("| ")]
+        header, rule, data = table[0], table[1], table[2:]
+        self.assertIn("| Julia |", header)
+        self.assertTrue(data)
+        width = len(header.split("|"))
+        for line in [rule] + data:
+            self.assertEqual(len(line.split("|")), width, line)
+        julia_column = header.split("|").index(" Julia ")
+        row = next(line for line in data if "`motor_composition_gp/f64/scalar`" in line)
+        julia_cell = row.split("|")[julia_column]
+        # median 34 ns over 2 operations per sample = 17.000 ns/op
+        self.assertIn("17.000 +/- ", julia_cell)
+        self.assertIn("(n=3)", julia_cell)
+
     def test_incompatible_hosts_omit_ratios_and_winner(self):
         rows = [evidence("cpp"), evidence("rust", host={"system": "Other", "machine": "fixture64"})]
         model = build_summary_model(self.manifest, rows, run_ids=["run"])

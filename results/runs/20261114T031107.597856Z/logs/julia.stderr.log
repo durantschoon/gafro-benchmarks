@@ -1,0 +1,38 @@
+[contract-runner] profile=smoke revision=0cbf25a13245bb74c7c49e1298fd24c9f5c966e3 dirty=false compiler=julia version 1.13.1
+[contract-runner] sibling workloads-v1.json not found; running against the embedded transcription of gafro-benchmarks@db00060 contracts/workloads-v1.json
+[contract-runner] smoke: spatial_inertia_action/f64/wrench_checksum
+[contract-runner]   supported: 3 samples, 814.211 ns/operation (best sample), oracle value 12.33
+[contract-runner] smoke: spatial_inertia_transform/f64/e01_mass
+[contract-runner]   supported: 3 samples, 7358.693 ns/operation (best sample), oracle value 2.0
+[contract-runner] smoke: dense_geometric_product/f64/scalar
+[contract-runner]   supported: 3 samples, 3695.263 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: dense_geometric_product/f64/orthogonal
+[contract-runner]   unsupported: gafro-julia has no orthogonal ePlus/eMinus basis layout: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so the workload's declared orthogonal operand basis cannot be constructed
+[contract-runner] smoke: dense_geometric_product/f64/orthogonal_conversion
+[contract-runner]   unsupported: gafro-julia has no orthogonal ePlus/eMinus basis layout and no null-basis conversion boundary: src/algebra/blades.jl defines only the G(4,1) null-basis blades over e0,e1,e2,e3,ei, so neither the declared operand basis nor the orthogonal-to-null conversion at either boundary exists
+[contract-runner] smoke: motor_composition_gp/f64/scalar
+[contract-runner]   supported: 3 samples, 646.919 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: sandwich_point_transform/f64/e1
+[contract-runner]   supported: 3 samples, 1714.256 ns/operation (best sample), oracle value 3.5
+[contract-runner] smoke: point_pair_outer_product/f64/e12
+[contract-runner]   supported: 3 samples, 463.376 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: rotor_construction/f64/scalar
+[contract-runner]   supported: 3 samples, 184.334 ns/operation (best sample), oracle value 0.7071067811865476
+[contract-runner] smoke: translator_construction/f64/e1i
+[contract-runner]   supported: 3 samples, 9.25 ns/operation (best sample), oracle value -0.5
+[contract-runner] smoke: batch_motor_composition/f64/n16/scalar_lane0
+[contract-runner]   supported: 3 samples, 20.812 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: batch_motor_composition/f64/n256/scalar_lane0
+[contract-runner]   supported: 3 samples, 53.223 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: batch_motor_composition/f64/n4096/scalar_lane0
+[contract-runner]   supported: 3 samples, 56.407 ns/operation (best sample), oracle value 1.0
+[contract-runner] smoke: batch_point_transform/f64/n16/e1_lane0
+[contract-runner]   supported: 3 samples, 7.812 ns/operation (best sample), oracle value 3.5
+[contract-runner] smoke: batch_point_transform/f64/n256/e1_lane0
+[contract-runner]   supported: 3 samples, 6.836 ns/operation (best sample), oracle value 3.5
+[contract-runner] smoke: batch_point_transform/f64/n4096/e1_lane0
+[contract-runner]   supported: 3 samples, 3.855 ns/operation (best sample), oracle value 3.5
+[contract-runner] smoke: robotics_forward_kinematics_2r/f64/motor_checksum
+[contract-runner]   supported: 3 samples, 2004.924 ns/operation (best sample), oracle value -1.414213562373095
+[contract-runner] smoke: robotics_geometric_jacobian_2r/f64/base_checksum
+[contract-runner]   supported: 3 samples, 24297.798 ns/operation (best sample), oracle value 5.0

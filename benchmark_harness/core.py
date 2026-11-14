@@ -528,7 +528,10 @@ def render_summary_markdown(model: Mapping[str, Any]) -> str:
             ratios += f"; apparent winner: {winner['implementation']} ({winner['scope']}); {winner['likely_reason']}"
         if workload["category"] == "optimization_variant":
             ratios = "optimization variant; " + ratios
-        lines.append(f"| `{workload['workload_id']}` | {rendered[0]} | {rendered[1]} | {rendered[2]} | {ratios} |")
+        # One cell per family in IMPLEMENTATIONS, in order, so data rows always
+        # carry exactly as many columns as the header built from the same tuple.
+        family_cells = " | ".join(rendered)
+        lines.append(f"| `{workload['workload_id']}` | {family_cells} | {ratios} |")
     return "\n".join(lines) + "\n"
 
 

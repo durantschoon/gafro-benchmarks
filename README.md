@@ -54,10 +54,11 @@ make test
 make benchmark-smoke
 ```
 
-Discovery checks `../gafro-{cpp,idris2,rust}` and their Envelope-style nested
-checkout directories. Override any location explicitly with `CPP_PATH=...`,
-`IDRIS2_PATH=...`, or `RUST_PATH=...`; a path is available only when its
-language-specific repository marker is present. The workload manifest and
+Discovery checks `../gafro-{cpp,idris2,rust,julia}` and their Envelope-style
+nested checkout directories. Override any location explicitly with
+`CPP_PATH=...`, `IDRIS2_PATH=...`, `RUST_PATH=...`, or `JULIA_PATH=...`; a path
+is available only when its language-specific repository marker is present
+(`Project.toml` for `julia`). The workload manifest and
 result schema are versioned under [`contracts/`](contracts/). Capability status
 is one of `supported`, `unsupported`, `unavailable`, or `failed`; every status
 except `supported` requires a reason.
@@ -152,6 +153,30 @@ make benchmark IMPLEMENTATIONS=cpp,idris2,rust \
 C++ and Idris report the Rust-specific CPU SoA IDs as unsupported. Robotics is
 reconciled in Stage 05 and CUDA in Stage 07, once those contracts exist.
 
+### Julia adapter
+
+Stage 18 registers `gafro-julia` in every comparison surface. The checkout
+ships its own contract runner, `benchmark/contract_main.jl`, which emits a
+`gafro-benchmark-result/v1` bundle on stdout and progress logging on stderr
+(captured separately). The harness instantiates the checkout's pinned
+`benchmark/` project (`julia --project=<checkout>/benchmark -e 'using Pkg;
+Pkg.instantiate()'`), then runs the contract runner with `cwd=<checkout>`,
+passing the profile, the checkout's `git` revision and dirty flag, and
+`julia --version`. Of the 18 contract rows, 16 are `supported`; the two
+`dense_geometric_product/f64/orthogonal*` rows are `unsupported` because the
+Julia algebra has no orthogonal `ePlus`/`eMinus` coefficient layout. The
+`JULIA` variable (`--julia`) selects the executable; the default is `julia`.
+
+```bash
+make benchmark-smoke IMPLEMENTATIONS=julia JULIA_PATH=../gafro-julia/gafro-julia
+make benchmark       IMPLEMENTATIONS=julia JULIA_PATH=../gafro-julia/gafro-julia
+python3 -m benchmark_harness.cli benchmark --profile full --implementations julia \
+  --julia-path ../gafro-julia/gafro-julia
+```
+
+Both `benchmark-smoke` and `benchmark` honour `IMPLEMENTATIONS`; their default
+member set is `cpp,idris2,rust,julia`.
+
 ### Canonical robotics workloads
 
 Stage 05 defines one language-neutral 2R chain rather than reusing the unlike
@@ -181,6 +206,20 @@ To build and run all benchmarks and generate side-by-side comparison tables:
 
 ```bash
 python3 runner/run_all.py
+```
+
+The shootout members are `cpp`, `rust`, `fstar` and `julia` (`--members`, a
+comma list, defaults to all four; `--julia-path` overrides Julia discovery).
+The published comparison, `results/benchmark_summary.{json,md}`, is
+regenerated only by a full-member run on one host: results from different
+hosts are never presented as a language ranking, and derived tables are never
+hand edited. A partial run must therefore name another destination with
+`--output-dir`, and the runner exits non-zero before running anything when it
+does not:
+
+```bash
+python3 runner/run_all.py --members julia --julia-path ../gafro-julia/gafro-julia \
+  --output-dir results/runs/<run-id>/shootout
 ```
 
 ### Individual Runs

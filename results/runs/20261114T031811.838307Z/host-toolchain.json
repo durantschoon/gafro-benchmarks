@@ -1,0 +1,6 @@
+{
+  "machine": "aarch64",
+  "python": "3.12.12",
+  "release": "7.2.12-orbstack-00394-gbecdd6130068",
+  "system": "Linux"
+}
