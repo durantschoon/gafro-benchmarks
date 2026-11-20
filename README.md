@@ -98,6 +98,19 @@ The Stage 02 C++ capability matrix is:
 | Motor-point sandwich | `double` | Supported | `e1` coefficient |
 | Point-pair outer product | `double` | Supported | `e12` coefficient |
 
+The adapter also emits the FP64 CPU SoA optimization rows,
+`batch_motor_composition` and `batch_point_transform` at 16, 256, and 4096
+elements, through gafro-cpp's `BatchMotorSoA` and `BatchPointSoA`. Packing and
+allocation stay outside the timed region, and every output lane is checked
+against the scalar gafro-cpp result before timing. A smoke sample of one small
+batch can fall inside a single clock tick, so batch samples are floored at 1 ns,
+as in the Rust adapter.
+
+The adapter includes gafro-cpp's algebra, physics, and robot headers rather
+than the `gafro/gafro.hpp` umbrella, whose `gafro/modern/` layer does not
+compile under Apple clang at the current gafro-cpp revision. Its CMake file
+accepts Eigen 3.4 through 5.x.
+
 Discovery normally finds the Envelope checkout and its configured build tree.
 An explicit clean release run is:
 
@@ -150,7 +163,7 @@ make benchmark IMPLEMENTATIONS=cpp,idris2,rust \
   RUST_PATH=../gafro-rust/gafro-rust
 ```
 
-C++ and Idris report the Rust-specific CPU SoA IDs as unsupported. Robotics is
+Idris reports the CPU SoA IDs as unsupported; C++ supports them. Robotics is
 reconciled in Stage 05 and CUDA in Stage 07, once those contracts exist.
 
 ### Julia adapter
