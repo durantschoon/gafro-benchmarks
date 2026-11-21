@@ -153,8 +153,8 @@ From `gafro-rust` benchmark run:
 ## 4. Next Session Action in `gafro-benchmarks`
 
 When starting the session in `gafro-benchmarks`:
-1. Check `docs/stages/stage-15-PROMPT.md`.
+1. Read the Stage 15 prompt in the internal development records.
 2. Run `make check`, `make test`, `make benchmark-smoke`.
 3. Ingest the Rust benchmark suite into the unified comparison report (`results/benchmark_summary.json` and `results/benchmark_summary.md`).
 4. Perform FP32 vs FP64 drift & performance analysis.
-5. Author `docs/stages/stage-15-REPORT.md` and merge Stage 15.
+5. Write the Stage 15 report in the internal development records and merge Stage 15.
