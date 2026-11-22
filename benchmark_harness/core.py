@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import hashlib
 from collections.abc import Iterable, Mapping
 from statistics import median
@@ -38,6 +39,26 @@ def parse_json(text: str) -> Any:
         return json.loads(text)
     except json.JSONDecodeError as exc:
         raise ContractError(f"invalid JSON: {exc.msg}") from exc
+
+
+_IDRIS_VERSION_ASSIGNMENT = re.compile(r"^IDRIS_VERSION[ \t]*(?:::|:|\?)?=[ \t]*([^#\s]*)[ \t]*(?:#.*)?$")
+
+
+def parse_idris_version_pin(makefile_text: str) -> tuple[str, str]:
+    """Return ("ok", version) or ("error", reason) for a Makefile's Idris pin.
+
+    The pin is the single top-level ``IDRIS_VERSION = <version>`` assignment.
+    A missing assignment, an empty value, or more than one assignment is an
+    error rather than a guess.
+    """
+    values = [match.group(1) for match in map(_IDRIS_VERSION_ASSIGNMENT.match, makefile_text.splitlines()) if match]
+    if not values:
+        return ("error", "no IDRIS_VERSION assignment")
+    if len(values) > 1:
+        return ("error", f"{len(values)} IDRIS_VERSION assignments ({', '.join(repr(value) for value in values)}); expected exactly one")
+    if not values[0]:
+        return ("error", "IDRIS_VERSION assignment has an empty value")
+    return ("ok", values[0])
 
 
 def validate_manifest(value: Any) -> dict[str, Any]:

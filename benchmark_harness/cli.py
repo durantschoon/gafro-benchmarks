@@ -13,8 +13,8 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .core import (IMPLEMENTATIONS, build_summary_model, parse_json,
-                   plan_gpu_sweep,
+from .core import (IMPLEMENTATIONS, build_summary_model, parse_idris_version_pin,
+                   parse_json, plan_gpu_sweep,
                    reconcile_results, render_summary_markdown,
                    summarize_results, validate_complete_run,
                    validate_heterogeneous_contract, validate_manifest)
@@ -177,6 +177,19 @@ def benchmark_cpp(args: argparse.Namespace, root: Path, manifest: dict[str, obje
     return write_bundle(run_dir, "cpp", checked, completed.stdout, completed.stderr)
 
 
+def idris2_pinned_version(implementation_path: Path) -> str:
+    """Read the Idris 2 compiler version the gafro-idris2 checkout pins in its Makefile."""
+    makefile = implementation_path / "Makefile"
+    try:
+        text = makefile.read_text()
+    except OSError as exc:
+        raise SystemExit(f"cannot read the Idris 2 version pin from {makefile}: {exc.strerror or exc}") from exc
+    status, value = parse_idris_version_pin(text)
+    if status != "ok":
+        raise SystemExit(f"cannot read the Idris 2 version pin from {makefile}: {value}")
+    return value
+
+
 def benchmark_idris2(args: argparse.Namespace, root: Path, manifest: dict[str, object], expected_operations: int, run_dir: Path) -> Path:
     found = discover(root, "idris2", args.idris2_path)
     if found["status"] != "available":
@@ -185,9 +198,10 @@ def benchmark_idris2(args: argparse.Namespace, root: Path, manifest: dict[str, o
     executable = shutil.which(args.idris2_compiler)
     if executable is None:
         raise SystemExit(f"Idris 2 compiler not found: {args.idris2_compiler}")
+    pinned = idris2_pinned_version(implementation_path)
     version = subprocess.run([executable, "--version"], check=True, text=True, capture_output=True).stdout.strip()
-    if "0.7.0" not in version:
-        raise SystemExit(f"gafro-idris2 requires pinned Idris 2 0.7.0, found: {version}")
+    if pinned not in version:
+        raise SystemExit(f"gafro-idris2 requires pinned Idris 2 {pinned} (IDRIS_VERSION in {implementation_path / 'Makefile'}), found: {version}")
     revision, dirty = repository_identity(implementation_path)
     with tempfile.TemporaryDirectory(prefix="gafro-benchmark-idris2-") as directory:
         staging = Path(directory)

@@ -150,5 +150,51 @@ class EnvelopeLayoutDiscoveryTests(unittest.TestCase):
             self.assertEqual(row["path"], str(plain))
 
 
+
+class IdrisVersionPinAdapterTests(unittest.TestCase):
+    """The Idris adapter requires the compiler version the checkout pins."""
+
+    @staticmethod
+    def make_args(implementation):
+        return type("Args", (), {
+            "idris2_path": str(implementation),
+            "idris2_compiler": "idris2",
+            "idris2_backend": "chez",
+            "profile": "smoke",
+        })()
+
+    def test_checkout_without_makefile_pin_names_the_makefile(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            implementation = root / "implementation"
+            implementation.mkdir()
+            (implementation / "gafro.ipkg").write_text("package fixture\n")
+            makefile = str(implementation.resolve() / "Makefile")
+            with patch("benchmark_harness.cli.shutil.which", return_value="/fixture/bin/idris2"):
+                with patch("benchmark_harness.cli.subprocess.run") as run:
+                    with self.assertRaises(SystemExit) as raised:
+                        benchmark_idris2(self.make_args(implementation), root, {"workloads": []}, 1000, root / "run")
+                    run.assert_not_called()
+            self.assertIn(makefile, str(raised.exception))
+
+    def test_version_mismatch_names_both_versions_and_the_pin_source(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            implementation = root / "implementation"
+            implementation.mkdir()
+            (implementation / "gafro.ipkg").write_text("package fixture\n")
+            (implementation / "Makefile").write_text("IDRIS2 ?= idris2\nIDRIS_VERSION = 0.8.0\n")
+            makefile = str(implementation.resolve() / "Makefile")
+            found = type("Completed", (), {"stdout": "Idris 2, version 0.7.0\n"})()
+            with patch("benchmark_harness.cli.shutil.which", return_value="/fixture/bin/idris2"):
+                with patch("benchmark_harness.cli.subprocess.run", return_value=found):
+                    with self.assertRaises(SystemExit) as raised:
+                        benchmark_idris2(self.make_args(implementation), root, {"workloads": []}, 1000, root / "run")
+            message = str(raised.exception)
+            self.assertIn("0.8.0", message)
+            self.assertIn("Idris 2, version 0.7.0", message)
+            self.assertIn(makefile, message)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from benchmark_harness.core import ContractError, parse_json, reconcile_results, summarize_results, validate_complete_run, validate_manifest, validate_result
+from benchmark_harness.core import ContractError, parse_idris_version_pin, parse_json, reconcile_results, summarize_results, validate_complete_run, validate_manifest, validate_result
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -112,6 +112,26 @@ class SmokeRowTests(unittest.TestCase):
         observable = manifest["workloads"][0]["observable"]
         value = supported[0]["oracle"]["value"]
         self.assertLessEqual(abs(value - observable["reference"]), observable["absolute_tolerance"])
+
+
+
+class IdrisVersionPinTests(unittest.TestCase):
+    """Pure parsing of the IDRIS_VERSION pin from a gafro-idris2 Makefile."""
+
+    def test_pin_found_among_other_assignments(self):
+        text = "IDRIS2 ?= idris2\nPACKAGE = gafro.ipkg\nIDRIS_VERSION = 0.8.0\nTESTS := tests\n\tcheck:\n"
+        self.assertEqual(parse_idris_version_pin(text), ("ok", "0.8.0"))
+
+    def test_missing_assignment_is_an_error(self):
+        status, reason = parse_idris_version_pin("IDRIS2 ?= idris2\n# IDRIS_VERSION = 0.7.0\n")
+        self.assertEqual(status, "error")
+        self.assertIn("no IDRIS_VERSION", reason)
+
+    def test_conflicting_assignments_are_an_error(self):
+        status, reason = parse_idris_version_pin("IDRIS_VERSION = 0.7.0\nIDRIS_VERSION = 0.8.0\n")
+        self.assertEqual(status, "error")
+        self.assertIn("0.7.0", reason)
+        self.assertIn("0.8.0", reason)
 
 
 if __name__ == "__main__":

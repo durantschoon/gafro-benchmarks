@@ -129,10 +129,10 @@ workload IDs, operation counts, finite samples, and oracle values pass.
 ### Idris 2 adapter
 
 Stage 03 runs the same four common workloads against the attached
-`gafro-idris2` checkout. The adapter requires the implementation's pinned Idris
-2 0.7.0 compiler and defaults to the Chez backend. It builds from an isolated
-temporary source tree, records revision and dirty state, and keeps encoding and
-output outside the timed regions:
+`gafro-idris2` checkout. The adapter requires the Idris 2 compiler version the
+checkout pins (`IDRIS_VERSION` in its `Makefile`) and defaults to the Chez
+backend. It builds from an isolated temporary source tree, records revision and
+dirty state, and keeps encoding and output outside the timed regions:
 
 ```bash
 make benchmark IMPLEMENTATIONS=cpp,idris2 \
