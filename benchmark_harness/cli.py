@@ -23,13 +23,25 @@ MARKERS = {"cpp": "CMakeLists.txt", "idris2": "gafro.ipkg", "rust": "Cargo.toml"
 
 
 def discover(root: Path, family: str, override: str | None) -> dict[str, str]:
+    """Locate a validated gafro-<family> checkout for this repository at root.
+
+    An explicit override is the only candidate.  Otherwise, for each parent in
+    (root.parent, root.parent.parent), try in order:
+    <parent>/gafro-<family> and <parent>/gafro-<family>/gafro-<family>; then,
+    for each parent again, the Envelope layout
+    <parent>/egafro-<family>/gafro-<family>.  The first candidate holding the
+    family's marker file wins.  When none does, the unavailable row shows the
+    first candidate tried.
+    """
     if override:
         candidates = [Path(override).expanduser()]
     else:
+        parents = (root.parent, root.parent.parent)
         candidates = []
-        for parent in (root.parent, root.parent.parent):
+        for parent in parents:
             checkout = parent / f"gafro-{family}"
             candidates.extend((checkout, checkout / f"gafro-{family}"))
+        candidates.extend(parent / f"egafro-{family}" / f"gafro-{family}" for parent in parents)
     marker = MARKERS[family]
     for candidate in candidates:
         resolved = candidate.resolve()
@@ -82,16 +94,25 @@ def gpu_plan(args: argparse.Namespace, root: Path) -> int:
     return 0
 
 
-def smoke(root: Path) -> int:
-    manifest = validate_manifest(json.loads((root / "contracts/workloads-v1.json").read_text()))
-    host = {"system": platform.system(), "machine": platform.machine()}
+def smoke_rows(manifest: dict[str, object], host: dict[str, str]) -> list[dict[str, object]]:
+    """Build the synthetic smoke rows for the manifest's first workload.
+
+    Pure: no I/O.  The supported row carries oracle.value, the key that
+    validate_complete_run reads, so it is a safe template for member authors.
+    """
     identity = {"family": "cpp", "name": "synthetic-smoke", "repository_revision": "synthetic", "dirty": False, "compiler": "none", "backend": "fixture", "flags": []}
     workload = manifest["workloads"][0]
-    rows = [
-        {"schema_version": "gafro-benchmark-result/v1", "implementation": identity, "host": host, "workload_id": workload["id"], "status": "supported", "reason": "", "warmup_operations": workload["warmup_operations"], "operations_per_sample": workload["operations_per_sample"], "sample_durations_ns": [1000, 1100, 900], "oracle": {"scalar": 1.0}},
+    return [
+        {"schema_version": "gafro-benchmark-result/v1", "implementation": identity, "host": host, "workload_id": workload["id"], "status": "supported", "reason": "", "warmup_operations": workload["warmup_operations"], "operations_per_sample": workload["operations_per_sample"], "sample_durations_ns": [1000, 1100, 900], "oracle": {"value": 1.0}},
         {"schema_version": "gafro-benchmark-result/v1", "implementation": {**identity, "family": "idris2"}, "host": host, "workload_id": workload["id"], "status": "unsupported", "reason": "synthetic capability gap"},
         {"schema_version": "gafro-benchmark-result/v1", "implementation": {**identity, "family": "rust"}, "host": host, "workload_id": workload["id"], "status": "unavailable", "reason": "synthetic missing checkout"},
     ]
+
+
+def smoke(root: Path) -> int:
+    manifest = validate_manifest(json.loads((root / "contracts/workloads-v1.json").read_text()))
+    host = {"system": platform.system(), "machine": platform.machine()}
+    rows = smoke_rows(manifest, host)
     print(json.dumps(summarize_results(reconcile_results(manifest, rows)), indent=2, sort_keys=True))
     return 0
 

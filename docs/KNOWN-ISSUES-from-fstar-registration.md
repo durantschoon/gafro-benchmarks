@@ -10,15 +10,16 @@ belong to); sources: gafro-fstar stage-04 REPORT §deviations/OQ.
    validated by `contracts/result-v1.schema.json`). A new member
    author following the doc emits rejected rows. Fix: update the doc
    sample from a committed run.
-2. **`cli.smoke` writes `oracle: {"scalar": 1.0}` but the validator
-   reads `oracle.value`** (`core.validate_complete_run`) — a template
-   trap for anyone copying the smoke row.
-3. **The C++ member no longer builds on this host**:
-   `cpp/build/CMakeCache.txt` pins `/opt/homebrew/opt/gcc/bin/g++-15`,
-   which Homebrew has since replaced with `…-16`. Pre-existing host
-   rot, reproduced with the exact cmake invocation during the fstar
-   registration; `build_cpp` itself is unchanged. Fix: regenerate the
-   build dir (it arguably should not be committed at all).
+3. **The sibling gafro-cpp build tree pins a compiler that is gone**:
+   gafro-cpp's own `build/CMakeCache.txt` pins
+   `/opt/homebrew/opt/gcc/bin/g++-15`, which Homebrew has since replaced
+   with `…-16`, so that sibling's own build no longer configures as-is.
+   This no longer affects the harness: the C++ member compiles its
+   adapter in a fresh temporary tree with its own compiler
+   (`/usr/bin/clang++` on Darwin) and reads only the generated
+   `src/gafro/gafro_package_config.hpp` from that build directory; a
+   2026-11-22 smoke run built and validated the C++ member against it
+   unchanged. Fix (in gafro-cpp): regenerate its build dir.
 4. **`benchmark_harness/core.py:15` hard-codes
    `IMPLEMENTATIONS = ("cpp","idris2","rust","julia")`** and rejects
    `"fstar"`; the one-token addition is proposed in the fstar

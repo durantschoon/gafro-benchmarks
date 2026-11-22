@@ -101,15 +101,25 @@ def placeholder_rows(status: str, reason: str, identity: dict | None = None) -> 
 
 
 def discover(override: str | None) -> dict[str, str]:
-    """Locate a gafro-fstar checkout, mirroring benchmark_harness.cli.discover."""
+    """Locate a gafro-fstar checkout, mirroring benchmark_harness.cli.discover.
+
+    An explicit override (argument, else GAFRO_FSTAR_PATH) is the only
+    candidate.  Otherwise, for each parent in this repository's parent and
+    grandparent, try <parent>/gafro-fstar and <parent>/gafro-fstar/gafro-fstar;
+    then, for each parent again, the Envelope layout
+    <parent>/egafro-fstar/gafro-fstar.  The first with the marker wins; the
+    unavailable message shows the first candidate tried.
+    """
     override = override or os.environ.get("GAFRO_FSTAR_PATH")
     if override:
         candidates = [Path(override).expanduser()]
     else:
+        parents = (ROOT_DIR.parent, ROOT_DIR.parent.parent)
         candidates = []
-        for parent in (ROOT_DIR.parent, ROOT_DIR.parent.parent):
+        for parent in parents:
             checkout = parent / f"gafro-{FAMILY}"
             candidates.extend((checkout, checkout / f"gafro-{FAMILY}"))
+        candidates.extend(parent / f"egafro-{FAMILY}" / f"gafro-{FAMILY}" for parent in parents)
     for candidate in candidates:
         resolved = candidate.resolve()
         if (resolved / MARKER).is_file():
@@ -118,8 +128,10 @@ def discover(override: str | None) -> dict[str, str]:
     return {
         "status": "unavailable",
         "path": shown,
-        "reason": f"no gafro-fstar checkout with {MARKER} at {shown} "
-                  f"(set GAFRO_FSTAR_PATH or pass --fstar-path)",
+        "reason": f"no gafro-fstar checkout with {MARKER} at {shown}"
+                  + (f" or {len(candidates) - 1} other default locations "
+                     f"(including egafro-{FAMILY}/gafro-{FAMILY})" if len(candidates) > 1 else "")
+                  + " (set GAFRO_FSTAR_PATH or pass --fstar-path)",
     }
 
 

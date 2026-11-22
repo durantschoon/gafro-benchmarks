@@ -160,5 +160,43 @@ class ShootoutPartialRunGuardTests(unittest.TestCase):
         self.assert_refused_before_running(["--members", "julia", "--output-dir", str(ROOT / "results")])
 
 
+
+FSTAR_RUNNER = ROOT / "fstar" / "run_fstar.py"
+
+
+def load_fstar_runner():
+    """Import fstar/run_fstar.py by path; it is a script, not a package."""
+    spec = importlib.util.spec_from_file_location("gafro_run_fstar", FSTAR_RUNNER)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+class EnvelopeLayoutDiscoveryTests(unittest.TestCase):
+    """The standalone runners find egafro-<family>/gafro-<family> checkouts."""
+
+    def test_julia_and_fstar_discover_envelope_layout(self):
+        import tempfile
+        run_all = load_runner()
+        run_fstar = load_fstar_runner()
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "egafro-benchmarks" / "gafro-benchmarks"
+            root.mkdir(parents=True)
+            julia = base / "egafro-julia" / "gafro-julia"
+            julia.mkdir(parents=True)
+            (julia / run_all.JULIA_MARKER).write_text("fixture\n")
+            fstar = base / "egafro-fstar" / "gafro-fstar"
+            (fstar / run_fstar.MARKER).parent.mkdir(parents=True)
+            (fstar / run_fstar.MARKER).write_text("fixture\n")
+            with patch.object(run_all, "ROOT_DIR", root):
+                self.assertEqual(run_all.discover_julia(), julia.resolve())
+            with patch.object(run_fstar, "ROOT_DIR", root), \
+                    patch.dict("os.environ", {}, clear=False) as environment:
+                environment.pop("GAFRO_FSTAR_PATH", None)
+                found = run_fstar.discover(None)
+            self.assertEqual(found, {"status": "available", "path": str(fstar.resolve())})
+
+
 if __name__ == "__main__":
     unittest.main()

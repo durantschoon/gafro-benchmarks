@@ -108,5 +108,47 @@ class DiscoveryTests(unittest.TestCase):
         self.assertIn("applyInertia", idris)
 
 
+
+class EnvelopeLayoutDiscoveryTests(unittest.TestCase):
+    """Default discovery of egafro-<family>/gafro-<family> sibling checkouts."""
+
+    @staticmethod
+    def make_checkout(path, marker="CMakeLists.txt"):
+        path.mkdir(parents=True)
+        (path / marker).write_text("fixture\n")
+        return path.resolve()
+
+    def test_envelope_checkout_found_from_grandparent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "egafro-benchmarks" / "gafro-benchmarks"
+            root.mkdir(parents=True)
+            expected = self.make_checkout(base / "egafro-cpp" / "gafro-cpp")
+            row = discover(root, "cpp", None)
+            self.assertEqual(row["status"], "available")
+            self.assertEqual(row["path"], str(expected))
+
+    def test_envelope_checkout_found_from_parent(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "gafro-benchmarks"
+            root.mkdir()
+            expected = self.make_checkout(base / "egafro-rust" / "gafro-rust", "Cargo.toml")
+            row = discover(root, "rust", None)
+            self.assertEqual(row["status"], "available")
+            self.assertEqual(row["path"], str(expected))
+
+    def test_plain_sibling_wins_over_envelope_checkout(self):
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "gafro-benchmarks"
+            root.mkdir()
+            plain = self.make_checkout(base / "gafro-cpp")
+            self.make_checkout(base / "egafro-cpp" / "gafro-cpp")
+            row = discover(root, "cpp", None)
+            self.assertEqual(row["status"], "available")
+            self.assertEqual(row["path"], str(plain))
+
+
 if __name__ == "__main__":
     unittest.main()

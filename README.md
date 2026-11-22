@@ -54,8 +54,10 @@ make test
 make benchmark-smoke
 ```
 
-Discovery checks `../gafro-{cpp,idris2,rust,julia}` and their Envelope-style
-nested checkout directories. Override any location explicitly with
+Discovery checks `../gafro-{cpp,idris2,rust,julia}` and their nested
+`gafro-<family>/gafro-<family>` checkout directories, then the Envelope layout
+`egafro-<family>/gafro-<family>`, each relative to this checkout's parent and
+grandparent; the first match wins. Override any location explicitly with
 `CPP_PATH=...`, `IDRIS2_PATH=...`, `RUST_PATH=...`, or `JULIA_PATH=...`; a path
 is available only when its language-specific repository marker is present
 (`Project.toml` for `julia`). The workload manifest and
@@ -116,8 +118,8 @@ An explicit clean release run is:
 
 ```bash
 make benchmark IMPLEMENTATIONS=cpp \
-  CPP_PATH=../gafro-cpp/gafro-cpp \
-  CPP_BUILD_PATH=../gafro-cpp/gafro-cpp/build \
+  CPP_PATH=../../egafro-cpp/gafro-cpp \
+  CPP_BUILD_PATH=../../egafro-cpp/gafro-cpp/build \
   CPP_COMPILER=/usr/bin/clang++
 ```
 
@@ -134,7 +136,6 @@ output outside the timed regions:
 
 ```bash
 make benchmark IMPLEMENTATIONS=cpp,idris2 \
-  IDRIS2_PATH=../gafro-idris2/gafro-idris2 \
   IDRIS2_COMPILER=/opt/homebrew/bin/idris2 \
   IDRIS2_BACKEND=chez
 ```
@@ -159,8 +160,7 @@ public type uses null `e0`/`eInf` coefficients. Equal array indices would not
 denote equal multivectors. Run all current adapters with:
 
 ```bash
-make benchmark IMPLEMENTATIONS=cpp,idris2,rust \
-  RUST_PATH=../gafro-rust/gafro-rust
+make benchmark IMPLEMENTATIONS=cpp,idris2,rust
 ```
 
 Idris reports the CPU SoA IDs as unsupported; C++ supports them. Robotics is
@@ -181,10 +181,9 @@ Julia algebra has no orthogonal `ePlus`/`eMinus` coefficient layout. The
 `JULIA` variable (`--julia`) selects the executable; the default is `julia`.
 
 ```bash
-make benchmark-smoke IMPLEMENTATIONS=julia JULIA_PATH=../gafro-julia/gafro-julia
-make benchmark       IMPLEMENTATIONS=julia JULIA_PATH=../gafro-julia/gafro-julia
-python3 -m benchmark_harness.cli benchmark --profile full --implementations julia \
-  --julia-path ../gafro-julia/gafro-julia
+make benchmark-smoke IMPLEMENTATIONS=julia
+make benchmark       IMPLEMENTATIONS=julia
+python3 -m benchmark_harness.cli benchmark --profile full --implementations julia
 ```
 
 Both `benchmark-smoke` and `benchmark` honour `IMPLEMENTATIONS`; their default
@@ -231,7 +230,7 @@ hand edited. A partial run must therefore name another destination with
 does not:
 
 ```bash
-python3 runner/run_all.py --members julia --julia-path ../gafro-julia/gafro-julia \
+python3 runner/run_all.py --members julia \
   --output-dir results/runs/<run-id>/shootout
 ```
 

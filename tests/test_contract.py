@@ -101,5 +101,18 @@ class ContractTests(unittest.TestCase):
                          [[1.0, 0.0, 0.0, 1.0, 0.0, 0.0], [1.0, 0.0, 0.0, 2.0, 0.0, 0.0]])
 
 
+
+class SmokeRowTests(unittest.TestCase):
+    def test_supported_smoke_row_passes_the_per_row_oracle_check(self):
+        from benchmark_harness.cli import smoke_rows
+        manifest = validate_manifest(json.loads((Path(__file__).resolve().parents[1] / "contracts/workloads-v1.json").read_text()))
+        rows = smoke_rows(manifest, {"system": "fixture", "machine": "fixture"})
+        supported = [row for row in rows if row["status"] == "supported"]
+        self.assertEqual(len(supported), 1)
+        observable = manifest["workloads"][0]["observable"]
+        value = supported[0]["oracle"]["value"]
+        self.assertLessEqual(abs(value - observable["reference"]), observable["absolute_tolerance"])
+
+
 if __name__ == "__main__":
     unittest.main()

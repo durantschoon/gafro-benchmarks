@@ -139,16 +139,20 @@ def discover_julia(override=None):
     """Return the resolved gafro-julia checkout, or None.
 
     Mirrors benchmark_harness/cli.py discover() for family "julia": an
-    explicit override, else ../gafro-julia and ../gafro-julia/gafro-julia
-    relative to this repository's parent and grandparent.
+    explicit override, else, for each parent in this repository's parent and
+    grandparent, <parent>/gafro-julia and <parent>/gafro-julia/gafro-julia;
+    then, for each parent again, the Envelope layout
+    <parent>/egafro-julia/gafro-julia.  The first with the marker wins.
     """
     if override:
         candidates = [Path(override).expanduser()]
     else:
+        parents = (ROOT_DIR.parent, ROOT_DIR.parent.parent)
         candidates = []
-        for parent in (ROOT_DIR.parent, ROOT_DIR.parent.parent):
+        for parent in parents:
             checkout = parent / "gafro-julia"
             candidates.extend((checkout, checkout / "gafro-julia"))
+        candidates.extend(parent / "egafro-julia" / "gafro-julia" for parent in parents)
     for candidate in candidates:
         resolved = candidate.resolve()
         if (resolved / JULIA_MARKER).is_file():
