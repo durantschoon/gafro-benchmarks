@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <numbers>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -53,6 +54,8 @@ struct Result {
     std::uint64_t warmup_operations{0};
     std::uint64_t operations_per_sample{0};
     std::size_t batch_size{0};  // 0 for scalar workloads
+    std::string status{"supported"};
+    std::string reason{};  // non-empty only for a non-supported row
 };
 template <class T> inline void do_not_optimize(T const &value) {
 #if defined(__GNUC__) || defined(__clang__)
@@ -170,6 +173,56 @@ Result batch_point(bool smoke, const std::string &id) {
     }
     const BatchPlan plan = batch_plan<N>(smoke);
     return measure(id, plan.warmup_invocations, plan.sample_invocations, plan.samples, 3.5, operation, N);
+}
+
+// Joins coordinates as "[a, b, ...]" at full precision for a failed-row reason.
+std::string coordinates_text(const std::array<double, 6> &values) {
+    std::ostringstream text;
+    text << std::setprecision(17) << '[';
+    for (std::size_t index = 0; index < values.size(); ++index) text << (index ? ", " : "") << values[index];
+    text << ']';
+    return text.str();
+}
+
+// Full-tensor spatial inertia action. The untimed oracle check compares every
+// wrench coordinate (f1, f2, tau12, f3, tau13, tau23) and the checksum; a
+// mismatch is evidence about gafro-cpp, so it becomes a "failed" row instead
+// of aborting the adapter, and no timing is reported for it.
+Result full_tensor_inertia_action(std::uint64_t warmup, std::uint64_t operations, int samples, const Twist<double> &twist) {
+    const std::string id = "spatial_inertia_action/f64/full_tensor_wrench_checksum";
+    // gafro-cpp's 7-parameter constructor takes the tensor's own entries:
+    // Inertia(mass, tensor) forwards tensor.coeff(0, 1) as ixy (Inertia.hxx:34-35).
+    const Inertia<double> inertia(2.0, 0.5, 0.05, 0.02, 0.6, 0.03, 0.8);
+    const std::array<double, 6> expected{2.0, 4.0, 0.08, 6.0, 0.102, 0.142};
+    const double expected_checksum = 12.324;
+    const auto coordinates = [&]() {
+        const Wrench<double> wrench = inertia(twist);
+        return std::array<double, 6>{wrench.template get<blades::e01>(), wrench.template get<blades::e02>(),
+                                     wrench.template get<blades::e12>(), wrench.template get<blades::e03>(),
+                                     wrench.template get<blades::e13>(), wrench.template get<blades::e23>()};
+    };
+    const std::array<double, 6> observed = coordinates();
+    double observed_checksum = 0.0;
+    bool matches = true;
+    for (std::size_t index = 0; index < observed.size(); ++index) {
+        observed_checksum += observed[index];
+        matches = matches && std::isfinite(observed[index]) && std::abs(observed[index] - expected[index]) <= 1e-10;
+    }
+    matches = matches && std::abs(observed_checksum - expected_checksum) <= 1e-10;
+    if (!matches) {
+        Result failed{id, {}, 0.0, 0, 0, 0};
+        failed.status = "failed";
+        failed.reason = "untimed oracle mismatch in gafro-cpp Inertia(mass, Ixx, Ixy, Ixz, Iyy, Iyz, Izz) applied to the twist: "
+                        "expected wrench coordinates (f1, f2, tau12, f3, tau13, tau23) " + coordinates_text(expected) +
+                        ", observed " + coordinates_text(observed);
+        return failed;
+    }
+    return measure(id, warmup, operations, samples, expected_checksum, [&](std::uint64_t) {
+        const Wrench<double> wrench = inertia(twist);
+        return wrench.template get<blades::e01>() + wrench.template get<blades::e02>() +
+               wrench.template get<blades::e12>() + wrench.template get<blades::e03>() +
+               wrench.template get<blades::e13>() + wrench.template get<blades::e23>();
+    });
 }
 
 std::string argument(int argc, char **argv, const std::string &key, const std::string &fallback) {
@@ -301,6 +354,7 @@ int main(int argc, char **argv) try {
         const Inertia<double> transformed = physics_inertia.transform(motors[0]);
         return transformed.getElement01().template get<blades::e01>();
     }));
+    results.push_back(full_tensor_inertia_action(warmup, operations, samples, physics_twist));
 
     results.push_back(batch_motor<16>(smoke, "batch_motor_composition/f64/n16/scalar_lane0"));
     results.push_back(batch_motor<256>(smoke, "batch_motor_composition/f64/n256/scalar_lane0"));
@@ -314,6 +368,14 @@ int main(int argc, char **argv) try {
     for (std::size_t index = 0; index < results.size(); ++index) {
         const auto &result = results[index];
         if (index) std::cout << ',';
+        if (result.status != "supported") {
+            std::cout << "{\"schema_version\":\"gafro-benchmark-result/v1\",\"implementation\":{\"family\":\"cpp\",\"name\":\"gafro-cpp\","
+                      << "\"repository_revision\":\"" << revision << "\",\"dirty\":" << dirty << ','
+                      << "\"compiler\":\"" << GAFRO_BENCH_COMPILER << "\",\"backend\":\"cpu-scalar\",\"flags\":[\"" << GAFRO_BENCH_FLAGS << "\"]},"
+                      << "\"host\":{" << host_base << "},\"workload_id\":\"" << result.id << "\",\"status\":\"" << result.status
+                      << "\",\"reason\":\"" << result.reason << "\"}";
+            continue;
+        }
         // Batch rows describe the SoA measurement boundary, as the Rust adapter does.
         const std::string host = result.batch_size == 0 ? "{" + host_base + "}" :
             "{" + host_base + ",\"threads\":1,\"simd\":\"compiler-target\",\"alignment\":\"native\",\"batch_size\":" +

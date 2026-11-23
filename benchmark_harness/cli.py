@@ -264,7 +264,7 @@ def benchmark_rust(args: argparse.Namespace, root: Path, manifest: dict[str, obj
         ], check=True, text=True, capture_output=True)
     preserve_adapter_output(run_dir, "rust", completed.stdout, completed.stderr)
     bundle = parse_json(completed.stdout)
-    checked = validate_complete_run(manifest, bundle.get("results", []), "rust", expected_operations=expected_operations)
+    checked = validate_complete_run(manifest, complete_adapter_results(manifest, bundle.get("results", []), "rust"), "rust", expected_operations=expected_operations)
     return write_bundle(run_dir, "rust", checked, completed.stdout, completed.stderr)
 
 
@@ -298,7 +298,7 @@ def benchmark_julia(args: argparse.Namespace, root: Path, manifest: dict[str, ob
     )
     preserve_adapter_output(run_dir, "julia", completed.stdout, completed.stderr)
     bundle = parse_json(completed.stdout)
-    checked = validate_complete_run(manifest, bundle.get("results", []), "julia", expected_operations=expected_operations)
+    checked = validate_complete_run(manifest, complete_adapter_results(manifest, bundle.get("results", []), "julia"), "julia", expected_operations=expected_operations)
     return write_bundle(run_dir, "julia", checked, completed.stdout, completed.stderr)
 
 

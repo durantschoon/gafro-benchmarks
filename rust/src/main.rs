@@ -16,7 +16,7 @@ use gafro::robots::{Joint, KinematicChain};
 struct Provenance { revision: String, dirty: bool, compiler: String, target: String, flags: String }
 
 struct ResultRow {
-    id: &'static str, status: &'static str, reason: &'static str,
+    id: &'static str, status: &'static str, reason: String,
     warmup_operations: u64, operations_per_sample: u64,
     durations_ns: Vec<u128>, oracle: Option<f64>,
 }
@@ -48,15 +48,43 @@ where F: FnMut(u64) -> f64 {
         black_box(accumulator);
         durations_ns.push(duration);
     }
-    ResultRow { id, status: "supported", reason: "",
+    ResultRow { id, status: "supported", reason: String::new(),
         warmup_operations: warmup_invocations * operations_per_invocation,
         operations_per_sample: sample_invocations * operations_per_invocation,
         durations_ns, oracle: Some(expected) }
 }
 
 fn unsupported(id: &'static str, reason: &'static str) -> ResultRow {
-    ResultRow { id, status: "unsupported", reason, warmup_operations: 0,
+    ResultRow { id, status: "unsupported", reason: reason.to_owned(), warmup_operations: 0,
         operations_per_sample: 0, durations_ns: Vec::new(), oracle: None }
+}
+
+/// Full-tensor spatial inertia action. The untimed oracle check compares every
+/// wrench coordinate (f1, f2, tau12, f3, tau13, tau23) and the checksum; a
+/// mismatch is evidence about gafro-rust, so it becomes a "failed" row with no
+/// timing instead of aborting the adapter.
+fn full_tensor_inertia_action(warmups: u64, operations: u64, samples: usize, twist: &Twist) -> ResultRow {
+    let id = "spatial_inertia_action/f64/full_tensor_wrench_checksum";
+    // from_mass_inertia(mass, ixx, ixy, ixz, iyy, iyz, izz) places the
+    // parameters exactly as gafro-cpp's tensor-entry constructor does
+    // (gafro-rust src/physics/inertia.rs:46-75), so pass the tensor's entries.
+    let inertia = Inertia::from_mass_inertia(2.0, 0.5, 0.05, 0.02, 0.6, 0.03, 0.8);
+    let expected = [2.0, 4.0, 0.08, 6.0, 0.102, 0.142];
+    let expected_checksum = 12.324;
+    let observed = inertia.apply(twist).blades;
+    let observed_checksum: f64 = observed.iter().sum();
+    let matches = observed.iter().zip(expected.iter())
+        .all(|(actual, wanted)| actual.is_finite() && (actual - wanted).abs() <= 1.0e-10)
+        && (observed_checksum - expected_checksum).abs() <= 1.0e-10;
+    if !matches {
+        return ResultRow { id, status: "failed",
+            reason: format!("untimed oracle mismatch in gafro-rust Inertia::from_mass_inertia(mass, ixx, ixy, ixz, iyy, iyz, izz) applied to the twist: expected wrench coordinates (f1, f2, tau12, f3, tau13, tau23) {expected:?}, observed {observed:?}"),
+            warmup_operations: 0, operations_per_sample: 0, durations_ns: Vec::new(), oracle: None };
+    }
+    measure(id, expected_checksum, warmups, operations, 1, samples, |_| {
+        let wrench = black_box(&inertia).apply(black_box(twist));
+        black_box(wrench.blades.iter().sum())
+    })
 }
 
 fn batch_motor<const N: usize>(profile: &str, id: &'static str) -> ResultRow {
@@ -235,6 +263,7 @@ fn main() {
             let transformed = black_box(&physics_inertia).transform(black_box(&first_motor));
             black_box(transformed.elements[0].get(E01))
         }));
+    rows.push(full_tensor_inertia_action(warmups, operations, samples, &physics_twist));
     rows.push(batch_motor::<16>(&profile, "batch_motor_composition/f64/n16/scalar_lane0"));
     rows.push(batch_motor::<256>(&profile, "batch_motor_composition/f64/n256/scalar_lane0"));
     rows.push(batch_motor::<4096>(&profile, "batch_motor_composition/f64/n4096/scalar_lane0"));

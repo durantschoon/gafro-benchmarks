@@ -224,6 +224,26 @@
       "operations_per_sample": 10000,
       "oracle": {"element01": {"e01": 2.0}},
       "observable": {"kind": "coefficient", "name": "e01_mass", "reference": 2.0, "absolute_tolerance": 1e-10}
+    },
+    {
+      "id": "spatial_inertia_action/f64/full_tensor_wrench_checksum",
+      "operation": "spatial inertia tensor action on twist computing 6D spatial wrench W = I * T, with a full symmetric rotational inertia tensor",
+      "operands": {
+        "kind": "spatial_inertia_and_twist",
+        "mass": 2.0,
+        "inertia_tensor": {"Ixx": 0.5, "Ixy": 0.05, "Ixz": 0.02, "Iyy": 0.6, "Iyz": 0.03, "Izz": 0.8},
+        "twist_linear_xyz": [1.0, 2.0, 3.0],
+        "twist_angular_bivectors": {"e12": 0.1, "e13": 0.2, "e23": 0.3},
+        "convention": "inertia_tensor holds the symmetric tensor's own entries (Ixy is I[x][y], not a negated product of inertia); angular twist and torque bivectors relate to axis vectors by the right-handed dual e23 <-> x, e13 <-> -y, e12 <-> z, so omega = (e23, -e13, e12); torque tau = I * omega, giving tau23 = tau_x, tau13 = -tau_y, tau12 = tau_z; force f = mass * twist_linear_xyz"
+      },
+      "numeric_type": "ieee754-binary64",
+      "warmup_operations": 1000,
+      "operations_per_sample": 10000,
+      "oracle": {
+        "wrench_coordinates": [2.0, 4.0, 0.08, 6.0, 0.102, 0.142],
+        "coordinate_order": ["f1", "f2", "tau12", "f3", "tau13", "tau23"]
+      },
+      "observable": {"kind": "coordinate_checksum", "name": "sum_wrench_coordinates", "reference": 12.324, "absolute_tolerance": 1e-10}
     }
   ]
 }

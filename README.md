@@ -128,8 +128,17 @@ workload IDs, operation counts, finite samples, and oracle values pass.
 
 ### Idris 2 adapter
 
-Stage 03 runs the same four common workloads against the attached
-`gafro-idris2` checkout. The adapter requires the Idris 2 compiler version the
+The Idris adapter runs against the attached `gafro-idris2` checkout. It
+supports the scalar GA workloads (dense geometric product, motor composition,
+motor-point sandwich, point-pair outer product, rotor and translator
+construction), both robotics IDs, and the three spatial inertia workloads listed
+below. `spatial_inertia_transform/f64/e01_mass` uses the library's
+`transformInertia` and reads row 0, column 0 (f1 from v1) of the transformed
+6x6 matrix, the entry gafro-cpp reads as `getElement01().get<e01>()`. For the
+full-tensor inertia row the adapter itself writes the 6x6 matrix from the
+contract tensor and convention, and records that in the row's
+`implementation.flags`. The CPU SoA batch IDs and the two orthogonal dense
+variants are unsupported. The adapter requires the Idris 2 compiler version the
 checkout pins (`IDRIS_VERSION` in its `Makefile`) and defaults to the Chez
 backend. It builds from an isolated temporary source tree, records revision and
 dirty state, and keeps encoding and output outside the timed regions:
@@ -188,6 +197,25 @@ python3 -m benchmark_harness.cli benchmark --profile full --implementations juli
 
 Both `benchmark-smoke` and `benchmark` honour `IMPLEMENTATIONS`; their default
 member set is `cpp,idris2,rust,julia`.
+
+### Spatial inertia workloads
+
+The manifest defines three spatial inertia workloads:
+
+| Workload ID | Operation | Observable |
+| --- | --- | --- |
+| `spatial_inertia_action/f64/wrench_checksum` | `W = I * T`, diagonal rotational tensor | sum of wrench coordinates |
+| `spatial_inertia_action/f64/full_tensor_wrench_checksum` | `W = I * T`, full symmetric rotational tensor | sum of wrench coordinates |
+| `spatial_inertia_transform/f64/e01_mass` | inertia transformed by a translation motor | `e01` coefficient of element 01 |
+
+The full-tensor entry differs from the diagonal one only in its tensor
+(`Ixy = 0.05`, `Ixz = 0.02`, `Iyz = 0.03`), so a sign or index error in an
+off-diagonal inertia term changes its torque coordinates. Its oracle is derived
+in `tests/test_inertia_oracle.py`, which first reproduces the diagonal oracle.
+An adapter whose untimed oracle check fails for this row emits it as `failed`
+with the expected and observed wrench coordinates, and still emits its other
+rows. A member that does not emit a manifest ID is recorded as `unsupported`
+with an "adapter predates this canonical workload variant" reason.
 
 ### Canonical robotics workloads
 
